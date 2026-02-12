@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {
   CalendarOptions,
@@ -11,6 +11,7 @@ import {
 } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { DateTimeMapper } from '../../utils/DateTimeMapper';
 
 @Component({
   selector: 'app-my-time',
@@ -28,6 +29,8 @@ export class AppMyTime {
   public events: WritableSignal<EventInput[]> = signal([]);
 
   private eventIdCounter = this.events().length;
+
+  private mapper = inject(DateTimeMapper);
 
   public calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, interactionPlugin],
@@ -72,10 +75,10 @@ export class AppMyTime {
       console.error(eventDescriptor);
       throw new Error('Error with event descriptor');
     }
-    return `${this.getTimeString(eventDescriptor.start)}_-_${this.getTimeString(eventDescriptor.end)}`;
-  }
-  private getTimeString(date: Date): string {
-    const dateString = date.toISOString();
-    return dateString.slice(dateString.indexOf('T') + 1);
+    const [startString, endString] = [
+      this.mapper.dateToTimeString(eventDescriptor.start),
+      this.mapper.dateToTimeString(eventDescriptor.end),
+    ];
+    return `${startString}_-_${endString}`;
   }
 }
