@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Client } from './Client';
+import { WeekSchedule } from '../time/Schedule';
 
-// TODO: later on, we might edit
 @Injectable({
   providedIn: 'root',
 })
@@ -16,9 +16,11 @@ export class ClientService {
   }
 
   private generateIdFrom(allClients: Array<Client>): number {
-    return (
-      allClients.reduce((maxId, client) => (client.id > maxId ? client.id : maxId), -Infinity) + 1
+    const lastId = allClients.reduce(
+      (maxId, client) => (client.id > maxId ? client.id : maxId),
+      -Infinity,
     );
+    return lastId === -Infinity ? 1 : lastId + 1;
   }
 
   public getAllClients(): Array<Client> {
@@ -27,6 +29,17 @@ export class ClientService {
 
   public deleteClient(toBeDeleted: Client): void {
     this.saveAll(this.getAllClients().filter((client) => client.id !== toBeDeleted.id));
+  }
+
+  public editClient(editedClient: Client): void {
+    const allClients = this.getAllClients();
+    allClients.map((client) => (client.id !== editedClient.id ? client : editedClient));
+    this.saveAll(allClients);
+  }
+
+  public editScheduleForClient(client: Client, newSchedule: WeekSchedule): void {
+    newSchedule.sort((a, b) => a.toString().localeCompare(b.toString()));
+    this.editClient({ ...client, schedule: newSchedule });
   }
 
   private saveAll(allClients: Array<Client>): void {
