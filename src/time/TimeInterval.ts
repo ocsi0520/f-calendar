@@ -1,4 +1,4 @@
-import type { EventApi } from '@fullcalendar/core/index.js';
+import type { EventApi, EventInput } from '@fullcalendar/core/index.js';
 import type { Hour, Minute, Time } from './Time';
 
 export const dayByNumber = {
@@ -24,92 +24,135 @@ const localeOptions = {
   } satisfies Intl.DateTimeFormatOptions,
 } as const;
 
-// TODO: test
-// TODO: separate -> TimeIntervalFactory and TimeInterval
 export class TimeInterval {
-  private static TIME_REGEX: RegExp = /^([01]\d|2[0-3]):([0-5]\d)$/;
   private static TIME_DIVIDER = '_-_';
-  public static createOf(wholeIntervalString: string): TimeInterval;
-  public static createOf(eventDescriptor: EventDescriptor): TimeInterval;
-  public static createOf(input: string | EventDescriptor): TimeInterval {
-    return typeof input === 'string'
-      ? this.createFromFormattedString(input)
-      : this.createFromEventDescriptor(input);
-  }
+  public static Factory = class {
+    private static TIME_REGEX: RegExp = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-  private static createFromEventDescriptor(eventDescriptor: EventDescriptor): TimeInterval {
-    if (!eventDescriptor.start || !eventDescriptor.end)
-      throw new Error('invalid eventDescriptor: ' + JSON.stringify(eventDescriptor));
-    if (this.getDayNumberFrom(eventDescriptor.start) !== this.getDayNumberFrom(eventDescriptor.end))
-      throw new Error('does not allow multi-day intervals');
-
-    const startString = eventDescriptor.start.toLocaleTimeString(
-      localeOptions.locale,
-      localeOptions.formatOptions,
-    );
-    const endString = eventDescriptor.end.toLocaleTimeString(
-      localeOptions.locale,
-      localeOptions.formatOptions,
-    );
-
-    return new TimeInterval(
-      this.getDayNumberFrom(eventDescriptor.start),
-      this.convertToTime(startString),
-      this.convertToTime(endString),
-    );
-  }
-  private static createFromFormattedString(wholeIntervalString: string): TimeInterval {
-    const [dayNumberString, timesPart] = this.validateParts(
-      wholeIntervalString.split('T'),
-      wholeIntervalString,
-    );
-    const numberOfDay = this.validateNumberOfDay(this.parsePositiveIntStrict(dayNumberString));
-    const [startString, endString] = this.validateParts(
-      timesPart.split(this.TIME_DIVIDER),
-      wholeIntervalString,
-    );
-
-    return new TimeInterval(
-      numberOfDay,
-      this.convertToTime(startString),
-      this.convertToTime(endString),
-    );
-  }
-  private static parsePositiveIntStrict(value: string): number {
-    if (!/^\d+$/.test(value)) {
-      throw new Error(`Invalid integer: "${value}"`);
+    public createOf(wholeIntervalString: string): TimeInterval;
+    public createOf(eventDescriptor: EventDescriptor): TimeInterval;
+    public createOf(input: string | EventDescriptor): TimeInterval {
+      return typeof input === 'string'
+        ? this.createFromFormattedString(input)
+        : this.createFromEventDescriptor(input);
     }
 
-    return Number(value);
-  }
+    private createFromEventDescriptor(eventDescriptor: EventDescriptor): TimeInterval {
+      if (!eventDescriptor.start || !eventDescriptor.end)
+        throw new Error('invalid eventDescriptor: ' + JSON.stringify(eventDescriptor));
+      if (
+        this.getDayNumberFrom(eventDescriptor.start) !== this.getDayNumberFrom(eventDescriptor.end)
+      )
+        throw new Error('does not allow multi-day intervals');
 
-  private static validateParts(parts: string[], wholeIntervalString: string): [string, string] {
-    if (parts.length !== 2)
-      throw new Error('Invalid string format for interval: ' + wholeIntervalString);
-    return parts as [string, string];
-  }
-  private static validateNumberOfDay(rawDayNumber: number): DayNumber {
-    if (rawDayNumber < 1 || rawDayNumber > 7) throw new Error('Invalid DayNumber: ' + rawDayNumber);
-    return rawDayNumber as DayNumber;
-  }
+      const startString = eventDescriptor.start.toLocaleTimeString(
+        localeOptions.locale,
+        localeOptions.formatOptions,
+      );
+      const endString = eventDescriptor.end.toLocaleTimeString(
+        localeOptions.locale,
+        localeOptions.formatOptions,
+      );
 
-  private static convertToTime(timeString: string): Time {
-    const result = timeString.match(this.TIME_REGEX);
-    if (result?.length !== 2) throw new Error('Invalid time string: ' + timeString);
+      return new TimeInterval(
+        this.getDayNumberFrom(eventDescriptor.start),
+        this.convertToTime(startString),
+        this.convertToTime(endString),
+      );
+    }
+    private createFromFormattedString(wholeIntervalString: string): TimeInterval {
+      const [dayNumberString, timesPart] = this.validateParts(
+        wholeIntervalString.split('T'),
+        wholeIntervalString,
+      );
 
-    return [
-      this.parsePositiveIntStrict(result[0]) as Hour,
-      this.parsePositiveIntStrict(result[1]) as Minute,
-    ];
-  }
+      const numberOfDay = this.validateNumberOfDay(this.parsePositiveIntStrict(dayNumberString));
 
-  private static getDayNumberFrom(date: Date): DayNumber {
-    return (date.getDay() || 7) as DayNumber;
-  }
+      const [startString, endString] = this.validateParts(
+        timesPart.split(TimeInterval.TIME_DIVIDER),
+        wholeIntervalString,
+      );
 
+      return new TimeInterval(
+        numberOfDay,
+        this.convertToTime(startString),
+        this.convertToTime(endString),
+      );
+    }
+    private parsePositiveIntStrict(value: string, allowLeading0 = false): number {
+      const valueToCheck = allowLeading0 && value.startsWith('0') ? value.slice(1) : value;
+
+      if (!/^\d+$/.test(valueToCheck)) {
+        throw new Error(`Invalid integer: "${valueToCheck}"`);
+      }
+
+      return Number(valueToCheck);
+    }
+
+    private validateParts(parts: string[], wholeIntervalString: string): [string, string] {
+      if (parts.length !== 2)
+        throw new Error('Invalid string format for interval: ' + wholeIntervalString);
+      return parts as [string, string];
+    }
+    private validateNumberOfDay(rawDayNumber: number): DayNumber {
+      if (rawDayNumber < 1 || rawDayNumber > 7)
+        throw new Error('Invalid DayNumber: ' + rawDayNumber);
+      return rawDayNumber as DayNumber;
+    }
+
+    private convertToTime(timeString: string): Time {
+      const result = timeString.match(TimeInterval.Factory.TIME_REGEX);
+      if (result?.length !== 3) throw new Error('Invalid time string: ' + timeString);
+
+      return [
+        this.parsePositiveIntStrict(result[1], true) as Hour,
+        this.parsePositiveIntStrict(result[2], true) as Minute,
+      ];
+    }
+
+    private getDayNumberFrom(date: Date): DayNumber {
+      return (date.getDay() || 7) as DayNumber;
+    }
+  };
   private constructor(
     public readonly dayNumber: DayNumber,
     public readonly start: Time,
     public readonly end: Time,
   ) {}
+
+  public toString(): string {
+    return `${this.dayNumber}T${this.timeToString(this.start)}_-_${this.timeToString(this.end)}`;
+  }
+  private withLeading0(number: Number): string {
+    return number.toString(10).padStart(2, '0');
+  }
+  private timeToString([hour, minute]: Time): string {
+    return this.withLeading0(hour) + ':' + this.withLeading0(minute);
+  }
+
+  public toEventWith(baseDate: Date, title?: string): EventInput {
+    const mondayMidnightOfThatWeek = this.getMondayMidnightOfWeekAt(baseDate);
+
+    const newEvent: EventInput = {
+      title: title || 'Meeting',
+      start: this.getExactDate(mondayMidnightOfThatWeek, this.start),
+      end: this.getExactDate(mondayMidnightOfThatWeek, this.end),
+      color: 'lightblue',
+      id: this.toString(),
+    };
+    return newEvent;
+  }
+  private getMondayMidnightOfWeekAt(baseDate: Date): Date {
+    const mondayMidnightOfThatWeek = new Date(baseDate);
+    const dayDiffFromMonday = (baseDate.getDay() || 7) - 1;
+    mondayMidnightOfThatWeek.setDate(mondayMidnightOfThatWeek.getDate() - dayDiffFromMonday);
+    mondayMidnightOfThatWeek.setHours(0, 0);
+    return mondayMidnightOfThatWeek;
+  }
+  private getExactDate(mondayMidnightOfThatWeek: Date, [hours, minutes]: Time): Date {
+    const exactDate = new Date(mondayMidnightOfThatWeek);
+    exactDate.setDate(exactDate.getDate() + this.dayNumber - 1);
+    exactDate.setHours(hours, minutes);
+    return exactDate;
+  }
 }
