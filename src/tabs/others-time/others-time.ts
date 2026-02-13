@@ -1,0 +1,41 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { ClientService } from '../../client/client.service';
+import { MatSelectModule } from '@angular/material/select';
+import { Client } from '../../client/Client';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { WeekSchedule } from '../../time/Schedule';
+import { SchedulerManager } from '../../scheduler-manager/scheduler-manager';
+
+@Component({
+  selector: 'app-others-time',
+  imports: [MatSelectModule, MatCardModule, MatButtonModule, SchedulerManager],
+  templateUrl: './others-time.html',
+  styleUrl: './others-time.scss',
+})
+export class OthersTime implements OnInit {
+  private clientService = inject(ClientService);
+  public selectedClient = signal<Client | null>(null);
+  public selectClient(client: Client): void {
+    this.selectedClient.set(client);
+  }
+
+  allClients = signal<Array<Client>>([]);
+
+  public ngOnInit(): void {
+    this.refreshClients();
+  }
+
+  public refreshClients(): void {
+    this.allClients.set(this.clientService.getAllClients());
+  }
+
+  public handleSave(schedule: WeekSchedule): void {
+    this.clientService.editScheduleForClient(this.selectedClient()!, schedule);
+    const editedClient: Client = { ...this.selectedClient()!, schedule };
+    this.selectedClient.set(editedClient);
+    this.allClients.set(
+      this.allClients().map((client) => (client.id === editedClient.id ? editedClient : client)),
+    );
+  }
+}

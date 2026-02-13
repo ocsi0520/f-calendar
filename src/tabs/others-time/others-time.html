@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-card-title
+    >Pair clients
+    <button (click)="refreshClients()" class="refresh" matButton="elevated">
+      Refresh client list
+    </button></mat-card-title
+  >
+
+  <mat-select (selectionChange)="selectClient($event.value)">
+    @for (client of allClients(); track client.id) {
+      <mat-option [value]="client">
+        {{ client.name }}
+      </mat-option>
+    }
+  </mat-select>
+
+  @if(selectedClient(); as client) {
+    <app-scheduler-manager [title]="client.name" [initialWeekSchedule]="client.schedule" (saveNewSchedule)="handleSave($event)"></app-scheduler-manager>
+  }
+</mat-card>
