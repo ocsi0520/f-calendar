@@ -1,0 +1,28 @@
+import { inject, Injectable } from '@angular/core';
+import { Client } from './Client';
+import { WeekSchedule } from '../time/Schedule';
+import { TimeIntervalFactory } from '../time/TimeInterval';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class MyTimeService {
+  // currently working w/ local storage, later on we can move on to a proper BE call
+  private static STORAGE_KEY = 'my_time';
+  private timeIntervalFactory = inject(TimeIntervalFactory);
+
+  public saveSchedule(newSchedule: WeekSchedule) {
+    localStorage.setItem(
+      MyTimeService.STORAGE_KEY,
+      JSON.stringify(newSchedule.map((timeInterval) => timeInterval.toString())),
+    );
+  }
+  public loadSchedule(): WeekSchedule {
+    const timeIntervalStrings = JSON.parse(
+      localStorage.getItem(MyTimeService.STORAGE_KEY) || '[]',
+    ) as string[];
+    return timeIntervalStrings.map((timeIntervalString) =>
+      this.timeIntervalFactory.createOf(timeIntervalString),
+    );
+  }
+}
