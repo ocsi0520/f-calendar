@@ -13,7 +13,7 @@ export const dayByNumber = {
 
 export type DayNumber = keyof typeof dayByNumber;
 
-type EventDescriptor = Pick<EventApi, 'start' | 'end'>;
+export type EventDescriptor = Pick<EventApi, 'start' | 'end'>;
 
 const localeOptions = {
   locale: new Intl.Locale('HU'),
