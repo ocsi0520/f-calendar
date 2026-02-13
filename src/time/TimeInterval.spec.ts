@@ -1,9 +1,9 @@
-import { TimeInterval, dayByNumber } from './TimeInterval';
+import { TimeInterval, TimeIntervalFactory, dayByNumber,  } from './TimeInterval';
 
 // https://www.calendar-365.com/calendar/2024/January.html
 
 describe('TimeInterval.Factory', () => {
-  const factory = new TimeInterval.Factory();
+  const factory = new TimeIntervalFactory();
 
   describe('createOf(string)', () => {
     it('creates interval from valid formatted string', () => {
@@ -96,7 +96,7 @@ describe('TimeInterval.Factory', () => {
 });
 
 describe('TimeInterval core behavior', () => {
-  const factory = new TimeInterval.Factory();
+  const factory = new TimeIntervalFactory();
 
   it('toString produces stable serialized representation', () => {
     const interval = factory.createOf('3T09:15_-_10:45');

@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {
   CalendarOptions,
@@ -9,7 +9,7 @@ import {
 } from '@fullcalendar/core/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { EventDescriptor, TimeInterval } from '../../time/TimeInterval';
+import { EventDescriptor, TimeIntervalFactory } from '../../time/TimeInterval';
 
 @Component({
   selector: 'app-my-time',
@@ -18,6 +18,7 @@ import { EventDescriptor, TimeInterval } from '../../time/TimeInterval';
   styleUrl: './app-my-time.scss',
 })
 export class AppMyTime {
+  timeIntervalFactory = inject(TimeIntervalFactory);
   private static BUSINESS_TIME_START = '07:00' as const;
   private static BUSINESS_TIME_END = '21:00' as const;
   private static BUSINESS_CONSTRAINT: ConstraintInput = {
@@ -30,6 +31,8 @@ export class AppMyTime {
     plugins: [timeGridPlugin, interactionPlugin],
     initialView: 'timeGridWeek',
     slotDuration: '00:15:00', // 15-minute granularity
+    eventOverlap: false,
+    selectOverlap: false,
     selectable: true, // drag selection
     firstDay: 1,
     editable: true,
@@ -49,7 +52,7 @@ export class AppMyTime {
     select: this.addEvent.bind(this),
     selectAllow: (selectInfo) => {
       return selectInfo.start.getDay() === selectInfo.end.getDay();
-    }
+    },
   };
   private removeEvent(eventClickArg: EventClickArg) {
     const idOfRemoved = this.getIdOf(eventClickArg.event);
@@ -66,6 +69,6 @@ export class AppMyTime {
     this.events.set([...this.events(), newEvent]);
   }
   private getIdOf(eventDescriptor: EventDescriptor): string {
-    return new TimeInterval.Factory().createOf(eventDescriptor).toString();
+    return this.timeIntervalFactory.createOf(eventDescriptor).toString();
   }
 }
