@@ -46,8 +46,10 @@ export class ClientService {
 
   public editClient(editedClient: Client): void {
     const allClients = this.getAllClients();
-    allClients.map((client) => (client.id !== editedClient.id ? client : editedClient));
-    this.saveAll(allClients);
+    const editedAllClients = allClients.map((client) =>
+      client.id !== editedClient.id ? client : editedClient,
+    );
+    this.saveAll(editedAllClients);
   }
 
   public editScheduleForClient(client: Client, newSchedule: WeekSchedule): void {
