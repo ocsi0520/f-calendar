@@ -1,0 +1,24 @@
+mat-card-title {
+  padding: 8px;
+}
+
+button.refresh {
+  max-width: max-content;
+}
+
+div.list-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+mat-list-item button {
+  width: max-content;
+  &.selected {
+    --mat-button-outlined-label-text-color: green;
+    --mat-button-outlined-outline-color: lightgreen;
+  }
+  &.selected-pair {
+    --mat-button-outlined-label-text-color: brown;
+    --mat-button-outlined-outline-color: salmon;
+  }
+}

@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-title
+    >Pair clients
+    <button (click)="refreshClients()" class="refresh" matButton="elevated">
+      Refresh client list
+    </button></mat-card-title
+  >
+
+  <mat-card-content>
+    <!-- Client list -->
+    <div class="list-wrapper">
+      <mat-list>
+        @for (client of allClients(); track client.id) {
+          <mat-list-item>
+            <button
+              [class.selected]="client.id === this.selectedClient()?.id"
+              (click)="selectClient(client)"
+              matButton="outlined"
+            >
+              {{ client.name }}
+            </button>
+          </mat-list-item>
+        }
+      </mat-list>
+      <mat-list>
+        @if (this.selectedClient()) {
+          @for (client of this.selectableClientsForPair(); track client.id) {
+            <mat-list-item>
+              <button
+                [class.selected-pair]="this.pairedClientsForSelected().includes(client.id)"
+                (click)="togglePair(client)"
+                matButton="outlined"
+              >
+                {{ client.name }}
+              </button>
+            </mat-list-item>
+          }
+        }
+      </mat-list>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button
+      mat-flat-button
+      color="primary"
+      type="button"
+      (click)="save()"
+      [disabled]="!selectedClient()"
+    >
+      Pair
+    </button>
+  </mat-card-actions>
+</mat-card>
