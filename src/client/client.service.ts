@@ -1,6 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Client } from './Client';
 import { WeekSchedule } from '../time/Schedule';
+import { TimeIntervalFactory } from '../time/TimeInterval';
+
+type ScheduleSerializedClient = Omit<Client, 'schedule'> & { schedule: string[] };
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +11,7 @@ import { WeekSchedule } from '../time/Schedule';
 export class ClientService {
   // currently working w/ local storage, later on we can move on to a proper BE call
   private static CLIENT_KEY = 'calendar_clients';
+  private timeIntervalFactory = inject(TimeIntervalFactory);
 
   public addClient(newClient: Client): void {
     const allClients = this.getAllClients();
@@ -24,7 +28,16 @@ export class ClientService {
   }
 
   public getAllClients(): Array<Client> {
-    return JSON.parse(localStorage.getItem(ClientService.CLIENT_KEY) || '[]');
+    const halfDeserialized: Array<ScheduleSerializedClient> = JSON.parse(
+      localStorage.getItem(ClientService.CLIENT_KEY) || '[]',
+    );
+    const clients: Array<Client> = halfDeserialized.map((item) => {
+      const deserializedSchedule = item.schedule.map((timeIntervalString) =>
+        this.timeIntervalFactory.createOf(timeIntervalString),
+      );
+      return { ...item, schedule: deserializedSchedule };
+    });
+    return clients;
   }
 
   public deleteClient(toBeDeleted: Client): void {
@@ -43,6 +56,10 @@ export class ClientService {
   }
 
   private saveAll(allClients: Array<Client>): void {
-    localStorage.setItem(ClientService.CLIENT_KEY, JSON.stringify(allClients));
+    const halfSerialized: Array<ScheduleSerializedClient> = allClients.map((client) => ({
+      ...client,
+      schedule: client.schedule.map((timeInterval) => timeInterval.toString()),
+    }));
+    localStorage.setItem(ClientService.CLIENT_KEY, JSON.stringify(halfSerialized));
   }
 }
