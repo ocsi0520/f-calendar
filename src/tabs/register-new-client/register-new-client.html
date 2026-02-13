@@ -1,0 +1,54 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="client-form">
+  <mat-card>
+    <mat-card-title>Create Client</mat-card-title>
+
+    <mat-card-content>
+      <!-- Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="name" />
+
+        @if (name.touched && name.hasError('required')) {
+          <mat-error>Name is required</mat-error>
+        }
+        @if (name.touched && name.hasError('maxlength')) {
+          <mat-error>Max 100 characters</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Sessions per week -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sessions per week</mat-label>
+        <input
+          matInput
+          type="number"
+          min="1"
+          max="7"
+          [formControl]="sessions"
+        />
+
+        @if (sessions.touched && sessions.hasError('required')) {
+          <mat-error>Required</mat-error>
+        }
+        @if (sessions.touched && sessions.hasError('min')) {
+          <mat-error>Minimum is 1</mat-error>
+        }
+        @if (sessions.touched && sessions.hasError('max')) {
+          <mat-error>Maximum is 7</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Comment -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Comment</mat-label>
+        <textarea matInput rows="3" [formControl]="comment"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button [disabled]="form.invalid" mat-flat-button color="primary" type="submit">
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

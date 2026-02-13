@@ -1,0 +1,86 @@
+:host {
+  display: block;
+}
+
+/* Layout container */
+.client-form {
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+/* Card sizing + spacing */
+mat-card {
+  width: 100%;
+  max-width: 560px;
+  border-radius: 16px;
+}
+
+/* Title spacing */
+mat-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 8px;
+}
+
+/* Content spacing rhythm */
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 12px;
+}
+
+/* Full-width form controls */
+.full-width {
+  width: 100%;
+}
+
+/* Textarea ergonomics */
+textarea[matInput] {
+  resize: vertical;
+  min-height: 72px;
+}
+
+/* Actions alignment */
+mat-card-actions {
+  padding-top: 8px;
+}
+
+/* Button visual weight */
+button[mat-flat-button] {
+  min-width: 120px;
+  font-weight: 500;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .client-form {
+    padding: 16px 8px;
+  }
+
+  mat-card {
+    border-radius: 12px;
+  }
+
+  mat-card-title {
+    font-size: 1.15rem;
+  }
+}
+
+/* Optional: tighter density variant */
+:host(.dense) {
+  mat-card-content {
+    gap: 12px;
+  }
+
+  mat-form-field {
+    --mat-form-field-container-height: 48px;
+  }
+}
+
+/* Optional: error emphasis alignment */
+mat-error {
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
