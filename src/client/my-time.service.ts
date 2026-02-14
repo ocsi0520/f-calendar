@@ -12,15 +12,16 @@ export class MyTimeService {
   private timeIntervalFactory = inject(TimeIntervalFactory);
 
   public saveSchedule(newSchedule: WeekSchedule) {
-    localStorage.setItem(
-      MyTimeService.STORAGE_KEY,
-      JSON.stringify(newSchedule.map((timeInterval) => timeInterval.toString())),
-    );
+    const stringifiedSchedules = newSchedule.map((timeInterval) => timeInterval.toString());
+    stringifiedSchedules.sort();
+
+    localStorage.setItem(MyTimeService.STORAGE_KEY, JSON.stringify(stringifiedSchedules));
   }
   public loadSchedule(): WeekSchedule {
     const timeIntervalStrings = JSON.parse(
       localStorage.getItem(MyTimeService.STORAGE_KEY) || '[]',
     ) as string[];
+    timeIntervalStrings.sort(); // might not need, as saveSchedule anyway sort them
     return timeIntervalStrings.map((timeIntervalString) =>
       this.timeIntervalFactory.createOf(timeIntervalString),
     );
