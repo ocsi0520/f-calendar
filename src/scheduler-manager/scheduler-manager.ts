@@ -12,7 +12,7 @@ import {
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {
   CalendarOptions,
-  DateSelectArg,
+  EventChangeArg,
   EventClickArg,
   EventInput,
 } from '@fullcalendar/core/index.js';
@@ -21,6 +21,7 @@ import { WeekSchedule } from '../time/Schedule';
 import { ClientService } from '../client/client.service';
 import { baseCalendarOptions } from './base-calendar-options';
 import { MatButtonModule } from '@angular/material/button';
+import { sessionSpan } from '../time/session-span';
 
 @Component({
   selector: 'app-scheduler-manager',
@@ -71,17 +72,23 @@ export class SchedulerManager implements OnChanges {
     selectable: this.isReadWrite(),
     eventClick: this.removeEvent.bind(this),
     select: this.addEvent.bind(this),
+    eventChange: this.changeEvent.bind(this),
   }));
 
-  private removeEvent(eventClickArg: EventClickArg) {
+  private removeEvent(eventClickArg: Pick<EventClickArg, 'event'>) {
     const idOfRemoved = this.getIdOf(eventClickArg.event);
     this.events.set(this.events().filter((event) => event.id !== idOfRemoved));
   }
-  private addEvent(dateSelectArg: DateSelectArg) {
+  private addEvent(dateSelectArg: EventDescriptor) {
+    if (!this.atLeastSessionTime(dateSelectArg)) {
+      // TODO: toast
+      alert('time slots cant be less than 75 minutes');
+      return;
+    }
     const newEvent: EventInput = {
       title: this.title(),
-      start: dateSelectArg.start,
-      end: dateSelectArg.end,
+      start: dateSelectArg.start!,
+      end: dateSelectArg.end!,
       color: 'lightblue',
       id: this.getIdOf(dateSelectArg),
     };
@@ -89,5 +96,20 @@ export class SchedulerManager implements OnChanges {
   }
   private getIdOf(eventDescriptor: EventDescriptor): string {
     return this.timeIntervalFactory.createOf(eventDescriptor).toString();
+  }
+  private changeEvent(eventChangeArg: EventChangeArg): void {
+    if (!this.atLeastSessionTime(eventChangeArg.event)) {
+      eventChangeArg.revert();
+      // TODO: toast
+      alert('time slots cant be less than 75 minutes');
+      return;
+    }
+
+    this.removeEvent({ event: eventChangeArg.oldEvent });
+    this.addEvent(eventChangeArg.event);
+  }
+  private atLeastSessionTime(eventDesc: EventDescriptor): boolean {
+    const timeSpanInMilliSeconds = eventDesc.end!.valueOf() - eventDesc.start!.valueOf();
+    return timeSpanInMilliSeconds >= sessionSpan.inMilliSeconds;
   }
 }
