@@ -1,5 +1,9 @@
 <div class="actions">
+  @if (isReadWrite()) {
     <button (click)="save()" matButton="tonal">Save</button>
     <button (click)="reset()" matButton="tonal">Reset</button>
+  } @else {
+    <button (click)="fixCalendar()" matButton="tonal">Fix calendar</button>
+  }
 </div>
-<full-calendar [options]="calendarOptions" [events]="events()"></full-calendar>
+<full-calendar [options]="calendarOptions()" [events]="events()"></full-calendar>

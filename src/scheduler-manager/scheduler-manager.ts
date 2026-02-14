@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   inject,
   input,
   OnChanges,
@@ -35,10 +36,14 @@ export class SchedulerManager implements OnChanges {
       ),
     );
   }
-  public save() {
+  public save(): void {
     this.saveNewSchedule.emit(
       this.events().map((event) => this.timeIntervalFactory.createOf(event as EventDescriptor)),
     );
+  }
+  // TOOD: later on this can be removed, as only MyTime is generated immediately, the other ones are going to be generated later
+  public fixCalendar(): void {
+    this.events.set([...this.events()]);
   }
   timeIntervalFactory = inject(TimeIntervalFactory);
   clientService = inject(ClientService);
@@ -47,24 +52,26 @@ export class SchedulerManager implements OnChanges {
 
   public initialWeekSchedule = input.required<WeekSchedule>();
   public title = input.required<string>();
+  public isReadWrite = input<boolean>(true);
 
   public saveNewSchedule = output<WeekSchedule>();
 
   public ngOnChanges(changes: SimpleChanges<typeof this>): void {
     const changeOfSchedule = changes['initialWeekSchedule'];
-    if (changeOfSchedule)
-      this.events.set(
-        changeOfSchedule.currentValue.map((timeInterval) =>
-          timeInterval.toEventWith(new Date(), this.title()),
-        ),
-      );
+    if (!changeOfSchedule) return;
+    this.events.set(
+      changeOfSchedule.currentValue.map((timeInterval) =>
+        timeInterval.toEventWith(new Date(), this.title()),
+      ),
+    );
   }
 
-  public calendarOptions: CalendarOptions = {
+  public calendarOptions = computed<CalendarOptions>(() => ({
     ...baseCalendarOptions,
+    selectable: this.isReadWrite(),
     eventClick: this.removeEvent.bind(this),
     select: this.addEvent.bind(this),
-  };
+  }));
 
   private removeEvent(eventClickArg: EventClickArg) {
     const idOfRemoved = this.getIdOf(eventClickArg.event);

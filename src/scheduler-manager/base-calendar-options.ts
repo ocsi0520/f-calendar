@@ -16,7 +16,6 @@ export const baseCalendarOptions: CalendarOptions = {
     slotDuration: '00:15:00', // 15-minute granularity
     eventOverlap: false,
     selectOverlap: false,
-    selectable: true, // drag selection
     firstDay: 1,
     editable: true,
     weekends: true,
