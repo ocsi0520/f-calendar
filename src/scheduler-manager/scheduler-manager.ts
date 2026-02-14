@@ -16,7 +16,7 @@ import {
   EventClickArg,
   EventInput,
 } from '@fullcalendar/core/index.js';
-import { EventDescriptor, TimeIntervalFactory } from '../time/TimeInterval';
+import { EventDescriptor, TimeIntervalFactory } from '../time/TimeInterval/TimeInterval';
 import { WeekSchedule } from '../time/Schedule';
 import { ClientService } from '../client/client.service';
 import { baseCalendarOptions } from './base-calendar-options';

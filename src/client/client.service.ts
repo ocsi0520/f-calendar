@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Client } from './Client';
 import { WeekSchedule } from '../time/Schedule';
-import { TimeIntervalFactory } from '../time/TimeInterval';
+import { TimeIntervalFactory } from '../time/TimeInterval/TimeInterval';
 
 type ScheduleSerializedClient = Omit<Client, 'schedule'> & { schedule: string[] };
 

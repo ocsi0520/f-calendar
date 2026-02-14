@@ -1,4 +1,4 @@
-import { TimeInterval, TimeIntervalFactory, dayByNumber,  } from './TimeInterval';
+import { TimeIntervalFactory, dayByNumber } from './TimeInterval';
 
 // https://www.calendar-365.com/calendar/2024/January.html
 

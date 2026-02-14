@@ -1,3 +1,3 @@
-import { TimeInterval } from './TimeInterval';
+import { TimeInterval } from './TimeInterval/TimeInterval';
 
 export type WeekSchedule = Array<TimeInterval>;

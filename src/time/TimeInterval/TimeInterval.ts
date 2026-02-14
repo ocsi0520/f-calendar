@@ -1,5 +1,5 @@
 import type { EventApi, EventInput } from '@fullcalendar/core/index.js';
-import type { Hour, Minute, Time } from './Time';
+import type { Hour, Minute, Time } from '../Time';
 import { Injectable } from '@angular/core';
 
 export const dayByNumber = {
