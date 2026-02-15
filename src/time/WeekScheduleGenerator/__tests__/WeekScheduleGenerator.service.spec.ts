@@ -1,9 +1,11 @@
 import { methodName } from '../../../utils/test-name';
 import { WeekSchedule } from '../../Schedule';
-import { DayNumber, TimeInterval, TimeIntervalFactory } from '../../TimeInterval/TimeInterval';
+import { TimeInterval } from '../../TimeInterval/TimeInterval';
 import { allMorningClient, impossibleClient } from './TestClients';
-
 import { WeekScheduleGeneratorService } from '../WeekScheduleGenerator.service';
+import { DayNumber } from '../../TimeInterval/TimeInterval-constants';
+import { TimeIntervalFactory } from '../../TimeInterval/TimeIntervalFactory';
+
 describe(WeekScheduleGeneratorService.name, () => {
   const timeIntervalFactory = new TimeIntervalFactory();
   const unitUnderTest = new WeekScheduleGeneratorService();
@@ -54,10 +56,14 @@ describe(WeekScheduleGeneratorService.name, () => {
       expect(unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [])).toEqual([]);
     });
     it('should return an empty array if all clients have proper overlapping', () => {
-      expect(unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [allMorningClient])).toEqual([]);
+      expect(
+        unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [allMorningClient]),
+      ).toEqual([]);
     });
-    it.only('should return a client which is impossible to have session with', () => {
-      expect(unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [impossibleClient])).toEqual([impossibleClient]);
+    it('should return a client which is impossible to have session with', () => {
+      expect(
+        unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [impossibleClient]),
+      ).toEqual([impossibleClient]);
     });
   });
 });

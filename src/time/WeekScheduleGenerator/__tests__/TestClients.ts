@@ -1,7 +1,6 @@
-import { TimeInterval, TimeIntervalFactory } from '../../TimeInterval/TimeInterval';
 import { Client } from '../../../client/Client';
 import { NumberRange } from '../../../utils/Range';
-import { WeekSchedule } from '../../Schedule';
+import { TimeIntervalFactory } from '../../TimeInterval/TimeIntervalFactory';
 
 let idCounter = 0;
 
