@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { SchedulerManager } from '../../scheduler-manager/scheduler-manager';
 import { WeekSchedule } from '../../time/Schedule';
 import { MyTimeService } from '../../client/my-time.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-my-time',
@@ -10,9 +11,9 @@ import { MyTimeService } from '../../client/my-time.service';
   styleUrl: './app-my-time.scss',
 })
 export class AppMyTime implements OnInit {
-  myTimeService = inject(MyTimeService);
-
-  mySchedule = signal<WeekSchedule>([]);
+  private myTimeService = inject(MyTimeService);
+  private snackBar = inject(MatSnackBar);
+  public mySchedule = signal<WeekSchedule>([]);
 
   public ngOnInit(): void {
     this.mySchedule.set(this.myTimeService.loadSchedule());
@@ -21,5 +22,6 @@ export class AppMyTime implements OnInit {
   public handleSave(schedule: WeekSchedule): void {
     this.mySchedule.set(schedule);
     this.myTimeService.saveSchedule(schedule);
+    this.snackBar.open('My schedule has been succesfully updated ✅', undefined, { duration: 2_000 });
   }
 }

@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { WeekSchedule } from '../../time/Schedule';
 import { SchedulerManager } from '../../scheduler-manager/scheduler-manager';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-others-time',
@@ -15,6 +16,7 @@ import { SchedulerManager } from '../../scheduler-manager/scheduler-manager';
 })
 export class OthersTime implements OnInit {
   private clientService = inject(ClientService);
+  private snackBar = inject(MatSnackBar);
   public selectedClient = signal<Client | null>(null);
   public selectClient(client: Client): void {
     this.selectedClient.set(client);
@@ -36,6 +38,11 @@ export class OthersTime implements OnInit {
     this.selectedClient.set(editedClient);
     this.allClients.set(
       this.allClients().map((client) => (client.id === editedClient.id ? editedClient : client)),
+    );
+    this.snackBar.open(
+      `${editedClient.name} client's schedule has been successfully updated ✅`,
+      undefined,
+      { duration: 2_000 },
     );
   }
 }

@@ -22,6 +22,7 @@ import { ClientService } from '../client/client.service';
 import { baseCalendarOptions } from './base-calendar-options';
 import { MatButtonModule } from '@angular/material/button';
 import { sessionSpan } from '../time/session-span';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-scheduler-manager',
@@ -30,6 +31,17 @@ import { sessionSpan } from '../time/session-span';
   styleUrl: './scheduler-manager.scss',
 })
 export class SchedulerManager implements OnChanges {
+  timeIntervalFactory = inject(TimeIntervalFactory);
+  clientService = inject(ClientService);
+
+  public events: WritableSignal<EventInput[]> = signal([]);
+
+  public initialWeekSchedule = input.required<WeekSchedule>();
+  public title = input.required<string>();
+  public isReadWrite = input<boolean>(true);
+
+  public saveNewSchedule = output<WeekSchedule>();
+  private snackBar = inject(MatSnackBar);
   public reset(): void {
     this.events.set(
       this.initialWeekSchedule().map((timeInterval) =>
@@ -46,16 +58,6 @@ export class SchedulerManager implements OnChanges {
   public fixCalendar(): void {
     this.events.set([...this.events()]);
   }
-  timeIntervalFactory = inject(TimeIntervalFactory);
-  clientService = inject(ClientService);
-
-  public events: WritableSignal<EventInput[]> = signal([]);
-
-  public initialWeekSchedule = input.required<WeekSchedule>();
-  public title = input.required<string>();
-  public isReadWrite = input<boolean>(true);
-
-  public saveNewSchedule = output<WeekSchedule>();
 
   public ngOnChanges(changes: SimpleChanges<typeof this>): void {
     const changeOfSchedule = changes['initialWeekSchedule'];
@@ -81,8 +83,9 @@ export class SchedulerManager implements OnChanges {
   }
   private addEvent(dateSelectArg: EventDescriptor) {
     if (!this.atLeastSessionTime(dateSelectArg)) {
-      // TODO: toast
-      alert('time slots cant be less than 75 minutes');
+      this.snackBar.open("Time slots can't be less than 75 minutes ❌", undefined, {
+        duration: 2_000,
+      });
       return;
     }
     const newEvent: EventInput = {
@@ -100,8 +103,9 @@ export class SchedulerManager implements OnChanges {
   private changeEvent(eventChangeArg: EventChangeArg): void {
     if (!this.atLeastSessionTime(eventChangeArg.event)) {
       eventChangeArg.revert();
-      // TODO: toast
-      alert('time slots cant be less than 75 minutes');
+      this.snackBar.open("Time slots can't be less than 75 minutes ❌", undefined, {
+        duration: 2_000,
+      });
       return;
     }
 

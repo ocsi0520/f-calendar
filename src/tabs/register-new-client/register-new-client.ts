@@ -1,18 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { ClientService } from '../../client/client.service';
-import { FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Client } from '../../client/Client';
-import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register-new-client',
   standalone: true,
   imports: [
-    CommonModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -25,6 +25,7 @@ import { CommonModule } from '@angular/common';
 export class RegisterNewClient {
   clientService = inject(ClientService);
   private fb = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
 
   form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -41,6 +42,9 @@ export class RegisterNewClient {
     const newClient = this.form.getRawValue() as Omit<Client, 'schedule'>;
     this.clientService.addClient({ ...newClient, schedule: [] });
     this.form.reset();
+    this.snackBar.open(`${newClient.name} client has been successfully registered✅`, undefined, {
+      duration: 2_000,
+    });
   }
 
   // convenience getters for template

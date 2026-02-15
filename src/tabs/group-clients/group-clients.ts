@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Client } from '../../client/Client';
 import { ClientPairService } from '../../client/client-pair.service';
 import { ClientService } from '../../client/client.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-group-clients',
@@ -17,11 +18,12 @@ import { ClientService } from '../../client/client.service';
 export class GroupClients implements OnInit {
   private clientService = inject(ClientService);
   private pairService = inject(ClientPairService);
+  private snackBar = inject(MatSnackBar);
 
-  allClients = signal<Array<Client>>([]);
-  selectedClient = signal<Client | null>(null);
-  pairedClientsForSelected = signal<Array<Client['id']>>([]);
-  selectableClientsForPair = computed<Array<Client>>(() =>
+  public allClients = signal<Array<Client>>([]);
+  public selectedClient = signal<Client | null>(null);
+  public pairedClientsForSelected = signal<Array<Client['id']>>([]);
+  public selectableClientsForPair = computed<Array<Client>>(() =>
     !this.selectedClient()
       ? []
       : this.allClients().filter((client) => client.id !== this.selectedClient()!.id),
@@ -50,12 +52,17 @@ export class GroupClients implements OnInit {
   }
 
   public save(): void {
-    const selectedClientId = this.selectedClient()!.id;
-    this.pairService.removePairsByClientId(selectedClientId);
+    const selectedClientForPair = this.selectedClient()!;
+    this.pairService.removePairsByClientId(selectedClientForPair.id);
     this.pairedClientsForSelected().forEach((secondClientId) => {
-      this.pairService.addPair(selectedClientId, secondClientId);
+      this.pairService.addPair(selectedClientForPair.id, secondClientId);
     });
     this.pairedClientsForSelected.set([]);
     this.selectedClient.set(null);
+    this.snackBar.open(
+      `${selectedClientForPair.name} client's pairs has been succesfully updated✅`,
+      undefined,
+      { duration: 2_000 },
+    );
   }
 }
