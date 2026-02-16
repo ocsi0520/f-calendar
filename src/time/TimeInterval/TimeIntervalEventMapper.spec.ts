@@ -1,3 +1,4 @@
+// https://www.calendar-365.com/calendar/2024/January.html
 import { TestBed } from '@angular/core/testing';
 import { TimeIntervalEventMapper } from './TimeIntervalEventMapper';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
@@ -14,7 +15,7 @@ describe(TimeIntervalEventMapper.name, () => {
     unitUnderTest = TestBed.inject(TimeIntervalEventMapper);
   });
 
-  describe('mapFromEvent', () => {
+  describe(methodName(TimeIntervalEventMapper, 'mapFromEvent'), () => {
     it('creates interval from valid descriptor on tuesday', () => {
       const start = new Date('2024-01-09T08:00:00'); // Tuesday
       const end = new Date('2024-01-09T09:30:00');

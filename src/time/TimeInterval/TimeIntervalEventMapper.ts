@@ -86,6 +86,7 @@ export class TimeIntervalEventMapper {
     ];
   }
 
+  // TODO: unnecessary as TIME_REGEX anyway narrow down
   private parsePositiveIntStrict(value: string, allowLeading0 = false): number {
     const valueToCheck = allowLeading0 && value.startsWith('0') ? value.slice(1) : value;
 

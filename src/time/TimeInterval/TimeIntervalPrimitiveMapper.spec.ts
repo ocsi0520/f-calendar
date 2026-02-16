@@ -1,10 +1,11 @@
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
 import { TimeInterval } from './TimeInterval';
+import { methodName } from '../../utils/test-name';
 
-describe('TimeIntervalPrimitiveMapper', () => {
+describe(TimeIntervalPrimitiveMapper.name, () => {
   const unitUnderTest = new TimeIntervalPrimitiveMapper();
 
-  describe('mapFromString', () => {
+  describe(methodName(TimeIntervalPrimitiveMapper, 'mapFromString'), () => {
     it('creates interval from valid formatted string', () => {
       const interval = unitUnderTest.mapFromString('1T08:30_-_10:45');
 
@@ -44,7 +45,7 @@ describe('TimeIntervalPrimitiveMapper', () => {
     });
   });
 
-  describe('mapToString', () => {
+  describe(methodName(TimeIntervalPrimitiveMapper, 'mapToString'), () => {
     it('produces stable serialized representation', () => {
       const interval = new TimeInterval(3, [9, 15], [10, 45]);
 

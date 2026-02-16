@@ -1,110 +1,76 @@
-// https://www.calendar-365.com/calendar/2024/January.html
 import { TestBed } from '@angular/core/testing';
-import { TimeInterval } from './TimeInterval';
 import { TimeIntervalMapper } from './TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from './TimeIntervalEventMapper';
-import { methodName } from '../../utils/test-name';
+import { TimeInterval } from './TimeInterval';
+import { vi } from 'vitest';
+import { EventInput } from '@fullcalendar/core/index.js';
+import { EventDescriptor } from './TimeInterval-constants';
 
 describe(TimeIntervalMapper.name, () => {
   let unitUnderTest: TimeIntervalMapper;
-  let primitiveMapper: TimeIntervalPrimitiveMapper;
-  let eventMapper: TimeIntervalEventMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
     });
     unitUnderTest = TestBed.inject(TimeIntervalMapper);
-    primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
-    eventMapper = TestBed.inject(TimeIntervalEventMapper);
   });
 
-  it('toString produces stable serialized representation', () => {
-    const interval = new TimeInterval(3, [9, 15], [10, 45]);
+  it('should delegate mapToString call to primitiveMapper', () => {
+    const primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
+    primitiveMapper.mapToString = vi.fn(() => 'SENTINEL');
 
-    expect(unitUnderTest.mapToString(interval)).toBe('3T09:15_-_10:45');
+    const interval = new TimeInterval(2, [8, 0], [9, 30]);
+    const result = unitUnderTest.mapToString(interval);
+
+    expect(primitiveMapper.mapToString).toHaveBeenCalledWith(interval);
+    expect(result).toBe('SENTINEL');
   });
 
-  it('round-trips via string serialization', () => {
-    const original = new TimeInterval(5, [12, 0], [13, 30]);
-    const reconstructed = primitiveMapper.mapFromString(unitUnderTest.mapToString(original));
+  it('should delegate mapFromString call to primitiveMapper', () => {
+    const primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
 
-    expect(reconstructed.dayNumber).toBe(original.dayNumber);
-    expect(reconstructed.start).toEqual(original.start);
-    expect(reconstructed.end).toEqual(original.end);
+    const returnInterval = new TimeInterval(3, [9, 15], [10, 45]);
+    primitiveMapper.mapFromString = vi.fn(() => returnInterval);
+
+    const repr = 'irrelevant';
+    const result = unitUnderTest.mapFromString(repr);
+
+    expect(primitiveMapper.mapFromString).toHaveBeenCalledWith(repr);
+    expect(result).toBe(returnInterval);
   });
 
-  describe(methodName(TimeIntervalMapper, 'mapToEvent'), () => {
-    it('creates event aligned to monday of given week', () => {
-      const interval = new TimeInterval(1, [8, 0], [9, 0]);
-      const baseDate = new Date('2024-01-10T12:00:00'); // Wednesday
+  it('should delegate mapToEvent call to eventMapper', () => {
+    const eventMapper = TestBed.inject(TimeIntervalEventMapper);
 
-      const event = unitUnderTest.mapToEvent(interval, baseDate, 'Standup');
+    const sentinel: EventInput = {
+      id: 'x',
+      start: new Date(2000, 1, 12, 11, 0),
+      end: new Date(2000, 1, 12, 13, 0),
+    };
+    eventMapper.mapToEvent = vi.fn(() => sentinel);
 
-      expect(event.title).toBe('Standup');
-      expect(event.color).toBe('lightblue');
-      expect(event.id).toBe(unitUnderTest.mapToString(interval));
+    const interval = new TimeInterval(1, [7, 0], [8, 0]);
+    const base = new Date(2024, 0, 1);
+    const title = 'MyTitle';
 
-      const start = new Date(event.start as Date);
-      const end = new Date(event.end as Date);
+    const result = unitUnderTest.mapToEvent(interval, base, title);
 
-      expect(start.getDay()).toBe(1); // Monday
-      expect(start.getHours()).toBe(8);
-      expect(start.getMinutes()).toBe(0);
+    expect(eventMapper.mapToEvent).toHaveBeenCalledWith(interval, base, title);
+    expect(result).toBe(sentinel);
+  });
 
-      expect(end.getDay()).toBe(1);
-      expect(end.getHours()).toBe(9);
-      expect(end.getMinutes()).toBe(0);
-    });
+  it('should delegate mapFromEvent call to eventMapper', () => {
+    const eventMapper = TestBed.inject(TimeIntervalEventMapper);
 
-    it('defaults title when omitted', () => {
-      const interval = new TimeInterval(2, [10, 0], [11, 0]);
-      const baseDate = new Date('2024-01-09T12:00:00');
+    const returnInterval = new TimeInterval(4, [11, 0], [12, 0]);
+    eventMapper.mapFromEvent = vi.fn(() => returnInterval);
 
-      const event = unitUnderTest.mapToEvent(interval, baseDate);
+    const descriptor: EventDescriptor = { start: new Date(), end: new Date() };
+    const result = unitUnderTest.mapFromEvent(descriptor);
 
-      expect(event.title).toBe('Meeting');
-    });
-    it('should handle thursday interval and tuesday base date', () => {
-      const interval = new TimeInterval(4, [14, 30], [15, 30]); // Thursday
-      const baseDate = new Date('2024-01-09T00:00:00'); // Tuesday
-
-      const event = unitUnderTest.mapToEvent(interval, baseDate);
-
-      const start = new Date(event.start as Date);
-
-      expect(start.getDate()).toBe(11); // Jan 11
-      expect(start.getDay()).toBe(4); // Thursday
-      expect(start.getHours()).toBe(14);
-      expect(start.getMinutes()).toBe(30);
-    });
-
-    it('should handle monday interval and sunday base date', () => {
-      const interval = new TimeInterval(1, [14, 30], [15, 30]); // monday
-      const baseDate = new Date('2024-01-07T00:00:00'); // sunday
-
-      const event = unitUnderTest.mapToEvent(interval, baseDate);
-
-      const start = new Date(event.start as Date);
-
-      expect(start.getDate()).toBe(1); // jan 1
-      expect(start.getDay()).toBe(1); // Thursday
-      expect(start.getHours()).toBe(14);
-      expect(start.getMinutes()).toBe(30);
-    });
-    it('should handle sunday interval and monday base date', () => {
-      const interval = new TimeInterval(7, [14, 30], [15, 30]); // sunday
-      const baseDate = new Date('2024-01-08T00:00:00'); // monday
-
-      const event = unitUnderTest.mapToEvent(interval, baseDate);
-
-      const start = new Date(event.start as Date);
-
-      expect(start.getDate()).toBe(14); // jan 14
-      expect(start.getDay()).toBe(0); // sunday - 0 for raw dates
-      expect(start.getHours()).toBe(14);
-      expect(start.getMinutes()).toBe(30);
-    });
+    expect(eventMapper.mapFromEvent).toHaveBeenCalledWith(descriptor);
+    expect(result).toBe(returnInterval);
   });
 });
