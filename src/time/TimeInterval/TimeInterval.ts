@@ -7,10 +7,6 @@ export class TimeInterval {
     public readonly start: Time,
     public readonly end: Time,
   ) {}
-
-  public getInAbsoluteMinutes(time: 'start' | 'end'): number {
-    return this[time][0] * 60 + this[time][1];
-  }
 }
 
 export const isSameInterval = (t1: TimeInterval, t2: TimeInterval): boolean => {

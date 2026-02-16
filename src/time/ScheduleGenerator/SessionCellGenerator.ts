@@ -1,9 +1,8 @@
 import { sessionSpan } from '../session-span';
 import { inject, Injectable } from '@angular/core';
-import { Hour, Minute, Time } from '../Time';
 import { TimeInterval } from '../TimeInterval/TimeInterval';
-import { DayNumber } from '../TimeInterval/TimeInterval-constants';
 import { SessionCell } from './SessionCell';
+import { TimeIntervalPrimitiveMapper } from '../TimeInterval/TimeIntervalPrimitiveMapper';
 
 export const sessionStartGranularityInMins = 15;
 
@@ -11,34 +10,46 @@ export const sessionStartGranularityInMins = 15;
   providedIn: 'root',
 })
 export class SessionCellGenerator {
+  private primitiveMapper = inject(TimeIntervalPrimitiveMapper);
+  private readonly NUMBER_BASE = TimeIntervalPrimitiveMapper.NUMBER_BASE;
+  private readonly STEP_SHIFT_15_MINS =
+    sessionStartGranularityInMins * TimeIntervalPrimitiveMapper.NUMBER_BASE +
+    sessionStartGranularityInMins;
+
   public generateAllPossibleCellsWith(freeSlotForPerson: TimeInterval): Array<SessionCell> {
-    const startInMins = freeSlotForPerson.getInAbsoluteMinutes('start');
-    const endInMins = freeSlotForPerson.getInAbsoluteMinutes('end');
+    const startNumberRepresentation = this.encodeTimeIntervalStart(freeSlotForPerson);
     const sessionCells: Array<SessionCell> = [];
-    for (
-      let sessionStart = startInMins;
-      sessionStart + sessionSpan.inMinutes <= endInMins;
-      sessionStart += sessionStartGranularityInMins
-    ) {
+
+    let currentNumberRepresentation = startNumberRepresentation;
+    let currentTimeInterval = this.primitiveMapper.mapFromNumber(currentNumberRepresentation);
+
+    while (this.isWithinSlot(currentTimeInterval, freeSlotForPerson)) {
       sessionCells.push({
-        timeInterval: this.generateSessionIntervalWith(freeSlotForPerson.dayNumber, sessionStart),
+        timeInterval: currentTimeInterval,
         status: 'available',
       });
+      currentNumberRepresentation += this.STEP_SHIFT_15_MINS;
+      currentTimeInterval = this.primitiveMapper.mapFromNumber(currentNumberRepresentation);
     }
+
     return sessionCells;
   }
 
-  private generateSessionIntervalWith(day: DayNumber, startInAbsoluteMins: number): TimeInterval {
-    const endInAbsoluteMins = startInAbsoluteMins + sessionSpan.inMinutes;
-    const startTime: Time = [
-      Math.floor(startInAbsoluteMins / 60) as Hour,
-      (startInAbsoluteMins % 60) as Minute,
-    ];
+  private encodeTimeIntervalStart(timeInterval: TimeInterval): number {
+    const startInMinutes =
+      (timeInterval.dayNumber - 1) * 24 * 60 + timeInterval.start[0] * 60 + timeInterval.start[1];
+    const endInMinutes = startInMinutes + sessionSpan.inMinutes;
+    return startInMinutes * this.NUMBER_BASE + endInMinutes;
+  }
 
-    const endTime: Time = [
-      Math.floor(endInAbsoluteMins / 60) as Hour,
-      (endInAbsoluteMins % 60) as Minute,
-    ];
-    return new TimeInterval(day, startTime, endTime);
+  private isWithinSlot(
+    currentTimeInterval: TimeInterval,
+    freeSlotForPerson: TimeInterval,
+  ): boolean {
+    return !(
+      currentTimeInterval.end[0] > freeSlotForPerson.end[0] ||
+      (currentTimeInterval.end[0] === freeSlotForPerson.end[0] &&
+        currentTimeInterval.end[1] > freeSlotForPerson.end[1])
+    );
   }
 }
