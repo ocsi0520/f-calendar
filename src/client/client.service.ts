@@ -13,7 +13,7 @@ export class ClientService {
   private static CLIENT_KEY = 'calendar_clients';
   private timeIntervalFactory = inject(TimeIntervalFactory);
 
-  public addClient(newClient: Client): void {
+  public addClient(newClient: Omit<Client, 'id'>): void {
     const allClients = this.getAllClients();
     allClients.push({ ...newClient, id: this.generateIdFrom(allClients) });
     this.saveAll(allClients);
