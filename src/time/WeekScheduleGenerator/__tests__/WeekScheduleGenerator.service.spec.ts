@@ -1,3 +1,4 @@
+import { TestBed } from '@angular/core/testing';
 import { methodName } from '../../../utils/test-name';
 import { WeekSchedule } from '../../Schedule';
 import { TimeInterval } from '../../TimeInterval/TimeInterval';
@@ -7,10 +8,18 @@ import { DayNumber } from '../../TimeInterval/TimeInterval-constants';
 import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 
 describe(WeekScheduleGeneratorService.name, () => {
-  const primitiveMapper = new TimeIntervalPrimitiveMapper();
-  const unitUnderTest = new WeekScheduleGeneratorService();
+  let unitUnderTest: WeekScheduleGeneratorService;
+  let primitiveMapper: TimeIntervalPrimitiveMapper;
 
-  const schedulesOnDays: Record<DayNumber, Array<TimeInterval>> = {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [WeekScheduleGeneratorService, TimeIntervalPrimitiveMapper],
+    });
+    unitUnderTest = TestBed.inject(WeekScheduleGeneratorService);
+    primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
+  });
+
+  const getSchedulesOnDays = (): Record<DayNumber, Array<TimeInterval>> => ({
     1: [
       // monday both before/afternoon
       primitiveMapper.mapFromString('1T08:30_-_12:00'),
@@ -38,31 +47,33 @@ describe(WeekScheduleGeneratorService.name, () => {
       // sunday only in the morning
       primitiveMapper.mapFromString('7T07:00_-_10:30'),
     ],
-  };
+  });
 
   const combineScheduleDaySchedules = (...dayNumbers: Array<DayNumber>): WeekSchedule => {
     dayNumbers.sort(); // one digit -> string sort is fine
+    const schedulesOnDays = getSchedulesOnDays();
     return dayNumbers
       .map((dayNumber) => schedulesOnDays[dayNumber])
       .reduce((acc, curr) => [...acc, ...curr], []);
   };
-  const wholeWeekSchedule = combineScheduleDaySchedules(
-    ...Object.keys(schedulesOnDays).map((i) => Number(i) as DayNumber),
-  );
+  const getWholeWeekSchedule = () =>
+    combineScheduleDaySchedules(
+      ...Object.keys(getSchedulesOnDays()).map((i) => Number(i) as DayNumber),
+    );
 
   describe(methodName(WeekScheduleGeneratorService, 'getClientsWithNoOverlappingTime'), () => {
     it('should return empty array if no clients are present', () => {
       expect(unitUnderTest.getClientsWithNoOverlappingTime([], [])).toEqual([]);
-      expect(unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [])).toEqual([]);
+      expect(unitUnderTest.getClientsWithNoOverlappingTime(getWholeWeekSchedule(), [])).toEqual([]);
     });
     it('should return an empty array if all clients have proper overlapping', () => {
       expect(
-        unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [allMorningClient]),
+        unitUnderTest.getClientsWithNoOverlappingTime(getWholeWeekSchedule(), [allMorningClient]),
       ).toEqual([]);
     });
     it('should return a client which is impossible to have session with', () => {
       expect(
-        unitUnderTest.getClientsWithNoOverlappingTime(wholeWeekSchedule, [impossibleClient]),
+        unitUnderTest.getClientsWithNoOverlappingTime(getWholeWeekSchedule(), [impossibleClient]),
       ).toEqual([impossibleClient]);
     });
   });

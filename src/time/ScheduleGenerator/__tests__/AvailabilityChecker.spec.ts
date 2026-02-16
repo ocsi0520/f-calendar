@@ -19,10 +19,17 @@ describe(AvailabilityChecker.name, () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
+      providers: [
+        TimeIntervalMapper,
+        TimeIntervalPrimitiveMapper,
+        TimeIntervalEventMapper,
+        SessionCellGenerator,
+        AvailabilityChecker,
+      ],
     });
     mapper = TestBed.inject(TimeIntervalMapper);
-    sessionCellGenerator = new SessionCellGenerator();
+    sessionCellGenerator = TestBed.inject(SessionCellGenerator);
+    availabilityChecker = TestBed.inject(AvailabilityChecker);
 
     aClient = {
       id: 1,
@@ -31,8 +38,6 @@ describe(AvailabilityChecker.name, () => {
       sessionCountsInWeek: 2,
       schedule: [],
     };
-
-    availabilityChecker = new AvailabilityChecker(sessionCellGenerator);
   });
 
   describe(methodName(AvailabilityChecker, 'getAllPossibleSessionCellsForClient'), () => {

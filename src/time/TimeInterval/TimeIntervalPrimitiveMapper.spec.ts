@@ -1,10 +1,18 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { TestBed } from '@angular/core/testing';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
 import { TimeInterval } from './TimeInterval';
 import { methodName } from '../../utils/test-name';
 
 describe(TimeIntervalPrimitiveMapper.name, () => {
-  const unitUnderTest = new TimeIntervalPrimitiveMapper();
+  let unitUnderTest: TimeIntervalPrimitiveMapper;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [TimeIntervalPrimitiveMapper],
+    });
+    unitUnderTest = TestBed.inject(TimeIntervalPrimitiveMapper);
+  });
 
   describe(methodName(TimeIntervalPrimitiveMapper, 'mapFromString'), () => {
     it('creates interval from valid formatted string', () => {

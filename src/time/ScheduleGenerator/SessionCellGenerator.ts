@@ -1,4 +1,5 @@
 import { sessionSpan } from '../session-span';
+import { inject, Injectable } from '@angular/core';
 import { Hour, Minute, Time } from '../Time';
 import { TimeInterval } from '../TimeInterval/TimeInterval';
 import { DayNumber } from '../TimeInterval/TimeInterval-constants';
@@ -6,6 +7,9 @@ import { SessionCell } from './SessionCell';
 
 export const sessionStartGranularityInMins = 15;
 
+@Injectable({
+  providedIn: 'root',
+})
 export class SessionCellGenerator {
   public generateAllPossibleCellsWith(freeSlotForPerson: TimeInterval): Array<SessionCell> {
     const startInMins = freeSlotForPerson.getInAbsoluteMinutes('start');

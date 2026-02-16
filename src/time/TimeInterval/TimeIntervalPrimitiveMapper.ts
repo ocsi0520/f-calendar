@@ -7,14 +7,16 @@ import { DayNumber } from './TimeInterval-constants';
   providedIn: 'root',
 })
 export class TimeIntervalPrimitiveMapper {
-  private static TIME_REGEX: RegExp = /^([01]\d|2[0-3]):([0-5]\d)$/;
-  private static TIME_DIVIDER = '_-_';
-  private static DAY_IN_MINUTES = 24 * 60;
-  private static HOUR_IN_MINUTES = 60;
+  private static readonly TIME_REGEX: RegExp = /^([01]\d|2[0-3]):([0-5]\d)$/;
+  private static readonly TIME_DIVIDER = '_-_';
+  private static readonly DAY_IN_MINUTES = 24 * 60;
+  private static readonly HOUR_IN_MINUTES = 60;
 
-  private static MAXIMUM_MINS_FROM_MONDAY_MIDNIGHT = 6 * 24 * 60 + 23 * 60 + 59;
-  private static NUMBER_BASE = TimeIntervalPrimitiveMapper.MAXIMUM_MINS_FROM_MONDAY_MIDNIGHT + 1;
-  private static MAXIMUM_VALID_ENCODED_NUMBER = TimeIntervalPrimitiveMapper.NUMBER_BASE ** 2 - 1;
+  private static readonly MAXIMUM_MINS_FROM_MONDAY_MIDNIGHT = 6 * 24 * 60 + 23 * 60 + 59;
+  public static readonly NUMBER_BASE =
+    TimeIntervalPrimitiveMapper.MAXIMUM_MINS_FROM_MONDAY_MIDNIGHT + 1;
+  private static readonly MAXIMUM_VALID_ENCODED_NUMBER =
+    TimeIntervalPrimitiveMapper.NUMBER_BASE ** 2 - 1;
 
   public mapToNumber({ start, end, dayNumber }: TimeInterval): number {
     const startFromMondayMidnight = (dayNumber - 1) * 24 * 60 + start[0] * 60 + start[1];

@@ -1,3 +1,4 @@
+import { Injectable, inject } from '@angular/core';
 import { Client } from '../../client/Client';
 import { WeekSchedule } from '../Schedule';
 import { isSameInterval } from '../TimeInterval/TimeInterval';
@@ -5,8 +6,11 @@ import { SessionCell } from './SessionCell';
 import { SessionCellGenerator } from './SessionCellGenerator';
 
 // TODO: better name
+@Injectable({
+  providedIn: 'root',
+})
 export class AvailabilityChecker {
-  constructor(private sessionCellGenerator: SessionCellGenerator) {}
+  private sessionCellGenerator = inject(SessionCellGenerator);
 
   public getAllPossibleSessionCellsForClient(
     mySchedule: WeekSchedule,

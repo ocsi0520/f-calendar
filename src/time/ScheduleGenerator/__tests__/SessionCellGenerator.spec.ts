@@ -1,10 +1,20 @@
+import { TestBed } from '@angular/core/testing';
 import { SessionCellGenerator } from '../SessionCellGenerator';
 import { isSameInterval, TimeInterval } from '../../TimeInterval/TimeInterval';
 import { methodName } from '../../../utils/test-name';
+import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 
 describe(SessionCellGenerator.name, () => {
+  let unitUnderTest: SessionCellGenerator;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [SessionCellGenerator, TimeIntervalPrimitiveMapper],
+    });
+    unitUnderTest = TestBed.inject(SessionCellGenerator);
+  });
+
   describe(methodName(SessionCellGenerator, 'generateAllPossibleCellsWith'), () => {
-    const unitUnderTest = new SessionCellGenerator();
     it('should generate non, as interval is less than a session span', () => {
       const shortInterval = new TimeInterval(1, [9, 0], [10, 0]); // 60 minutes < 75
       const actual = unitUnderTest.generateAllPossibleCellsWith(shortInterval);
