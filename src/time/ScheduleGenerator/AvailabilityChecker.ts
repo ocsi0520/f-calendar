@@ -1,5 +1,6 @@
 import { Client } from '../../client/Client';
 import { WeekSchedule } from '../Schedule';
+import { isSameInterval } from '../TimeInterval/TimeInterval';
 import { SessionCell } from './SessionCell';
 import { SessionCellGenerator } from './SessionCellGenerator';
 
@@ -27,7 +28,9 @@ export class AvailabilityChecker {
     clientCells: Array<SessionCell>,
   ): Array<SessionCell> {
     return myCells.filter((myCell) =>
-      clientCells.some((clientCell) => clientCell.timeInterval.isSameInterval(myCell.timeInterval)),
+      clientCells.some((clientCell) =>
+        isSameInterval(clientCell.timeInterval, myCell.timeInterval),
+      ),
     );
   }
 }

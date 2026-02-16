@@ -1,5 +1,5 @@
 import { SessionCellGenerator } from '../SessionCellGenerator';
-import { TimeInterval } from '../../TimeInterval/TimeInterval';
+import { isSameInterval, TimeInterval } from '../../TimeInterval/TimeInterval';
 import { methodName } from '../../../utils/test-name';
 
 describe(SessionCellGenerator.name, () => {
@@ -16,7 +16,7 @@ describe(SessionCellGenerator.name, () => {
       const actual = unitUnderTest.generateAllPossibleCellsWith(exact);
 
       expect(actual).toHaveLength(1);
-      expect(actual[0].timeInterval.isSameInterval(exact)).true;
+      expect(isSameInterval(actual[0].timeInterval, exact)).true;
     });
 
     it('should generate two, as interval is longer w/ 15 mins than session span', () => {
@@ -28,7 +28,7 @@ describe(SessionCellGenerator.name, () => {
         new TimeInterval(1, [9, 15], [10, 30]),
       ];
       for (let i = 0; i < expected.length; i++)
-        expect(actual[i].timeInterval.isSameInterval(expected[i])).true;
+        expect(isSameInterval(actual[i].timeInterval, expected[i])).true;
     });
 
     it('should generate 6', () => {
@@ -45,7 +45,7 @@ describe(SessionCellGenerator.name, () => {
         new TimeInterval(1, [10, 15], [11, 30]),
       ];
       for (let i = 0; i < expected.length; i++)
-        expect(actual[i].timeInterval.isSameInterval(expected[i])).true;
+        expect(isSameInterval(actual[i].timeInterval, expected[i])).true;
     });
   });
 });
