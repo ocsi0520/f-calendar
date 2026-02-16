@@ -75,7 +75,7 @@ describe(TimeIntervalEventMapper.name, () => {
 
   describe(methodName(TimeIntervalEventMapper, 'mapToEvent'), () => {
     it('creates event aligned to monday of given week', () => {
-      const interval = new TimeInterval(1, [8, 0], [9, 0]);
+      const interval: TimeInterval = { dayNumber: 1, start: [8, 0], end: [9, 0] };
       const baseDate = new Date('2024-01-10T12:00:00'); // Wednesday
 
       const event = unitUnderTest.mapToEvent(interval, baseDate, 'Standup');
@@ -96,7 +96,7 @@ describe(TimeIntervalEventMapper.name, () => {
     });
 
     it('defaults title when omitted', () => {
-      const interval = new TimeInterval(2, [10, 0], [11, 0]);
+      const interval: TimeInterval = { dayNumber: 2, start: [10, 0], end: [11, 0] };
       const baseDate = new Date('2024-01-09T12:00:00');
 
       const event = unitUnderTest.mapToEvent(interval, baseDate);
@@ -105,7 +105,7 @@ describe(TimeIntervalEventMapper.name, () => {
     });
 
     it('should handle thursday interval and tuesday base date', () => {
-      const interval = new TimeInterval(4, [14, 30], [15, 30]); // Thursday
+      const interval: TimeInterval = { dayNumber: 4, start: [14, 30], end: [15, 30] }; // Thursday
       const baseDate = new Date('2024-01-09T00:00:00'); // Tuesday
 
       const event = unitUnderTest.mapToEvent(interval, baseDate);
@@ -119,7 +119,7 @@ describe(TimeIntervalEventMapper.name, () => {
     });
 
     it('should handle monday interval and sunday base date', () => {
-      const interval = new TimeInterval(1, [14, 30], [15, 30]); // monday
+      const interval: TimeInterval = { dayNumber: 1, start: [14, 30], end: [15, 30] }; // monday
       const baseDate = new Date('2024-01-07T00:00:00'); // sunday
 
       const event = unitUnderTest.mapToEvent(interval, baseDate);
@@ -133,7 +133,7 @@ describe(TimeIntervalEventMapper.name, () => {
     });
 
     it('should handle sunday interval and monday base date', () => {
-      const interval = new TimeInterval(7, [14, 30], [15, 30]); // sunday
+      const interval: TimeInterval = { dayNumber: 7, start: [14, 30], end: [15, 30] }; // sunday
       const baseDate = new Date('2024-01-08T00:00:00'); // monday
 
       const event = unitUnderTest.mapToEvent(interval, baseDate);

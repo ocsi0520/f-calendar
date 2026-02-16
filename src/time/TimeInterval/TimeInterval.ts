@@ -1,13 +1,11 @@
 import type { Time } from '../Time';
 import { DayNumber } from './TimeInterval-constants';
 
-export class TimeInterval {
-  public constructor(
-    public readonly dayNumber: DayNumber,
-    public readonly start: Time,
-    public readonly end: Time,
-  ) {}
-}
+export type TimeInterval = {
+  readonly dayNumber: DayNumber;
+  readonly start: Time;
+  readonly end: Time;
+};
 
 export const isSameInterval = (t1: TimeInterval, t2: TimeInterval): boolean => {
   return (

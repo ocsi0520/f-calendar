@@ -7,9 +7,9 @@ import { TimeInterval } from '../../time/TimeInterval/TimeInterval';
 describe(MyTimeService.name, () => {
   let unitUnderTest: MyTimeService;
 
-  const interval1 = new TimeInterval(1, [9, 15], [13, 0]);
-  const interval2 = new TimeInterval(1, [17, 0], [20, 15]);
-  const interval3 = new TimeInterval(3, [11, 0], [15, 0]);
+  const interval1: TimeInterval = { dayNumber: 1, start: [9, 15], end: [13, 0] };
+  const interval2: TimeInterval = { dayNumber: 1, start: [17, 0], end: [20, 15] };
+  const interval3: TimeInterval = { dayNumber: 3, start: [11, 0], end: [15, 0] };
 
   beforeEach(() => {
     TestBed.configureTestingModule({

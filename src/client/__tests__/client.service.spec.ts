@@ -113,16 +113,16 @@ describe(ClientService.name, () => {
       expect(unitUnderTest.getAllClients()).toEqual([{ ...newTestClient1, id: 1 }, editedClient]);
     });
     it('should add schedule for first client', () => {
-      const schedule: WeekSchedule = [new TimeInterval(1, [10, 15], [13, 30])];
+      const schedule: WeekSchedule = [{ dayNumber: 1, start: [10, 15], end: [13, 30] }];
       unitUnderTest.editScheduleForClient(testClient1, schedule);
       const readTestClient1 = unitUnderTest.getAllClients()[0];
       expect(readTestClient1).toEqual({ ...testClient1, schedule });
     });
 
     it('should sort schedules for second client', () => {
-      const schedule1 = new TimeInterval(1, [10, 15], [13, 30]);
-      const schedule2 = new TimeInterval(1, [18, 45], [20, 0]);
-      const schedule3 = new TimeInterval(3, [10, 15], [13, 30]);
+      const schedule1: TimeInterval = { dayNumber: 1, start: [10, 15], end: [13, 30] };
+      const schedule2: TimeInterval = { dayNumber: 1, start: [18, 45], end: [20, 0] };
+      const schedule3: TimeInterval = { dayNumber: 3, start: [10, 15], end: [13, 30] };
       const schedule: WeekSchedule = [schedule2, schedule3, schedule1];
       unitUnderTest.editScheduleForClient(testClient2, schedule);
       const readTestClient2 = unitUnderTest.getAllClients()[1];
@@ -132,9 +132,9 @@ describe(ClientService.name, () => {
       });
     });
     it('should override the whole schedule for first client', () => {
-      const schedule1 = new TimeInterval(1, [10, 15], [13, 30]);
-      const schedule2 = new TimeInterval(1, [18, 45], [20, 0]);
-      const schedule3 = new TimeInterval(3, [10, 15], [13, 30]);
+      const schedule1: TimeInterval = { dayNumber: 1, start: [10, 15], end: [13, 30] };
+      const schedule2: TimeInterval = { dayNumber: 1, start: [18, 45], end: [20, 0] };
+      const schedule3: TimeInterval = { dayNumber: 3, start: [10, 15], end: [13, 30] };
       const oldSchedule: WeekSchedule = [schedule3, schedule2];
       const newSchedule: WeekSchedule = [schedule2, schedule1];
       unitUnderTest.editScheduleForClient(testClient1, oldSchedule);

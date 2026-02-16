@@ -35,11 +35,11 @@ export class TimeIntervalEventMapper {
       localeOptions.formatOptions,
     );
 
-    return new TimeInterval(
-      this.getDayNumberFrom(eventDescriptor.start),
-      this.convertToTime(startString),
-      this.convertToTime(endString),
-    );
+    return {
+      dayNumber: this.getDayNumberFrom(eventDescriptor.start),
+      start: this.convertToTime(startString),
+      end: this.convertToTime(endString),
+    };
   }
 
   public mapToEvent(timeInterval: TimeInterval, baseDate: Date, title?: string): EventInput {

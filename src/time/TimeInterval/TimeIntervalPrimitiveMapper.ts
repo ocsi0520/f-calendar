@@ -39,7 +39,11 @@ export class TimeIntervalPrimitiveMapper {
     if (endDayNumber !== startDayNumber || startDayNumber < 1 || startDayNumber > 7)
       throw new Error('Invalid day number');
 
-    return new TimeInterval(startDayNumber, startTime, endTime);
+    return {
+      dayNumber: startDayNumber,
+      start: startTime,
+      end: endTime,
+    };
   }
 
   private mapTimeFromNumber(timeNumber: number): [DayNumber, Time] {
@@ -69,11 +73,11 @@ export class TimeIntervalPrimitiveMapper {
       wholeIntervalString,
     );
 
-    return new TimeInterval(
-      numberOfDay,
-      this.convertToTime(startString),
-      this.convertToTime(endString),
-    );
+    return {
+      dayNumber: numberOfDay,
+      start: this.convertToTime(startString),
+      end: this.convertToTime(endString),
+    };
   }
 
   private withLeading0(number: Number): string {

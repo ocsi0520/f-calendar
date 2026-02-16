@@ -52,7 +52,7 @@ describe(AvailabilityChecker.name, () => {
 
     it('should return empty array when my schedule is empty', () => {
       const mySchedule: WeekSchedule = [];
-      aClient.schedule = [new TimeInterval(1, [9, 0], [10, 15])];
+      aClient.schedule = [{ dayNumber: 1, start: [9, 0], end: [10, 15] }];
 
       const result = availabilityChecker.getAllPossibleSessionCellsForClient(mySchedule, aClient);
 
@@ -60,7 +60,7 @@ describe(AvailabilityChecker.name, () => {
     });
 
     it('should return empty array when client schedule is empty', () => {
-      const mySchedule: WeekSchedule = [new TimeInterval(1, [9, 0], [10, 15])];
+      const mySchedule: WeekSchedule = [{ dayNumber: 1, start: [9, 0], end: [10, 15] }];
       aClient.schedule = [];
 
       const result = availabilityChecker.getAllPossibleSessionCellsForClient(mySchedule, aClient);
@@ -69,7 +69,7 @@ describe(AvailabilityChecker.name, () => {
     });
 
     it('should return matching session cells when schedules are exactly the same', () => {
-      const timeSlot = new TimeInterval(1, [9, 0], [10, 15]);
+      const timeSlot: TimeInterval = { dayNumber: 1, start: [9, 0], end: [10, 15] };
       const mySchedule: WeekSchedule = [timeSlot];
       aClient.schedule = [timeSlot];
 
@@ -81,8 +81,8 @@ describe(AvailabilityChecker.name, () => {
     });
 
     it('should filter out non-matching cells', () => {
-      const mySchedule: WeekSchedule = [new TimeInterval(1, [9, 0], [10, 15])];
-      aClient.schedule = [new TimeInterval(2, [14, 0], [15, 15])];
+      const mySchedule: WeekSchedule = [{ dayNumber: 1, start: [9, 0], end: [10, 15] }];
+      aClient.schedule = [{ dayNumber: 2, start: [14, 0], end: [15, 15] }];
 
       const result = availabilityChecker.getAllPossibleSessionCellsForClient(mySchedule, aClient);
 
@@ -91,12 +91,12 @@ describe(AvailabilityChecker.name, () => {
 
     it('should handle multiple schedule slots correctly', () => {
       const mySchedule: WeekSchedule = [
-        new TimeInterval(1, [9, 0], [10, 15]),
-        new TimeInterval(3, [14, 0], [15, 15]),
+        { dayNumber: 1, start: [9, 0], end: [10, 15] },
+        { dayNumber: 3, start: [14, 0], end: [15, 15] },
       ];
       aClient.schedule = [
-        new TimeInterval(1, [9, 0], [10, 15]),
-        new TimeInterval(5, [10, 0], [11, 15]),
+        { dayNumber: 1, start: [9, 0], end: [10, 15] },
+        { dayNumber: 5, start: [10, 0], end: [11, 15] },
       ];
 
       const result = availabilityChecker.getAllPossibleSessionCellsForClient(mySchedule, aClient);
@@ -106,16 +106,16 @@ describe(AvailabilityChecker.name, () => {
 
     it('should handle normal scenario', () => {
       const mySchedule: WeekSchedule = [
-        new TimeInterval(1, [9, 0], [12, 15]),
-        new TimeInterval(2, [14, 0], [18, 0]),
-        new TimeInterval(3, [8, 0], [11, 0]),
-        new TimeInterval(4, [8, 0], [15, 0]),
+        { dayNumber: 1, start: [9, 0], end: [12, 15] },
+        { dayNumber: 2, start: [14, 0], end: [18, 0] },
+        { dayNumber: 3, start: [8, 0], end: [11, 0] },
+        { dayNumber: 4, start: [8, 0], end: [15, 0] },
       ];
       aClient.schedule = [
-        new TimeInterval(1, [8, 0], [11, 0]),
-        new TimeInterval(2, [13, 0], [19, 0]),
-        new TimeInterval(3, [10, 30], [14, 0]),
-        new TimeInterval(5, [8, 0], [15, 0]),
+        { dayNumber: 1, start: [8, 0], end: [11, 0] },
+        { dayNumber: 2, start: [13, 0], end: [19, 0] },
+        { dayNumber: 3, start: [10, 30], end: [14, 0] },
+        { dayNumber: 5, start: [8, 0], end: [15, 0] },
       ];
 
       const actual = availabilityChecker.getAllPossibleSessionCellsForClient(mySchedule, aClient);

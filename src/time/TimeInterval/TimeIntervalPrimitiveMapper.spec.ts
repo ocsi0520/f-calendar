@@ -56,7 +56,7 @@ describe(TimeIntervalPrimitiveMapper.name, () => {
 
   describe(methodName(TimeIntervalPrimitiveMapper, 'mapToString'), () => {
     it('produces stable serialized representation', () => {
-      const interval = new TimeInterval(3, [9, 15], [10, 45]);
+      const interval: TimeInterval = { dayNumber: 3, start: [9, 15], end: [10, 45] };
 
       expect(unitUnderTest.mapToString(interval)).toBe('3T09:15_-_10:45');
     });
@@ -64,7 +64,7 @@ describe(TimeIntervalPrimitiveMapper.name, () => {
 
   describe('round-trip serialization', () => {
     it('round-trips via string serialization', () => {
-      const original = new TimeInterval(5, [12, 0], [13, 30]);
+      const original: TimeInterval = { dayNumber: 5, start: [12, 0], end: [13, 30] };
       const reconstructed = unitUnderTest.mapFromString(unitUnderTest.mapToString(original));
 
       expect(reconstructed.dayNumber).toBe(original.dayNumber);
@@ -129,39 +129,39 @@ describe(TimeIntervalPrimitiveMapper.name, () => {
   describe(methodName(TimeIntervalPrimitiveMapper, 'mapToNumber'), () => {
     describe('edge cases', () => {
       it('should handle monday midnight from-to', () => {
-        const input = new TimeInterval(1, [0, 0], [0, 0]);
+        const input: TimeInterval = { dayNumber: 1, start: [0, 0], end: [0, 0] };
         const actual = unitUnderTest.mapToNumber(input);
         expect(actual).toBe(0);
       });
       it('should handle sunday 23.59 from-to', () => {
-        const input = new TimeInterval(7, [23, 59], [23, 59]);
+        const input: TimeInterval = { dayNumber: 7, start: [23, 59], end: [23, 59] };
         const actual = unitUnderTest.mapToNumber(input);
         expect(actual).toBe(101606399);
       });
       it('should handle from monday 00.00 to monday 23.59', () => {
-        const input = new TimeInterval(1, [0, 0], [23, 59]);
+        const input: TimeInterval = { dayNumber: 1, start: [0, 0], end: [23, 59] };
         const actual = unitUnderTest.mapToNumber(input);
         expect(actual).toBe(1439);
       });
       it('should handle from sunday 00.00 to sunday 23.59', () => {
-        const input = new TimeInterval(7, [0, 0], [23, 59]);
+        const input: TimeInterval = { dayNumber: 7, start: [0, 0], end: [23, 59] };
         const actual = unitUnderTest.mapToNumber(input);
         expect(actual).toBe(87101279);
       });
     });
     describe('normal cases', () => {
       it('should handle tuesday 10.00 - 14.15', () => {
-        const input = new TimeInterval(2, [10, 0], [14, 15]);
+        const input: TimeInterval = { dayNumber: 2, start: [10, 0], end: [14, 15] };
         const actual = unitUnderTest.mapToNumber(input);
         expect(actual).toBe(20565495);
       });
       it('should handle thursday 18.30 - 21.00', () => {
-        const input = new TimeInterval(4, [18, 30], [21, 0]);
+        const input: TimeInterval = { dayNumber: 4, start: [18, 30], end: [21, 0] };
         const actual = unitUnderTest.mapToNumber(input);
         expect(actual).toBe(54739980);
       });
       it('should handle saturday 11.00 - 19.00', () => {
-        const input = new TimeInterval(6, [11, 0], [19, 0]);
+        const input: TimeInterval = { dayNumber: 6, start: [11, 0], end: [19, 0] };
         const actual = unitUnderTest.mapToNumber(input);
         expect(actual).toBe(79237140);
       });

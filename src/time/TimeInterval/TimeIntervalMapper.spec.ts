@@ -25,7 +25,7 @@ describe(TimeIntervalMapper.name, () => {
   it('should delegate mapToString call to primitiveMapper', () => {
     primitiveMapper.mapToString = vi.fn(() => 'SENTINEL');
 
-    const interval = new TimeInterval(2, [8, 0], [9, 30]);
+    const interval: TimeInterval = { dayNumber: 2, start: [8, 0], end: [9, 30] };
     const result = unitUnderTest.mapToString(interval);
 
     expect(primitiveMapper.mapToString).toHaveBeenCalledWith(interval);
@@ -33,7 +33,7 @@ describe(TimeIntervalMapper.name, () => {
   });
 
   it('should delegate mapFromString call to primitiveMapper', () => {
-    const returnInterval = new TimeInterval(3, [9, 15], [10, 45]);
+    const returnInterval: TimeInterval = { dayNumber: 3, start: [9, 15], end: [10, 45] };
     primitiveMapper.mapFromString = vi.fn(() => returnInterval);
 
     const repr = 'irrelevant';
@@ -51,7 +51,7 @@ describe(TimeIntervalMapper.name, () => {
     };
     eventMapper.mapToEvent = vi.fn(() => sentinel);
 
-    const interval = new TimeInterval(1, [7, 0], [8, 0]);
+    const interval: TimeInterval = { dayNumber: 1, start: [7, 0], end: [8, 0] };
     const base = new Date(2024, 0, 1);
     const title = 'MyTitle';
 
@@ -62,7 +62,7 @@ describe(TimeIntervalMapper.name, () => {
   });
 
   it('should delegate mapFromEvent call to eventMapper', () => {
-    const returnInterval = new TimeInterval(4, [11, 0], [12, 0]);
+    const returnInterval: TimeInterval = { dayNumber: 4, start: [11, 0], end: [12, 0] };
     eventMapper.mapFromEvent = vi.fn(() => returnInterval);
 
     const descriptor: EventDescriptor = { start: new Date(), end: new Date() };
@@ -75,7 +75,7 @@ describe(TimeIntervalMapper.name, () => {
   it('should delegate mapToNumber call to primitiveMapper', () => {
     primitiveMapper.mapToNumber = vi.fn(() => 12345);
 
-    const interval = new TimeInterval(5, [14, 30], [15, 45]);
+    const interval: TimeInterval = { dayNumber: 5, start: [14, 30], end: [15, 45] };
     const result = unitUnderTest.mapToNumber(interval);
 
     expect(primitiveMapper.mapToNumber).toHaveBeenCalledWith(interval);
@@ -83,7 +83,7 @@ describe(TimeIntervalMapper.name, () => {
   });
 
   it('should delegate mapFromNumber call to primitiveMapper', () => {
-    const returnInterval = new TimeInterval(6, [10, 0], [11, 30]);
+    const returnInterval: TimeInterval = { dayNumber: 6, start: [10, 0], end: [11, 30] };
     primitiveMapper.mapFromNumber = vi.fn(() => returnInterval);
 
     const num = 54321;
