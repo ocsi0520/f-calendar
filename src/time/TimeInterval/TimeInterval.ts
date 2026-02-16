@@ -35,6 +35,11 @@ export class TimeInterval {
     };
     return newEvent;
   }
+
+  public isSameInterval(other: TimeInterval): boolean {
+    return this.toString() === other.toString();
+  }
+
   private getMondayMidnightOfWeekAt(baseDate: Date): Date {
     const mondayMidnightOfThatWeek = new Date(baseDate);
     const dayDiffFromMonday = (baseDate.getDay() || 7) - 1;
