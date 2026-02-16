@@ -4,39 +4,39 @@ import { TimeInterval } from '../../TimeInterval/TimeInterval';
 import { allMorningClient, impossibleClient } from './TestClients';
 import { WeekScheduleGeneratorService } from '../WeekScheduleGenerator.service';
 import { DayNumber } from '../../TimeInterval/TimeInterval-constants';
-import { TimeIntervalFactory } from '../../TimeInterval/TimeIntervalFactory';
+import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 
 describe(WeekScheduleGeneratorService.name, () => {
-  const timeIntervalFactory = new TimeIntervalFactory();
+  const primitiveMapper = new TimeIntervalPrimitiveMapper();
   const unitUnderTest = new WeekScheduleGeneratorService();
 
   const schedulesOnDays: Record<DayNumber, Array<TimeInterval>> = {
     1: [
       // monday both before/afternoon
-      timeIntervalFactory.createOf('1T08:30_-_12:00'),
-      timeIntervalFactory.createOf('1T13:30_-_18:00'),
+      primitiveMapper.mapFromString('1T08:30_-_12:00'),
+      primitiveMapper.mapFromString('1T13:30_-_18:00'),
     ],
     2: [
       // tuesday only beforenoon/in the morning
 
-      timeIntervalFactory.createOf('2T07:15_-_13:45'),
+      primitiveMapper.mapFromString('2T07:15_-_13:45'),
     ],
     3: [
       // wednesday only afternoon
-      timeIntervalFactory.createOf('3T14:00_-_17:00'),
+      primitiveMapper.mapFromString('3T14:00_-_17:00'),
     ],
     4: [], // no thursday,
     5: [
       // friday around noon
-      timeIntervalFactory.createOf('5T10:00_-_14:00'),
+      primitiveMapper.mapFromString('5T10:00_-_14:00'),
     ],
     6: [
       // saturday whole day
-      timeIntervalFactory.createOf('6T07:00_-_21:00'),
+      primitiveMapper.mapFromString('6T07:00_-_21:00'),
     ],
     7: [
       // sunday only in the morning
-      timeIntervalFactory.createOf('7T07:00_-_10:30'),
+      primitiveMapper.mapFromString('7T07:00_-_10:30'),
     ],
   };
 

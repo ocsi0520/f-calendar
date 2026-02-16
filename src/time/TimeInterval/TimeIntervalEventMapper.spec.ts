@@ -1,41 +1,78 @@
-// https://www.calendar-365.com/calendar/2024/January.html
 import { TestBed } from '@angular/core/testing';
-import { TimeInterval } from './TimeInterval';
-import { TimeIntervalMapper } from './TimeIntervalMapper';
-import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from './TimeIntervalEventMapper';
+import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
+import { TimeInterval } from './TimeInterval';
 import { methodName } from '../../utils/test-name';
 
-describe(TimeIntervalMapper.name, () => {
-  let unitUnderTest: TimeIntervalMapper;
-  let primitiveMapper: TimeIntervalPrimitiveMapper;
-  let eventMapper: TimeIntervalEventMapper;
+describe(TimeIntervalEventMapper.name, () => {
+  let unitUnderTest: TimeIntervalEventMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
+      providers: [TimeIntervalEventMapper, TimeIntervalPrimitiveMapper],
     });
-    unitUnderTest = TestBed.inject(TimeIntervalMapper);
-    primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
-    eventMapper = TestBed.inject(TimeIntervalEventMapper);
+    unitUnderTest = TestBed.inject(TimeIntervalEventMapper);
   });
 
-  it('toString produces stable serialized representation', () => {
-    const interval = new TimeInterval(3, [9, 15], [10, 45]);
+  describe('mapFromEvent', () => {
+    it('creates interval from valid descriptor on tuesday', () => {
+      const start = new Date('2024-01-09T08:00:00'); // Tuesday
+      const end = new Date('2024-01-09T09:30:00');
 
-    expect(unitUnderTest.mapToString(interval)).toBe('3T09:15_-_10:45');
+      const interval = unitUnderTest.mapFromEvent({ start, end });
+
+      expect(interval.dayNumber).toBe(2);
+      expect(interval.start).toEqual([8, 0]);
+      expect(interval.end).toEqual([9, 30]);
+    });
+
+    it('creates interval from valid descriptor on monday', () => {
+      const start = new Date('2024-01-08T08:00:00'); // monday
+      const end = new Date('2024-01-08T09:30:00');
+
+      const interval = unitUnderTest.mapFromEvent({ start, end });
+
+      expect(interval.dayNumber).toBe(1);
+      expect(interval.start).toEqual([8, 0]);
+      expect(interval.end).toEqual([9, 30]);
+    });
+
+    it('creates interval from valid descriptor on sunday', () => {
+      const start = new Date('2024-01-07T08:00:00'); // sunday
+      const end = new Date('2024-01-07T09:30:00');
+
+      const interval = unitUnderTest.mapFromEvent({ start, end });
+
+      expect(interval.dayNumber).toBe(7);
+      expect(interval.start).toEqual([8, 0]);
+      expect(interval.end).toEqual([9, 30]);
+    });
+
+    it('throws if start is null', () => {
+      const end = new Date();
+      expect(() => unitUnderTest.mapFromEvent({ start: null, end })).toThrow(
+        'invalid eventDescriptor',
+      );
+    });
+
+    it('throws if end is null', () => {
+      const start = new Date();
+      expect(() => unitUnderTest.mapFromEvent({ start, end: null })).toThrow(
+        'invalid eventDescriptor',
+      );
+    });
+
+    it('rejects multi-day intervals', () => {
+      const start = new Date('2024-01-08T23:00:00'); // Mon
+      const end = new Date('2024-01-09T01:00:00'); // Tues
+
+      expect(() => unitUnderTest.mapFromEvent({ start, end })).toThrow(
+        'does not allow multi-day intervals',
+      );
+    });
   });
 
-  it('round-trips via string serialization', () => {
-    const original = new TimeInterval(5, [12, 0], [13, 30]);
-    const reconstructed = primitiveMapper.mapFromString(unitUnderTest.mapToString(original));
-
-    expect(reconstructed.dayNumber).toBe(original.dayNumber);
-    expect(reconstructed.start).toEqual(original.start);
-    expect(reconstructed.end).toEqual(original.end);
-  });
-
-  describe(methodName(TimeIntervalMapper, 'mapToEvent'), () => {
+  describe(methodName(TimeIntervalEventMapper, 'mapToEvent'), () => {
     it('creates event aligned to monday of given week', () => {
       const interval = new TimeInterval(1, [8, 0], [9, 0]);
       const baseDate = new Date('2024-01-10T12:00:00'); // Wednesday
@@ -44,7 +81,6 @@ describe(TimeIntervalMapper.name, () => {
 
       expect(event.title).toBe('Standup');
       expect(event.color).toBe('lightblue');
-      expect(event.id).toBe(unitUnderTest.mapToString(interval));
 
       const start = new Date(event.start as Date);
       const end = new Date(event.end as Date);
@@ -66,6 +102,7 @@ describe(TimeIntervalMapper.name, () => {
 
       expect(event.title).toBe('Meeting');
     });
+
     it('should handle thursday interval and tuesday base date', () => {
       const interval = new TimeInterval(4, [14, 30], [15, 30]); // Thursday
       const baseDate = new Date('2024-01-09T00:00:00'); // Tuesday
@@ -93,6 +130,7 @@ describe(TimeIntervalMapper.name, () => {
       expect(start.getHours()).toBe(14);
       expect(start.getMinutes()).toBe(30);
     });
+
     it('should handle sunday interval and monday base date', () => {
       const interval = new TimeInterval(7, [14, 30], [15, 30]); // sunday
       const baseDate = new Date('2024-01-08T00:00:00'); // monday

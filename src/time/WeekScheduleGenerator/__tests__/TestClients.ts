@@ -1,10 +1,10 @@
 import { Client } from '../../../client/Client';
 import { NumberRange } from '../../../utils/Range';
-import { TimeIntervalFactory } from '../../TimeInterval/TimeIntervalFactory';
+import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 
 let idCounter = 0;
 
-const intervalFactory = new TimeIntervalFactory();
+const primitiveMapper = new TimeIntervalPrimitiveMapper();
 const createClient = (
   name: string,
   sessionCountsInWeek: NumberRange<7>,
@@ -14,7 +14,7 @@ const createClient = (
   name,
   comment: name,
   sessionCountsInWeek,
-  schedule: scheduleStrings.map(intervalFactory.createOf.bind(intervalFactory)),
+  schedule: scheduleStrings.map((s) => primitiveMapper.mapFromString(s)),
 });
 
 export const allMorningClient: Client = createClient('all morning', 2, [

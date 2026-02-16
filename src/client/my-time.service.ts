@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { WeekSchedule } from '../time/Schedule';
-import { TimeIntervalFactory } from '../time/TimeInterval/TimeIntervalFactory';
 import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 
 @Injectable({
@@ -9,7 +8,6 @@ import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 export class MyTimeService {
   // currently working w/ local storage, later on we can move on to a proper BE call
   private static STORAGE_KEY = 'my_time';
-  private timeIntervalFactory = inject(TimeIntervalFactory);
   private mapper = inject(TimeIntervalMapper);
 
   public saveSchedule(newSchedule: WeekSchedule) {
@@ -26,7 +24,7 @@ export class MyTimeService {
     ) as string[];
     timeIntervalStrings.sort(); // might not need, as saveSchedule anyway sort them
     return timeIntervalStrings.map((timeIntervalString) =>
-      this.timeIntervalFactory.createOf(timeIntervalString),
+      this.mapper.mapFromString(timeIntervalString),
     );
   }
 }

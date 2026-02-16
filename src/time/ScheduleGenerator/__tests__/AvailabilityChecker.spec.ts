@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
 import { AvailabilityChecker } from '../AvailabilityChecker';
 import { SessionCellGenerator } from '../SessionCellGenerator';
 import { SessionCell } from '../SessionCell';
@@ -7,6 +8,8 @@ import { TimeInterval } from '../../TimeInterval/TimeInterval';
 import { WeekSchedule } from '../../Schedule';
 import { methodName } from '../../../utils/test-name';
 import { TimeIntervalMapper } from '../../TimeInterval/TimeIntervalMapper';
+import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
+import { TimeIntervalEventMapper } from '../../TimeInterval/TimeIntervalEventMapper';
 
 describe(AvailabilityChecker.name, () => {
   let availabilityChecker: AvailabilityChecker;
@@ -15,8 +18,11 @@ describe(AvailabilityChecker.name, () => {
   let aClient: Client;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
+    });
+    mapper = TestBed.inject(TimeIntervalMapper);
     sessionCellGenerator = new SessionCellGenerator();
-    mapper = new TimeIntervalMapper();
 
     aClient = {
       id: 1,

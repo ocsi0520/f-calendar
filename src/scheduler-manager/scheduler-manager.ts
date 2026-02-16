@@ -17,7 +17,6 @@ import {
   EventInput,
 } from '@fullcalendar/core/index.js';
 import { EventDescriptor } from '../time/TimeInterval/TimeInterval-constants';
-import { TimeIntervalFactory } from '../time/TimeInterval/TimeIntervalFactory';
 import { WeekSchedule } from '../time/Schedule';
 import { baseCalendarOptions } from './base-calendar-options';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,7 +31,6 @@ import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
   styleUrl: './scheduler-manager.scss',
 })
 export class SchedulerManager implements OnChanges {
-  timeIntervalFactory = inject(TimeIntervalFactory);
   mapper = inject(TimeIntervalMapper);
 
   public events: WritableSignal<EventInput[]> = signal([]);
@@ -52,7 +50,7 @@ export class SchedulerManager implements OnChanges {
   }
   public save(): void {
     this.saveNewSchedule.emit(
-      this.events().map((event) => this.timeIntervalFactory.createOf(event as EventDescriptor)),
+      this.events().map((event) => this.mapper.mapFromEvent(event as EventDescriptor)),
     );
   }
   // TOOD: later on this can be removed, as only MyTime is generated immediately, the other ones are going to be generated later
@@ -99,7 +97,7 @@ export class SchedulerManager implements OnChanges {
     this.events.set([...this.events(), newEvent]);
   }
   private getIdOf(eventDescriptor: EventDescriptor): string {
-    return this.mapper.mapToString(this.timeIntervalFactory.createOf(eventDescriptor));
+    return this.mapper.mapToString(this.mapper.mapFromEvent(eventDescriptor));
   }
   private changeEvent(eventChangeArg: EventChangeArg): void {
     if (!this.atLeastSessionTime(eventChangeArg.event)) {

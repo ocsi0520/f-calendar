@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Client } from './Client';
 import { WeekSchedule } from '../time/Schedule';
-import { TimeIntervalFactory } from '../time/TimeInterval/TimeIntervalFactory';
 import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 
 type ScheduleSerializedClient = Omit<Client, 'schedule'> & { schedule: string[] };
@@ -13,7 +12,6 @@ export class ClientService {
   // currently working w/ local storage, later on we can move on to a proper BE call
   private static CLIENT_KEY = 'calendar_clients';
   private static CLIENT_ID_KEY = 'calendar_clients_id';
-  private timeIntervalFactory = inject(TimeIntervalFactory);
   private mapper = inject(TimeIntervalMapper);
 
   public addClient(newClient: Omit<Client, 'id'>): void {
@@ -37,7 +35,7 @@ export class ClientService {
     );
     const clients: Array<Client> = halfDeserialized.map((item) => {
       const deserializedSchedule = item.schedule.map((timeIntervalString) =>
-        this.timeIntervalFactory.createOf(timeIntervalString),
+        this.mapper.mapFromString(timeIntervalString),
       );
       return { ...item, schedule: deserializedSchedule };
     });

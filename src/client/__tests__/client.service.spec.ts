@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ClientService } from '../client.service';
-import { TimeIntervalFactory } from '../../time/TimeInterval/TimeIntervalFactory';
+import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
+import { TimeIntervalPrimitiveMapper } from '../../time/TimeInterval/TimeIntervalPrimitiveMapper';
+import { TimeIntervalEventMapper } from '../../time/TimeInterval/TimeIntervalEventMapper';
 import { methodName } from '../../utils/test-name';
 import { Client } from '../Client';
 import { TimeInterval } from '../../time/TimeInterval/TimeInterval';
 import { WeekSchedule } from '../../time/Schedule';
-import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
 
 describe(ClientService.name, () => {
   let unitUnderTest: ClientService;
@@ -25,7 +26,7 @@ describe(ClientService.name, () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimeIntervalMapper, TimeIntervalFactory],
+      providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
     });
     unitUnderTest = TestBed.inject(ClientService);
     localStorage.clear();
