@@ -19,11 +19,11 @@ import {
 import { EventDescriptor } from '../time/TimeInterval/TimeInterval-constants';
 import { TimeIntervalFactory } from '../time/TimeInterval/TimeIntervalFactory';
 import { WeekSchedule } from '../time/Schedule';
-import { ClientService } from '../client/client.service';
 import { baseCalendarOptions } from './base-calendar-options';
 import { MatButtonModule } from '@angular/material/button';
 import { sessionSpan } from '../time/session-span';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 
 @Component({
   selector: 'app-scheduler-manager',
@@ -33,7 +33,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SchedulerManager implements OnChanges {
   timeIntervalFactory = inject(TimeIntervalFactory);
-  clientService = inject(ClientService);
+  mapper = inject(TimeIntervalMapper);
 
   public events: WritableSignal<EventInput[]> = signal([]);
 
@@ -46,7 +46,7 @@ export class SchedulerManager implements OnChanges {
   public reset(): void {
     this.events.set(
       this.initialWeekSchedule().map((timeInterval) =>
-        timeInterval.toEventWith(new Date(), this.title()),
+        this.mapper.mapToEvent(timeInterval, new Date(), this.title()),
       ),
     );
   }
@@ -65,7 +65,7 @@ export class SchedulerManager implements OnChanges {
     if (!changeOfSchedule) return;
     this.events.set(
       changeOfSchedule.currentValue.map((timeInterval) =>
-        timeInterval.toEventWith(new Date(), this.title()),
+        this.mapper.mapToEvent(timeInterval, new Date(), this.title()),
       ),
     );
   }
@@ -99,7 +99,7 @@ export class SchedulerManager implements OnChanges {
     this.events.set([...this.events(), newEvent]);
   }
   private getIdOf(eventDescriptor: EventDescriptor): string {
-    return this.timeIntervalFactory.createOf(eventDescriptor).toString();
+    return this.mapper.mapToString(this.timeIntervalFactory.createOf(eventDescriptor));
   }
   private changeEvent(eventChangeArg: EventChangeArg): void {
     if (!this.atLeastSessionTime(eventChangeArg.event)) {

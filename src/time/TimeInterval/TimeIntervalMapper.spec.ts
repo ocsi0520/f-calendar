@@ -1,35 +1,38 @@
 // https://www.calendar-365.com/calendar/2024/January.html
 import { TimeInterval } from './TimeInterval';
+import { TimeIntervalMapper } from './TimeIntervalMapper';
 import { TimeIntervalFactory } from './TimeIntervalFactory';
+import { methodName } from '../../utils/test-name';
 
-describe('TimeInterval', () => {
+describe(TimeIntervalMapper.name, () => {
   const factory = new TimeIntervalFactory();
+  const unitUnderTest = new TimeIntervalMapper();
 
   it('toString produces stable serialized representation', () => {
     const interval = new TimeInterval(3, [9, 15], [10, 45]);
 
-    expect(interval.toString()).toBe('3T09:15_-_10:45');
+    expect(unitUnderTest.mapToString(interval)).toBe('3T09:15_-_10:45');
   });
 
   it('round-trips via string serialization', () => {
     const original = new TimeInterval(5, [12, 0], [13, 30]);
-    const reconstructed = factory.createOf(original.toString());
+    const reconstructed = factory.createOf(unitUnderTest.mapToString(original));
 
     expect(reconstructed.dayNumber).toBe(original.dayNumber);
     expect(reconstructed.start).toEqual(original.start);
     expect(reconstructed.end).toEqual(original.end);
   });
 
-  describe('toEventWith', () => {
+  describe(methodName(TimeIntervalMapper, 'mapToEvent'), () => {
     it('creates event aligned to monday of given week', () => {
       const interval = new TimeInterval(1, [8, 0], [9, 0]);
       const baseDate = new Date('2024-01-10T12:00:00'); // Wednesday
 
-      const event = interval.toEventWith(baseDate, 'Standup');
+      const event = unitUnderTest.mapToEvent(interval, baseDate, 'Standup');
 
       expect(event.title).toBe('Standup');
       expect(event.color).toBe('lightblue');
-      expect(event.id).toBe(interval.toString());
+      expect(event.id).toBe(unitUnderTest.mapToString(interval));
 
       const start = new Date(event.start as Date);
       const end = new Date(event.end as Date);
@@ -47,7 +50,7 @@ describe('TimeInterval', () => {
       const interval = new TimeInterval(2, [10, 0], [11, 0]);
       const baseDate = new Date('2024-01-09T12:00:00');
 
-      const event = interval.toEventWith(baseDate);
+      const event = unitUnderTest.mapToEvent(interval, baseDate);
 
       expect(event.title).toBe('Meeting');
     });
@@ -55,7 +58,7 @@ describe('TimeInterval', () => {
       const interval = new TimeInterval(4, [14, 30], [15, 30]); // Thursday
       const baseDate = new Date('2024-01-09T00:00:00'); // Tuesday
 
-      const event = interval.toEventWith(baseDate);
+      const event = unitUnderTest.mapToEvent(interval, baseDate);
 
       const start = new Date(event.start as Date);
 
@@ -69,7 +72,7 @@ describe('TimeInterval', () => {
       const interval = new TimeInterval(1, [14, 30], [15, 30]); // monday
       const baseDate = new Date('2024-01-07T00:00:00'); // sunday
 
-      const event = interval.toEventWith(baseDate);
+      const event = unitUnderTest.mapToEvent(interval, baseDate);
 
       const start = new Date(event.start as Date);
 
@@ -82,7 +85,7 @@ describe('TimeInterval', () => {
       const interval = new TimeInterval(7, [14, 30], [15, 30]); // sunday
       const baseDate = new Date('2024-01-08T00:00:00'); // monday
 
-      const event = interval.toEventWith(baseDate);
+      const event = unitUnderTest.mapToEvent(interval, baseDate);
 
       const start = new Date(event.start as Date);
 

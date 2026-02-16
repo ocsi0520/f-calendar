@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Client } from './Client';
 import { WeekSchedule } from '../time/Schedule';
 import { TimeIntervalFactory } from '../time/TimeInterval/TimeIntervalFactory';
+import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 
 type ScheduleSerializedClient = Omit<Client, 'schedule'> & { schedule: string[] };
 
@@ -11,20 +12,23 @@ type ScheduleSerializedClient = Omit<Client, 'schedule'> & { schedule: string[] 
 export class ClientService {
   // currently working w/ local storage, later on we can move on to a proper BE call
   private static CLIENT_KEY = 'calendar_clients';
+  private static CLIENT_ID_KEY = 'calendar_clients_id';
   private timeIntervalFactory = inject(TimeIntervalFactory);
+  private mapper = inject(TimeIntervalMapper);
 
   public addClient(newClient: Omit<Client, 'id'>): void {
     const allClients = this.getAllClients();
-    allClients.push({ ...newClient, id: this.generateIdFrom(allClients) });
+    const newId = this.generateNextId();
+    this.saveLastId(newId);
+    allClients.push({ ...newClient, id: newId });
     this.saveAll(allClients);
   }
 
-  private generateIdFrom(allClients: Array<Client>): number {
-    const lastId = allClients.reduce(
-      (maxId, client) => (client.id > maxId ? client.id : maxId),
-      -Infinity,
-    );
-    return lastId === -Infinity ? 1 : lastId + 1;
+  private generateNextId(): number {
+    return Number(localStorage.getItem(ClientService.CLIENT_ID_KEY) || '0') + 1;
+  }
+  private saveLastId(lastId: number): void {
+    localStorage.setItem(ClientService.CLIENT_ID_KEY, lastId.toString());
   }
 
   public getAllClients(): Array<Client> {
@@ -53,14 +57,16 @@ export class ClientService {
   }
 
   public editScheduleForClient(client: Client, newSchedule: WeekSchedule): void {
-    newSchedule.sort((a, b) => a.toString().localeCompare(b.toString()));
+    newSchedule.sort((a, b) => {
+      return this.mapper.mapToString(a).localeCompare(this.mapper.mapToString(b));
+    });
     this.editClient({ ...client, schedule: newSchedule });
   }
 
   private saveAll(allClients: Array<Client>): void {
     const halfSerialized: Array<ScheduleSerializedClient> = allClients.map((client) => ({
       ...client,
-      schedule: client.schedule.map((timeInterval) => timeInterval.toString()),
+      schedule: client.schedule.map((timeInterval) => this.mapper.mapToString(timeInterval)),
     }));
     localStorage.setItem(ClientService.CLIENT_KEY, JSON.stringify(halfSerialized));
   }

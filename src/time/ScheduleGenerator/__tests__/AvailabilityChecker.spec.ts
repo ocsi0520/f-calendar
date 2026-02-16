@@ -6,14 +6,17 @@ import { Client } from '../../../client/Client';
 import { TimeInterval } from '../../TimeInterval/TimeInterval';
 import { WeekSchedule } from '../../Schedule';
 import { methodName } from '../../../utils/test-name';
+import { TimeIntervalMapper } from '../../TimeInterval/TimeIntervalMapper';
 
 describe(AvailabilityChecker.name, () => {
   let availabilityChecker: AvailabilityChecker;
   let sessionCellGenerator: SessionCellGenerator;
+  let mapper: TimeIntervalMapper;
   let aClient: Client;
 
   beforeEach(() => {
     sessionCellGenerator = new SessionCellGenerator();
+    mapper = new TimeIntervalMapper();
 
     aClient = {
       id: 1,
@@ -105,7 +108,7 @@ describe(AvailabilityChecker.name, () => {
       ];
 
       const actual = availabilityChecker.getAllPossibleSessionCellsForClient(mySchedule, aClient);
-      expect(actual.map((i) => i.timeInterval.toString())).toEqual([
+      expect(actual.map((i) => mapper.mapToString(i.timeInterval))).toEqual([
         '1T09:00_-_10:15',
         '1T09:15_-_10:30',
         '1T09:30_-_10:45',

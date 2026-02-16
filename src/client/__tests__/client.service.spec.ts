@@ -5,6 +5,7 @@ import { methodName } from '../../utils/test-name';
 import { Client } from '../Client';
 import { TimeInterval } from '../../time/TimeInterval/TimeInterval';
 import { WeekSchedule } from '../../time/Schedule';
+import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
 
 describe(ClientService.name, () => {
   let unitUnderTest: ClientService;
@@ -24,7 +25,7 @@ describe(ClientService.name, () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TimeIntervalFactory],
+      providers: [TimeIntervalMapper, TimeIntervalFactory],
     });
     unitUnderTest = TestBed.inject(ClientService);
     localStorage.clear();
@@ -65,8 +66,7 @@ describe(ClientService.name, () => {
       unitUnderTest.deleteClient({ ...newTestClient1, id: 1 });
       expect(unitUnderTest.getAllClients()).empty;
     });
-    // TODO: fix
-    it.skip('should keep adding ids when last one is deleted', () => {
+    it('should keep adding ids when last one is deleted', () => {
       unitUnderTest.addClient(newTestClient1);
       unitUnderTest.addClient(newTestClient2);
       unitUnderTest.deleteClient({ ...newTestClient2, id: 2 });

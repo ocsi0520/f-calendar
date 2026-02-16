@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-// import { TimeIntervalFactory } from '../../time/TimeInterval/TimeIntervalFactory';
-// import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
+import { TimeIntervalFactory } from '../../time/TimeInterval/TimeIntervalFactory';
+import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
 import { MyTimeService } from '../my-time.service';
 import { TimeInterval } from '../../time/TimeInterval/TimeInterval';
 describe(MyTimeService.name, () => {
@@ -12,7 +12,7 @@ describe(MyTimeService.name, () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    //   providers: [TimeIntervalMapper, TimeIntervalFactory],
+      providers: [TimeIntervalMapper, TimeIntervalFactory],
     });
     unitUnderTest = TestBed.inject(MyTimeService);
     localStorage.clear();
