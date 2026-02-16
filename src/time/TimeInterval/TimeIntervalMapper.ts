@@ -20,6 +20,14 @@ export class TimeIntervalMapper {
     return this.primitiveMapper.mapFromString(representation);
   }
 
+  public mapToNumber(timeInterval: TimeInterval): number {
+    return this.primitiveMapper.mapToNumber(timeInterval);
+  }
+
+  public mapFromNumber(representation: number): TimeInterval {
+    return this.primitiveMapper.mapFromNumber(representation);
+  }
+
   public mapFromEvent(representation: EventDescriptor): TimeInterval {
     return this.eventMapper.mapFromEvent(representation);
   }

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
 import { TimeInterval } from './TimeInterval';
 import { methodName } from '../../utils/test-name';
@@ -61,6 +62,101 @@ describe(TimeIntervalPrimitiveMapper.name, () => {
       expect(reconstructed.dayNumber).toBe(original.dayNumber);
       expect(reconstructed.start).toEqual(original.start);
       expect(reconstructed.end).toEqual(original.end);
+    });
+  });
+
+  describe(methodName(TimeIntervalPrimitiveMapper, 'mapFromNumber'), () => {
+    it('should throw in case of invalid numbers', () => {
+      expect(() => unitUnderTest.mapFromNumber(101606400)).toThrow('Invalid encoded number');
+      expect(() => unitUnderTest.mapFromNumber(-1)).toThrow('Invalid encoded number');
+      expect(() => unitUnderTest.mapFromNumber(10079)).toThrow('Invalid day number');
+    });
+    describe('edge cases', () => {
+      it('should handle monday midnight from-to', () => {
+        const actual = unitUnderTest.mapFromNumber(0);
+        expect(actual.dayNumber).toBe(1);
+        expect(actual.start).toEqual([0, 0]);
+        expect(actual.end).toEqual([0, 0]);
+      });
+      it('should handle sunday 23.59 from-to', () => {
+        const actual = unitUnderTest.mapFromNumber(101606399);
+        expect(actual.dayNumber).toBe(7);
+        expect(actual.start).toEqual([23, 59]);
+        expect(actual.end).toEqual([23, 59]);
+      });
+      it('should handle from monday 00.00 to monday 23.59', () => {
+        const actual = unitUnderTest.mapFromNumber(1439);
+        expect(actual.dayNumber).toBe(1);
+        expect(actual.start).toEqual([0, 0]);
+        expect(actual.end).toEqual([23, 59]);
+      });
+      it('should handle from sunday 00.00 to sunday 23.59', () => {
+        const actual = unitUnderTest.mapFromNumber(87101279);
+        expect(actual.dayNumber).toBe(7);
+        expect(actual.start).toEqual([0, 0]);
+        expect(actual.end).toEqual([23, 59]);
+      });
+    });
+    describe('normal cases', () => {
+      it('should handle tuesday 10.00 - 14.15', () => {
+        const actual = unitUnderTest.mapFromNumber(20565495);
+        expect(actual.dayNumber).toBe(2);
+        expect(actual.start).toEqual([10, 0]);
+        expect(actual.end).toEqual([14, 15]);
+      });
+      it('should handle thursday 18.30 - 21.00', () => {
+        const actual = unitUnderTest.mapFromNumber(54739980);
+        expect(actual.dayNumber).toBe(4);
+        expect(actual.start).toEqual([18, 30]);
+        expect(actual.end).toEqual([21, 0]);
+      });
+      it('should handle saturday 11.00 - 19.00', () => {
+        const actual = unitUnderTest.mapFromNumber(79237140);
+        expect(actual.dayNumber).toBe(6);
+        expect(actual.start).toEqual([11, 0]);
+        expect(actual.end).toEqual([19, 0]);
+      });
+    });
+  });
+  describe(methodName(TimeIntervalPrimitiveMapper, 'mapToNumber'), () => {
+    describe('edge cases', () => {
+      it('should handle monday midnight from-to', () => {
+        const input = new TimeInterval(1, [0, 0], [0, 0]);
+        const actual = unitUnderTest.mapToNumber(input);
+        expect(actual).toBe(0);
+      });
+      it('should handle sunday 23.59 from-to', () => {
+        const input = new TimeInterval(7, [23, 59], [23, 59]);
+        const actual = unitUnderTest.mapToNumber(input);
+        expect(actual).toBe(101606399);
+      });
+      it('should handle from monday 00.00 to monday 23.59', () => {
+        const input = new TimeInterval(1, [0, 0], [23, 59]);
+        const actual = unitUnderTest.mapToNumber(input);
+        expect(actual).toBe(1439);
+      });
+      it('should handle from sunday 00.00 to sunday 23.59', () => {
+        const input = new TimeInterval(7, [0, 0], [23, 59]);
+        const actual = unitUnderTest.mapToNumber(input);
+        expect(actual).toBe(87101279);
+      });
+    });
+    describe('normal cases', () => {
+      it('should handle tuesday 10.00 - 14.15', () => {
+        const input = new TimeInterval(2, [10, 0], [14, 15]);
+        const actual = unitUnderTest.mapToNumber(input);
+        expect(actual).toBe(20565495);
+      });
+      it('should handle thursday 18.30 - 21.00', () => {
+        const input = new TimeInterval(4, [18, 30], [21, 0]);
+        const actual = unitUnderTest.mapToNumber(input);
+        expect(actual).toBe(54739980);
+      });
+      it('should handle saturday 11.00 - 19.00', () => {
+        const input = new TimeInterval(6, [11, 0], [19, 0]);
+        const actual = unitUnderTest.mapToNumber(input);
+        expect(actual).toBe(79237140);
+      });
     });
   });
 });

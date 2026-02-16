@@ -9,6 +9,46 @@ import { DayNumber } from './TimeInterval-constants';
 export class TimeIntervalPrimitiveMapper {
   private static TIME_REGEX: RegExp = /^([01]\d|2[0-3]):([0-5]\d)$/;
   private static TIME_DIVIDER = '_-_';
+  private static DAY_IN_MINUTES = 24 * 60;
+  private static HOUR_IN_MINUTES = 60;
+
+  private static MAXIMUM_MINS_FROM_MONDAY_MIDNIGHT = 6 * 24 * 60 + 23 * 60 + 59;
+  private static NUMBER_BASE = TimeIntervalPrimitiveMapper.MAXIMUM_MINS_FROM_MONDAY_MIDNIGHT + 1;
+  private static MAXIMUM_VALID_ENCODED_NUMBER = TimeIntervalPrimitiveMapper.NUMBER_BASE ** 2 - 1;
+
+  public mapToNumber({ start, end, dayNumber }: TimeInterval): number {
+    const startFromMondayMidnight = (dayNumber - 1) * 24 * 60 + start[0] * 60 + start[1];
+    const endFromMondayMidnight = (dayNumber - 1) * 24 * 60 + end[0] * 60 + end[1];
+    return (
+      startFromMondayMidnight * TimeIntervalPrimitiveMapper.NUMBER_BASE + endFromMondayMidnight
+    );
+  }
+  public mapFromNumber(encodedNumber: number): TimeInterval {
+    if (
+      encodedNumber > TimeIntervalPrimitiveMapper.MAXIMUM_VALID_ENCODED_NUMBER ||
+      encodedNumber < 0
+    )
+      throw new Error('Invalid encoded number');
+    const encodedStart = Math.floor(encodedNumber / TimeIntervalPrimitiveMapper.NUMBER_BASE);
+    const encodedEnd = encodedNumber % TimeIntervalPrimitiveMapper.NUMBER_BASE;
+
+    const [startDayNumber, startTime] = this.mapTimeFromNumber(encodedStart);
+    const [endDayNumber, endTime] = this.mapTimeFromNumber(encodedEnd);
+    if (endDayNumber !== startDayNumber || startDayNumber < 1 || startDayNumber > 7)
+      throw new Error('Invalid day number');
+
+    return new TimeInterval(startDayNumber, startTime, endTime);
+  }
+
+  private mapTimeFromNumber(timeNumber: number): [DayNumber, Time] {
+    let remnant = timeNumber;
+    const daysPassed = Math.floor(timeNumber / TimeIntervalPrimitiveMapper.DAY_IN_MINUTES);
+    remnant -= daysPassed * TimeIntervalPrimitiveMapper.DAY_IN_MINUTES;
+    const hours = Math.floor(remnant / TimeIntervalPrimitiveMapper.HOUR_IN_MINUTES) as Hour;
+    remnant -= hours * TimeIntervalPrimitiveMapper.HOUR_IN_MINUTES;
+    const minutes = remnant as Minute;
+    return [(daysPassed + 1) as DayNumber, [hours, minutes]];
+  }
 
   public mapToString(timeInterval: TimeInterval): string {
     return `${timeInterval.dayNumber}T${this.timeToString(timeInterval.start)}_-_${this.timeToString(timeInterval.end)}`;

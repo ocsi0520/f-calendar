@@ -9,16 +9,20 @@ import { EventDescriptor } from './TimeInterval-constants';
 
 describe(TimeIntervalMapper.name, () => {
   let unitUnderTest: TimeIntervalMapper;
+  let primitiveMapper: TimeIntervalPrimitiveMapper;
+  let eventMapper: TimeIntervalEventMapper;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
     });
+    primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
+    eventMapper = TestBed.inject(TimeIntervalEventMapper);
+
     unitUnderTest = TestBed.inject(TimeIntervalMapper);
   });
 
   it('should delegate mapToString call to primitiveMapper', () => {
-    const primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
     primitiveMapper.mapToString = vi.fn(() => 'SENTINEL');
 
     const interval = new TimeInterval(2, [8, 0], [9, 30]);
@@ -29,8 +33,6 @@ describe(TimeIntervalMapper.name, () => {
   });
 
   it('should delegate mapFromString call to primitiveMapper', () => {
-    const primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
-
     const returnInterval = new TimeInterval(3, [9, 15], [10, 45]);
     primitiveMapper.mapFromString = vi.fn(() => returnInterval);
 
@@ -42,8 +44,6 @@ describe(TimeIntervalMapper.name, () => {
   });
 
   it('should delegate mapToEvent call to eventMapper', () => {
-    const eventMapper = TestBed.inject(TimeIntervalEventMapper);
-
     const sentinel: EventInput = {
       id: 'x',
       start: new Date(2000, 1, 12, 11, 0),
@@ -62,8 +62,6 @@ describe(TimeIntervalMapper.name, () => {
   });
 
   it('should delegate mapFromEvent call to eventMapper', () => {
-    const eventMapper = TestBed.inject(TimeIntervalEventMapper);
-
     const returnInterval = new TimeInterval(4, [11, 0], [12, 0]);
     eventMapper.mapFromEvent = vi.fn(() => returnInterval);
 
@@ -71,6 +69,27 @@ describe(TimeIntervalMapper.name, () => {
     const result = unitUnderTest.mapFromEvent(descriptor);
 
     expect(eventMapper.mapFromEvent).toHaveBeenCalledWith(descriptor);
+    expect(result).toBe(returnInterval);
+  });
+
+  it('should delegate mapToNumber call to primitiveMapper', () => {
+    primitiveMapper.mapToNumber = vi.fn(() => 12345);
+
+    const interval = new TimeInterval(5, [14, 30], [15, 45]);
+    const result = unitUnderTest.mapToNumber(interval);
+
+    expect(primitiveMapper.mapToNumber).toHaveBeenCalledWith(interval);
+    expect(result).toBe(12345);
+  });
+
+  it('should delegate mapFromNumber call to primitiveMapper', () => {
+    const returnInterval = new TimeInterval(6, [10, 0], [11, 30]);
+    primitiveMapper.mapFromNumber = vi.fn(() => returnInterval);
+
+    const num = 54321;
+    const result = unitUnderTest.mapFromNumber(num);
+
+    expect(primitiveMapper.mapFromNumber).toHaveBeenCalledWith(num);
     expect(result).toBe(returnInterval);
   });
 });
