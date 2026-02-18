@@ -96,6 +96,28 @@ describe(TimeIntervalManager.name, () => {
     });
   });
 
+  describe(methodName(TimeIntervalManager, 'shiftStart'), () => {
+    it('shiftStart adjusts only the start time', () => {
+      const interval: TimeInterval = { dayNumber: 1, start: [8, 0], end: [9, 0] };
+      const shifted = unitUnderTest.shiftStart(interval, 30);
+      expect(isSameInterval(shifted, { dayNumber: 1, start: [8, 30], end: [9, 0] })).toBe(true);
+
+      const shiftedBack = unitUnderTest.shiftStart(interval, -15);
+      expect(isSameInterval(shiftedBack, { dayNumber: 1, start: [7, 45], end: [9, 0] })).toBe(true);
+    });
+  });
+
+  describe(methodName(TimeIntervalManager, 'shiftEnd'), () => {
+    it('shiftEnd adjusts only the end time', () => {
+      const interval: TimeInterval = { dayNumber: 1, start: [8, 0], end: [9, 0] };
+      const shifted = unitUnderTest.shiftEnd(interval, 15);
+      expect(isSameInterval(shifted, { dayNumber: 1, start: [8, 0], end: [9, 15] })).toBe(true);
+
+      const shiftedBack = unitUnderTest.shiftEnd(interval, -30);
+      expect(isSameInterval(shiftedBack, { dayNumber: 1, start: [8, 0], end: [8, 30] })).toBe(true);
+    });
+  });
+
   describe(methodName(TimeIntervalManager, 'getMinutesBetweenIntervals'), () => {
     it('returns minutes from earlier end to later start', () => {
       const earlier: TimeInterval = { dayNumber: 1, start: [9, 15], end: [10, 30] };

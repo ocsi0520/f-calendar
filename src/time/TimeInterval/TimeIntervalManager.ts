@@ -41,7 +41,7 @@ export class TimeIntervalManager {
 
   public doesFirstIncludeSecond(interval1: TimeInterval, interval2: TimeInterval): boolean {
     if (interval1.dayNumber !== interval2.dayNumber) return false;
-  
+
     const [start1, end1] = this.mapIntervalToNumbers(interval1);
     const [start2, end2] = this.mapIntervalToNumbers(interval2);
 
@@ -51,10 +51,10 @@ export class TimeIntervalManager {
   // TODO: later on handle edge-case when we shift so much it goes to the next day
   // anyway TimeInterval does not handle case i.e. monday 23.30 - tuesday 00.45
   public shiftInterval(interval: TimeInterval, shiftByMinutes: number): TimeInterval {
-    const [start1, end1] = this.mapIntervalToNumbers(interval);
+    const [start, end] = this.mapIntervalToNumbers(interval);
     return this.mapNumbersToInterval(interval.dayNumber, [
-      start1 + shiftByMinutes,
-      end1 + shiftByMinutes,
+      start + shiftByMinutes,
+      end + shiftByMinutes,
     ]);
   }
 
@@ -65,5 +65,15 @@ export class TimeIntervalManager {
    */
   public getMinutesBetweenIntervals(earlier: TimeInterval, later: TimeInterval): number {
     return this.timeManager.timeToNumber(later.start) - this.timeManager.timeToNumber(earlier.end);
+  }
+
+  public shiftStart(interval: TimeInterval, shiftStartByMinutes: number): TimeInterval {
+    const [start, end] = this.mapIntervalToNumbers(interval);
+    return this.mapNumbersToInterval(interval.dayNumber, [start + shiftStartByMinutes, end]);
+  }
+
+  public shiftEnd(interval: TimeInterval, shiftEndByMinutes: number): TimeInterval {
+    const [start, end] = this.mapIntervalToNumbers(interval);
+    return this.mapNumbersToInterval(interval.dayNumber, [start, end + shiftEndByMinutes]);
   }
 }
