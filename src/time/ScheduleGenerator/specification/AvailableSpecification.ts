@@ -11,7 +11,7 @@ export abstract class AvailableSpecification implements ScheduleSpecification {
   protected withinSchedule(item: ScheduleItem, schedule: WeekSchedule): boolean {
     return schedule.some((timeInterval) => this.itemWithinInterval(item, timeInterval));
   }
-  protected itemWithinInterval(item: ScheduleItem, timeInterval: TimeInterval): boolean {
+  private itemWithinInterval(item: ScheduleItem, timeInterval: TimeInterval): boolean {
     if (item.timeInterval.dayNumber !== timeInterval.dayNumber) return false;
     const [myTimeStart, myTimeEnd] = [
       this.timeMapper.timeToNumber(timeInterval.start),
