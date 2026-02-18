@@ -72,4 +72,10 @@ describe(methodName(NoSameDayForSameClientSpecification, 'check'), () => {
 
     expect(unitUnderTest.check(table)).toBe(false);
   });
+  it('should handle case when client is registered twice', () => {
+    const table = makeTable([
+      { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1, 1] },
+    ]);
+    expect(unitUnderTest.check(table)).toBe(false);
+  });
 });
