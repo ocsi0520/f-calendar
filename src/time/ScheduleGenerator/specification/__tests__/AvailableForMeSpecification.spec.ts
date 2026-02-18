@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AvailableForMe } from '../AvailableForMeSpecification';
 import { MyTimeService } from '../../../../client/my-time.service';
-import { TimeManager } from '../../../TimeManager';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { TimeIntervalMapper } from '../../../TimeInterval/TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from '../../../TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from '../../../TimeInterval/TimeIntervalEventMapper';
@@ -11,31 +11,31 @@ import { WeekSchedule } from '../../../Schedule';
 
 describe(methodName(AvailableForMe, 'check'), () => {
   let myTimeService: MyTimeService;
-  let timeMapper: TimeManager;
+  let timeIntervalManager: TimeIntervalManager;
   let unitUnderTest: AvailableForMe;
 
   beforeEach(() => {
     localStorage.clear();
-    
+
     // Set up Angular injection context for services that use inject()
     TestBed.configureTestingModule({
       providers: [
-        TimeManager,
+        TimeIntervalManager,
         TimeIntervalPrimitiveMapper,
         TimeIntervalEventMapper,
         TimeIntervalMapper,
         MyTimeService,
       ],
     });
-    
+
     // Get instances from the injector so inject() works properly
-    timeMapper = TestBed.inject(TimeManager);
+    timeIntervalManager = TestBed.inject(TimeIntervalManager);
     myTimeService = TestBed.inject(MyTimeService);
   });
 
   const createUnitUnderTestWithSchedule = (schedule: WeekSchedule) => {
     myTimeService.saveSchedule(schedule);
-    return new AvailableForMe(myTimeService, timeMapper);
+    return new AvailableForMe(myTimeService, timeIntervalManager);
   };
 
   const makeTable = (scheduleItems: ScheduleItem[]): Table => ({
@@ -105,7 +105,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { dayNumber: 1, start: [8, 0], end: [17, 0] },
     ]);
     const table = makeTable([
-      { timeInterval: { dayNumber: 2, start: [9, 0], end: [10, 0] }, clientIdsInvolved: [1] },
+      { timeInterval: { dayNumber: 2, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [1] },
     ]);
 
     expect(unitUnderTest.check(table)).toBe(false);

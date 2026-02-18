@@ -1,9 +1,9 @@
-import { TimeManager } from '../../TimeManager';
+import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 import { ScheduleItem, Table } from '../Table';
 import { ScheduleSpecification } from './specification';
 
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
-  constructor(private readonly timeMapper: TimeManager) {}
+  constructor(private readonly timeIntervalManager: TimeIntervalManager) {}
 
   public check({ scheduleItems }: Table): boolean {
     const occupiedItem = scheduleItems.filter((item) => item.clientIdsInvolved.length > 0);
@@ -12,22 +12,7 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     }
     return true;
   }
-
-  // TODO: use TimeIntervalMapper
-  private mapCellToTimeNumbers(cell: ScheduleItem): [number, number] {
-    return [
-      this.timeMapper.timeToNumber(cell.timeInterval.start),
-      this.timeMapper.timeToNumber(cell.timeInterval.end),
-    ];
-  }
   private areCellsOverlapping(cell1: ScheduleItem, cell2: ScheduleItem): boolean {
-    if (cell1.timeInterval.dayNumber !== cell2.timeInterval.dayNumber) return false;
-
-    const [changedStart, changedEnd] = this.mapCellToTimeNumbers(cell1);
-    const [cellStart, cellEnd] = this.mapCellToTimeNumbers(cell2);
-
-    if (cellStart < changedStart && changedStart < cellEnd) return true;
-    if (changedStart < cellStart && cellStart < changedEnd) return true;
-    return false;
+    return this.timeIntervalManager.areIntervalsOverlapping(cell1.timeInterval, cell2.timeInterval);
   }
 }

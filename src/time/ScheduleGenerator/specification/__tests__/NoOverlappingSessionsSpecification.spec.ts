@@ -1,15 +1,16 @@
 import { NoOverlappingSessionsSpecification } from '../NoOverlappingSessionsSpecification';
-import { TimeManager } from '../../../TimeManager';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { ScheduleItem, Table } from '../../Table';
 import { methodName } from '../../../../utils/test-name';
+import { TestBed } from '@angular/core/testing';
 
 describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
   let unitUnderTest: NoOverlappingSessionsSpecification;
-  let timeMapper: TimeManager;
+  let timeIntervalManager: TimeIntervalManager;
 
   beforeEach(() => {
-    timeMapper = new TimeManager();
-    unitUnderTest = new NoOverlappingSessionsSpecification(timeMapper);
+    timeIntervalManager = TestBed.inject(TimeIntervalManager);
+    unitUnderTest = new NoOverlappingSessionsSpecification(timeIntervalManager);
   });
 
   const makeTable = (scheduleItems: ScheduleItem[]): Table => ({
