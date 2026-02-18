@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AvailableForMe } from '../AvailableForMeSpecification';
 import { MyTimeService } from '../../../../client/my-time.service';
-import { TimeMapper } from '../../../TimeMapper';
+import { TimeManager } from '../../../TimeManager';
 import { TimeIntervalMapper } from '../../../TimeInterval/TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from '../../../TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from '../../../TimeInterval/TimeIntervalEventMapper';
@@ -11,7 +11,7 @@ import { WeekSchedule } from '../../../Schedule';
 
 describe(methodName(AvailableForMe, 'check'), () => {
   let myTimeService: MyTimeService;
-  let timeMapper: TimeMapper;
+  let timeMapper: TimeManager;
   let unitUnderTest: AvailableForMe;
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
     // Set up Angular injection context for services that use inject()
     TestBed.configureTestingModule({
       providers: [
-        TimeMapper,
+        TimeManager,
         TimeIntervalPrimitiveMapper,
         TimeIntervalEventMapper,
         TimeIntervalMapper,
@@ -29,7 +29,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
     });
     
     // Get instances from the injector so inject() works properly
-    timeMapper = TestBed.inject(TimeMapper);
+    timeMapper = TestBed.inject(TimeManager);
     myTimeService = TestBed.inject(MyTimeService);
   });
 

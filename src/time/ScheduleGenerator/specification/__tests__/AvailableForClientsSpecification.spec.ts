@@ -1,5 +1,5 @@
 import { AvailableForClientsSpecification } from '../AvailableForClientsSpecification';
-import { TimeMapper } from '../../../TimeMapper';
+import { TimeManager } from '../../../TimeManager';
 import { ScheduleItem, Table, ClientInfo } from '../../Table';
 import { Client } from '../../../../client/Client';
 import { methodName } from '../../../../utils/test-name';
@@ -8,11 +8,11 @@ import { WeekSchedule } from '../../../Schedule';
 // TODO: revise test
 
 describe(methodName(AvailableForClientsSpecification, 'check'), () => {
-  let timeMapper: TimeMapper;
+  let timeMapper: TimeManager;
   let unitUnderTest: AvailableForClientsSpecification;
 
   beforeEach(() => {
-    timeMapper = new TimeMapper();
+    timeMapper = new TimeManager();
     unitUnderTest = new AvailableForClientsSpecification(timeMapper);
   });
 

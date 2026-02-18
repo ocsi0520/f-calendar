@@ -1,14 +1,14 @@
 import { NoOverlappingSessionsSpecification } from '../NoOverlappingSessionsSpecification';
-import { TimeMapper } from '../../../TimeMapper';
+import { TimeManager } from '../../../TimeManager';
 import { ScheduleItem, Table } from '../../Table';
 import { methodName } from '../../../../utils/test-name';
 
 describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
   let unitUnderTest: NoOverlappingSessionsSpecification;
-  let timeMapper: TimeMapper;
+  let timeMapper: TimeManager;
 
   beforeEach(() => {
-    timeMapper = new TimeMapper();
+    timeMapper = new TimeManager();
     unitUnderTest = new NoOverlappingSessionsSpecification(timeMapper);
   });
 

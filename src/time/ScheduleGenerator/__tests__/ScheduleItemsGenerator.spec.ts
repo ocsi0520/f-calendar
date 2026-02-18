@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { ScheduleItemsGenerator } from '../ScheduleItemsGenerator';
-import { TimeMapper } from '../../TimeMapper';
+import { TimeManager } from '../../TimeManager';
 import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 
 describe(ScheduleItemsGenerator.name, () => {
   let unitUnderTest: ScheduleItemsGenerator;
-  let timeMapper: TimeMapper;
+  let timeMapper: TimeManager;
   let primitiveMapper: TimeIntervalPrimitiveMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [ScheduleItemsGenerator, TimeMapper] });
+    TestBed.configureTestingModule({ providers: [ScheduleItemsGenerator, TimeManager] });
     unitUnderTest = TestBed.inject(ScheduleItemsGenerator);
-    timeMapper = TestBed.inject(TimeMapper);
+    timeMapper = TestBed.inject(TimeManager);
     primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
   });
 

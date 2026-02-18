@@ -4,7 +4,7 @@ import { Hour, Minute, Time } from './Time';
 @Injectable({
   providedIn: 'root',
 })
-export class TimeMapper {
+export class TimeManager {
   public timeToNumber([hour, minute]: Time): number {
     return hour * 60 + minute;
   }

@@ -1,6 +1,6 @@
 import { MyTimeService } from '../../../client/my-time.service';
 import { WeekSchedule } from '../../Schedule';
-import { TimeMapper } from '../../TimeMapper';
+import { TimeManager } from '../../TimeManager';
 import { Table } from '../Table';
 import { AvailableSpecification } from './AvailableSpecification';
 
@@ -8,7 +8,7 @@ export class AvailableForMe extends AvailableSpecification {
   private mySchedule: WeekSchedule;
   constructor(
     private readonly myTimeService: MyTimeService,
-    timeMapper: TimeMapper,
+    timeMapper: TimeManager,
   ) {
     super(timeMapper);
     this.mySchedule = this.myTimeService.loadSchedule();

@@ -1,16 +1,19 @@
 import { TimeInterval } from '../../TimeInterval/TimeInterval';
 import { WeekSchedule } from '../../Schedule';
-import { TimeMapper } from '../../TimeMapper';
+import { TimeManager } from '../../TimeManager';
 import { ScheduleItem, Table } from '../Table';
 import { ScheduleSpecification } from './specification';
 
 export abstract class AvailableSpecification implements ScheduleSpecification {
-  constructor(private readonly timeMapper: TimeMapper) {}
+  constructor(private readonly timeMapper: TimeManager) {}
   public abstract check(table: Table): boolean;
 
   protected withinSchedule(item: ScheduleItem, schedule: WeekSchedule): boolean {
     return schedule.some((timeInterval) => this.itemWithinInterval(item, timeInterval));
   }
+
+  // TODO: extract two interval overlapping, one interval contains the other
+  // use TimeIntervalManager
   private itemWithinInterval(item: ScheduleItem, timeInterval: TimeInterval): boolean {
     if (item.timeInterval.dayNumber !== timeInterval.dayNumber) return false;
     const [myTimeStart, myTimeEnd] = [

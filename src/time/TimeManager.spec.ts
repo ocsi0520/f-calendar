@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { TimeMapper } from './TimeMapper';
+import { TimeManager } from './TimeManager';
 
-describe(TimeMapper.name, () => {
-  let unitUnderTest: TimeMapper;
+describe(TimeManager.name, () => {
+  let unitUnderTest: TimeManager;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [TimeMapper] });
-    unitUnderTest = TestBed.inject(TimeMapper);
+    TestBed.configureTestingModule({ providers: [TimeManager] });
+    unitUnderTest = TestBed.inject(TimeManager);
   });
 
   it('timeToNumber converts times to minutes since midnight', () => {
