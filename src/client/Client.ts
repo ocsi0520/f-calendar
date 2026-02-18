@@ -6,4 +6,5 @@ export type Client = {
   sessionCountsInWeek: number; // min 1, max 7 I guess
   comment: string;
   schedule: WeekSchedule;
+  disabled: boolean;
 };

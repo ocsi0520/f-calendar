@@ -16,12 +16,14 @@ describe(ClientService.name, () => {
     name: 'Kis Gizella',
     schedule: [],
     sessionCountsInWeek: 2,
+    disabled: false
   };
   const newTestClient2: Omit<Client, 'id'> = {
     comment: 'comment',
     name: 'Kis Amanda',
     schedule: [],
     sessionCountsInWeek: 3,
+    disabled: false
   };
 
   beforeEach(() => {
@@ -95,6 +97,7 @@ describe(ClientService.name, () => {
         schedule: [],
         sessionCountsInWeek: 4,
         id: 1,
+        disabled: false
       });
       expect(unitUnderTest.getAllClients()).empty;
     });

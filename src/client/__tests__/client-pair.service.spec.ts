@@ -186,7 +186,14 @@ describe(ClientPairService.name, () => {
 
   describe(`${methodName(ClientPairService, 'getPairClientsFor')}`, () => {
     it('should return empty array when client has no pairs', () => {
-      const result = unitUnderTest.getPairClientsFor({ id: 1, name: '', sessionCountsInWeek: 1, comment: '', schedule: [] });
+      const result = unitUnderTest.getPairClientsFor({
+        id: 1,
+        name: '',
+        sessionCountsInWeek: 1,
+        comment: '',
+        schedule: [],
+        disabled: false,
+      });
       expect(result).toEqual([]);
     });
 
@@ -194,7 +201,14 @@ describe(ClientPairService.name, () => {
       unitUnderTest.addPair(1, 2);
       unitUnderTest.addPair(1, 3);
       unitUnderTest.addPair(1, 4);
-      const result = unitUnderTest.getPairClientsFor({ id: 1, name: '', sessionCountsInWeek: 1, comment: '', schedule: [] });
+      const result = unitUnderTest.getPairClientsFor({
+        id: 1,
+        name: '',
+        sessionCountsInWeek: 1,
+        comment: '',
+        schedule: [],
+        disabled: false,
+      });
       expect(result).toHaveLength(3);
       expect(result).toContain(2);
       expect(result).toContain(3);
@@ -204,7 +218,14 @@ describe(ClientPairService.name, () => {
     it('should work when client is second in pair', () => {
       unitUnderTest.addPair(2, 1);
       unitUnderTest.addPair(3, 1);
-      const result = unitUnderTest.getPairClientsFor({ id: 1, name: '', sessionCountsInWeek: 1, comment: '', schedule: [] });
+      const result = unitUnderTest.getPairClientsFor({
+        id: 1,
+        name: '',
+        sessionCountsInWeek: 1,
+        comment: '',
+        schedule: [],
+        disabled: false,
+      });
       expect(result).toHaveLength(2);
       expect(result).toContain(2);
       expect(result).toContain(3);
@@ -213,7 +234,14 @@ describe(ClientPairService.name, () => {
     it('should return clients regardless of pair order', () => {
       unitUnderTest.addPair(1, 2);
       unitUnderTest.addPair(3, 1);
-      const result = unitUnderTest.getPairClientsFor({ id: 1, name: '', sessionCountsInWeek: 1, comment: '', schedule: [] });
+      const result = unitUnderTest.getPairClientsFor({
+        id: 1,
+        name: '',
+        sessionCountsInWeek: 1,
+        comment: '',
+        schedule: [],
+        disabled: false,
+      });
       expect(result).toEqual([2, 3]);
     });
 
@@ -221,7 +249,14 @@ describe(ClientPairService.name, () => {
       unitUnderTest.addPair(1, 5);
       unitUnderTest.addPair(3, 1);
       unitUnderTest.addPair(1, 2);
-      const result = unitUnderTest.getPairClientsFor({ id: 1, name: '', sessionCountsInWeek: 1, comment: '', schedule: [] });
+      const result = unitUnderTest.getPairClientsFor({
+        id: 1,
+        name: '',
+        sessionCountsInWeek: 1,
+        comment: '',
+        schedule: [],
+        disabled: false,
+      });
       expect(result).toHaveLength(3);
       expect(result).toContain(2);
       expect(result).toContain(3);
@@ -255,7 +290,7 @@ describe(ClientPairService.name, () => {
       unitUnderTest.addPair(1, 2);
       unitUnderTest.addPair(3, 4);
       unitUnderTest.addPair(5, 6);
-      
+
       const newService = new ClientPairService();
       expect(newService.getAll()).toHaveLength(3);
       expect(newService.exists(1, 2)).toBe(true);

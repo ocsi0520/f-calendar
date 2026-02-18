@@ -40,7 +40,7 @@ export class RegisterNewClient {
     }
 
     const newClient = this.form.getRawValue() as Omit<Client, 'schedule'>;
-    this.clientService.addClient({ ...newClient, schedule: [] });
+    this.clientService.addClient({ ...newClient, schedule: [], disabled: false });
     this.form.reset();
     this.snackBar.open(`${newClient.name} client has been successfully registered✅`, undefined, {
       duration: 2_000,

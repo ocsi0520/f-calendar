@@ -27,6 +27,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     sessionCountsInWeek: 1,
     comment: '',
     schedule,
+    disabled: false
   });
 
   const createClientInfo = (client: Client): ClientInfo => ({
