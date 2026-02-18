@@ -1,15 +1,5 @@
-import { EventApi } from "@fullcalendar/core/index.js";
+import { EventApi } from '@fullcalendar/core/index.js';
 
-export const dayByNumber = {
-  1: 'Monday',
-  2: 'Tuesday',
-  3: 'Wednesday',
-  4: 'Thursday',
-  5: 'Friday',
-  6: 'Saturday',
-  7: 'Sunday',
-} as const;
-
-export type DayNumber = keyof typeof dayByNumber;
-
+export const dayNumbers = [1, 2, 3, 4, 5, 6, 7] as const;
+export type DayNumber = (typeof dayNumbers)[number];
 export type EventDescriptor = Pick<EventApi, 'start' | 'end'>;
