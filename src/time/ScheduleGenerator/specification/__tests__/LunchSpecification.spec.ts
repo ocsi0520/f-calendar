@@ -5,17 +5,7 @@ import { MorningChecker } from '../MorningChecker';
 import { LunchSpecification } from '../LunchSpecification';
 import { ScheduleItem, Table } from '../../Table';
 
-// TODO: extensive test
-// - there's morning session:
-//    1. there's only one overlapping that ends at 14.00 - true
-//    2. there's only one overlapping that ends at 14.15 - false
-//    3. there's only one overlapping that starts at 14.30 - true
-//    4. there's only one overlapping that starts at 14.15 - false
-// - there's no morning session:
-//    1. there's only one overlapping that ends at 13.30 - true
-//    2. there's only one overlapping that ends at 13.45 - false
-//    3. there's only one overlapping that starts at 14.00 - true
-//    4. there's only one overlapping that starts at 13.45 - false
+// TODO: 2 overlapping with and without morning sessions
 describe(LunchSpecification.name, () => {
   let timeIntervalManager: TimeIntervalManager;
   let morningChecker: MorningChecker;
@@ -55,6 +45,7 @@ describe(LunchSpecification.name, () => {
   });
 
   it('returns true when two sessions within lunch are separated by >= 60 minutes', () => {
+    // morning session
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 0] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [12, 0], end: [13, 15] }, clientIdsInvolved: [2] },
@@ -87,5 +78,100 @@ describe(LunchSpecification.name, () => {
 
     // For morning sessions lunch period is 13:30-15:00; sessions at 13:45 and 14:45 overlap the adjusted window
     expect(unitUnderTest.check(table)).toBe(false);
+  });
+
+  // ----- Detailed single-overlap cases (from TODO) -----
+  describe('single overlapping session edge-cases (morning first session)', () => {
+    // morning => lunch period 13:30-15:00
+    it('only overlapping that ends at 14:00 -> true', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [13, 30], end: [14, 0] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(true);
+    });
+
+    it('only overlapping that ends at 14:15 -> false', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [13, 30], end: [14, 15] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(true);
+    });
+
+    it('only overlapping that starts at 14:30 -> true', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [14, 30], end: [15, 0] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(true);
+    });
+
+    it('only overlapping that starts at 14:15 -> false', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [14, 15], end: [15, 0] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(false);
+    });
+  });
+
+  describe('single overlapping session edge-cases (non-morning first session)', () => {
+    // non-morning => lunch period 13:00-14:30
+    it('only overlapping that ends at 13:30 -> true', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [13, 0], end: [13, 30] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(true);
+    });
+
+    it('only overlapping that ends at 13:45 -> false', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [13, 0], end: [13, 45] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(true);
+    });
+
+    it('only overlapping that starts at 14:00 -> true', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [14, 0], end: [14, 30] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(true);
+    });
+
+    it('only overlapping that starts at 13:45 -> false', () => {
+      const table = makeTable([
+        { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 0] }, clientIdsInvolved: [1] },
+        { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 0] }, clientIdsInvolved: [2] },
+        { timeInterval: { dayNumber: 1, start: [13, 45], end: [14, 30] }, clientIdsInvolved: [3] },
+        { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
+      ]);
+
+      expect(unitUnderTest.check(table)).toBe(false);
+    });
   });
 });
