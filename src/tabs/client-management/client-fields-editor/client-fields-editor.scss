@@ -1,0 +1,10 @@
+.editor-wrapper {
+    display: grid;
+    padding: 8px;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: max-content;
+    gap: 16px;
+    align-items: center;
+    justify-items: start;
+    max-width: 50%;
+}

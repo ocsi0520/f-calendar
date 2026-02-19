@@ -15,12 +15,19 @@
   </mat-select>
 
   @if (selectedClient(); as client) {
-    <div class="actions">
-      <button matButton (click)="save()">Save</button>
-      <button matButton (click)="reset()">Reset</button>
-      <button class="danger" matButton="tonal" (click)="remove()">Delete</button>
-    </div>
+    <form #form="ngForm" novalidate>
+      <div class="actions">
+        <button [disabled]="!form.valid" matButton (click)="save()">Save</button>
+        <button matButton (click)="reset()">Reset</button>
+        <button class="danger" matButton="tonal" (click)="remove()">Delete</button>
+      </div>
 
-    <app-calendar [title]="client.name" [(weekSchedule)]="client.schedule"></app-calendar>
+      <app-client-fields-editor
+        [client]="client"
+        (clientChange)="selectedClient.set($event)"
+      ></app-client-fields-editor>
+
+      <app-calendar [title]="client.name" [(weekSchedule)]="client.schedule"></app-calendar>
+    </form>
   }
 </mat-card>

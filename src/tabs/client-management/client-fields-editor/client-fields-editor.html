@@ -1,0 +1,85 @@
+<div class="editor-wrapper">
+  <div>
+    <mat-form-field>
+      <mat-label>ID</mat-label>
+      <input matInput id="id" name="id" type="number" [ngModel]="client().id" readonly />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        id="name"
+        name="name"
+        type="text"
+        required
+        minlength="3"
+        [(ngModel)]="client().name"
+        #nameModel="ngModel"
+      />
+    </mat-form-field>
+    @if (nameModel.invalid && nameModel.touched) {
+      <div class="error">
+        @if (nameModel.errors?.['required']) {
+          <small> Name is required. </small>
+        }
+        @if (nameModel.errors?.['minlength']) {
+          <small> Name must be at least 3 characters. </small>
+        }
+      </div>
+    }
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Sessions per week</mat-label>
+      <input
+        matInput
+        id="sessionCountsInWeek"
+        name="sessionCountsInWeek"
+        type="number"
+        required
+        min="1"
+        max="7"
+        [(ngModel)]="client().sessionCountsInWeek"
+        #sessionsModel="ngModel"
+      />
+    </mat-form-field>
+    @if (sessionsModel.invalid && sessionsModel.touched) {
+      <div class="error">
+        @if (sessionsModel.errors?.['required']) {
+          <small> Required. </small>
+        }
+        @if (sessionsModel.errors?.['min']) {
+          <small> Minimum is 1. </small>
+        }
+        @if (sessionsModel.errors?.['max']) {
+          <small> Maximum is 7. </small>
+        }
+      </div>
+    }
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Comment</mat-label>
+      <textarea
+        matInput
+        id="comment"
+        name="comment"
+        rows="5"
+        [(ngModel)]="client().comment"
+      ></textarea>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-slide-toggle
+      (change)="clientChange.emit({...client(), disabled: $event.checked})"
+      [checked]="client().disabled"
+      >Disabled</mat-slide-toggle
+    >
+  </div>
+</div>

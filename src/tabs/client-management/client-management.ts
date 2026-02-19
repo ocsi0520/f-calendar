@@ -6,10 +6,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { AppCalendar } from '../../calendar/app-calendar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClientFieldsEditor } from './client-fields-editor/client-fields-editor';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-client-management',
-  imports: [MatSelectModule, MatCardModule, MatButtonModule, AppCalendar],
+  imports: [
+    MatSelectModule,
+    MatCardModule,
+    MatButtonModule,
+    AppCalendar,
+    ClientFieldsEditor,
+    FormsModule,
+  ],
   templateUrl: './client-management.html',
   styleUrl: './client-management.scss',
 })
@@ -24,7 +33,7 @@ export class ClientManagement implements OnInit {
 
   public selectClient(client: Client): void {
     this.backupClient = structuredClone(client);
-    this.selectedClient.set(client);
+    this.selectedClient.set(structuredClone(client));
   }
 
   public ngOnInit(): void {
