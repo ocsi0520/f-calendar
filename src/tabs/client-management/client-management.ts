@@ -50,4 +50,23 @@ export class ClientManagement implements OnInit {
       { duration: 2_000 },
     );
   }
+
+  public remove(): void {
+    const clientToBeDeleted = this.backupClient!;
+    const isConfirmed = confirm(
+      `Are you sure you want to delete '${clientToBeDeleted.name}' client`,
+    );
+    if (!isConfirmed) return;
+
+    this.clientService.deleteClient(clientToBeDeleted);
+    this.backupClient = null;
+    this.selectedClient.set(null);
+    this.refreshClients();
+
+    this.snackBar.open(
+      `'${clientToBeDeleted.name}' client has been succesfully removed 🗑️`,
+      undefined,
+      { duration: 2_000 },
+    );
+  }
 }

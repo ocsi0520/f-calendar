@@ -1,6 +1,18 @@
 mat-select {
-    width: 300px;
-    border: 1px solid black;
-    margin: 12px;
-    padding: 4px;
+  width: 300px;
+  border: 1px solid black;
+  margin: 12px;
+  padding: 4px;
+}
+
+.actions {
+  display: flex;
+  justify-content: start;
+  padding-inline: 8px;
+  gap: 16px;
+
+  > .danger {
+    background: rgba(255, 0, 0, 0.233);
+    margin-inline-start: auto;
+  }
 }
