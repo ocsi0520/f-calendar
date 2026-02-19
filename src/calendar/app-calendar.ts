@@ -25,16 +25,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 
 @Component({
-  selector: 'app-scheduler-manager',
+  selector: 'app-calendar',
   imports: [FullCalendarModule, MatButtonModule],
-  templateUrl: './scheduler-manager.html',
-  styleUrl: './scheduler-manager.scss',
+  templateUrl: './app-calendar.html',
+  styleUrl: './app-calendar.scss',
 })
-export class SchedulerManager implements OnChanges {
+export class AppCalendar implements OnChanges {
   mapper = inject(TimeIntervalMapper);
 
   public events: WritableSignal<EventInput[]> = signal([]);
 
+  // TODO: Array<NamedWeekSchedule>
   public initialWeekSchedule = input.required<WeekSchedule>();
   public title = input.required<string>();
   public isReadWrite = input<boolean>(true);

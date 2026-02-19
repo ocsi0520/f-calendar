@@ -1,12 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { SchedulerManager } from '../../scheduler-manager/scheduler-manager';
+import { AppCalendar } from '../../calendar/app-calendar';
 import { WeekSchedule } from '../../time/Schedule';
 import { MyTimeService } from '../../client/my-time.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-my-time',
-  imports: [SchedulerManager],
+  imports: [AppCalendar],
   templateUrl: './app-my-time.html',
   styleUrl: './app-my-time.scss',
 })

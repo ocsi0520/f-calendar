@@ -5,12 +5,12 @@ import { Client } from '../../client/Client';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { WeekSchedule } from '../../time/Schedule';
-import { SchedulerManager } from '../../scheduler-manager/scheduler-manager';
+import { AppCalendar } from '../../calendar/app-calendar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-client-management',
-  imports: [MatSelectModule, MatCardModule, MatButtonModule, SchedulerManager],
+  imports: [MatSelectModule, MatCardModule, MatButtonModule, AppCalendar],
   templateUrl: './client-management.html',
   styleUrl: './client-management.scss',
 })
