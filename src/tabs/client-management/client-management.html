@@ -14,7 +14,11 @@
     }
   </mat-select>
 
-  @if(selectedClient(); as client) {
-    <app-scheduler-manager [title]="client.name" [initialWeekSchedule]="client.schedule" (saveNewSchedule)="handleSave($event)"></app-scheduler-manager>
+  @if (selectedClient(); as client) {
+    <app-scheduler-manager
+      [title]="client.name"
+      [initialWeekSchedule]="client.schedule"
+      (saveNewSchedule)="handleSave($event)"
+    ></app-scheduler-manager>
   }
 </mat-card>

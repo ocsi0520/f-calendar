@@ -3,7 +3,7 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { AppMyTime } from '../app-my-time/app-my-time';
 import { RegisterNewClient } from '../register-new-client/register-new-client';
 import { GroupClients } from '../group-clients/group-clients';
-import { OthersTime } from '../others-time/others-time';
+import { ClientManagement } from '../client-management/client-management';
 import { AppGenerateWeekSchedule } from '../app-generate-week-schedule/app-generate-week-schedule';
 
 // TODO:
@@ -18,7 +18,7 @@ import { AppGenerateWeekSchedule } from '../app-generate-week-schedule/app-gener
     AppMyTime,
     RegisterNewClient,
     GroupClients,
-    OthersTime,
+    ClientManagement,
     AppGenerateWeekSchedule,
   ],
   templateUrl: './app-tab-selector.html',

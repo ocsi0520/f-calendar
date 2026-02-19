@@ -9,12 +9,12 @@ import { SchedulerManager } from '../../scheduler-manager/scheduler-manager';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-others-time',
+  selector: 'app-client-management',
   imports: [MatSelectModule, MatCardModule, MatButtonModule, SchedulerManager],
-  templateUrl: './others-time.html',
-  styleUrl: './others-time.scss',
+  templateUrl: './client-management.html',
+  styleUrl: './client-management.scss',
 })
-export class OthersTime implements OnInit {
+export class ClientManagement implements OnInit {
   private clientService = inject(ClientService);
   private snackBar = inject(MatSnackBar);
   public selectedClient = signal<Client | null>(null);
