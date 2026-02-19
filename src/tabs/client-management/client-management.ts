@@ -4,7 +4,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { Client } from '../../client/Client';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { WeekSchedule } from '../../time/Schedule';
 import { AppCalendar } from '../../calendar/app-calendar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -17,12 +16,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ClientManagement implements OnInit {
   private clientService = inject(ClientService);
   private snackBar = inject(MatSnackBar);
+
+  public allClients = signal<Array<Client>>([]);
+
   public selectedClient = signal<Client | null>(null);
+  private backupClient: Client | null = null;
+
   public selectClient(client: Client): void {
+    this.backupClient = structuredClone(client);
     this.selectedClient.set(client);
   }
-
-  allClients = signal<Array<Client>>([]);
 
   public ngOnInit(): void {
     this.refreshClients();
@@ -32,13 +35,15 @@ export class ClientManagement implements OnInit {
     this.allClients.set(this.clientService.getAllClients());
   }
 
-  public handleSave(schedule: WeekSchedule): void {
-    this.clientService.editScheduleForClient(this.selectedClient()!, schedule);
-    const editedClient: Client = { ...this.selectedClient()!, schedule };
-    this.selectedClient.set(editedClient);
-    this.allClients.set(
-      this.allClients().map((client) => (client.id === editedClient.id ? editedClient : client)),
-    );
+  public reset(): void {
+    this.selectedClient.set(structuredClone(this.backupClient));
+  }
+
+  public save(): void {
+    const editedClient = this.selectedClient()!;
+    this.clientService.editClient(editedClient);
+    this.refreshClients();
+    this.backupClient = structuredClone(editedClient);
     this.snackBar.open(
       `${editedClient.name} client's schedule has been successfully updated ✅`,
       undefined,

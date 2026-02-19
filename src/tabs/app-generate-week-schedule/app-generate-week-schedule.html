@@ -2,4 +2,4 @@
     <button matButton>Generate</button>
     <button matButton>Next Variation</button>
 </div>
-<app-calendar title="summary" [initialWeekSchedule]="[]" [isReadWrite]="false"></app-calendar>
+<app-calendar title="summary" [(weekSchedule)]="weekSchedule" [isReadOnly]="false"></app-calendar>

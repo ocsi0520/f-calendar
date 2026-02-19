@@ -19,14 +19,14 @@ import {
 import { EventDescriptor } from '../time/TimeInterval/TimeInterval-constants';
 import { WeekSchedule } from '../time/Schedule';
 import { baseCalendarOptions } from './base-calendar-options';
-import { MatButtonModule } from '@angular/material/button';
 import { sessionSpan } from '../time/session-span';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
+import { isSameInterval } from '../time/TimeInterval/TimeInterval';
 
 @Component({
   selector: 'app-calendar',
-  imports: [FullCalendarModule, MatButtonModule],
+  imports: [FullCalendarModule],
   templateUrl: './app-calendar.html',
   styleUrl: './app-calendar.scss',
 })
@@ -35,32 +35,17 @@ export class AppCalendar implements OnChanges {
 
   public events: WritableSignal<EventInput[]> = signal([]);
 
-  // TODO: Array<NamedWeekSchedule>
-  public initialWeekSchedule = input.required<WeekSchedule>();
-  public title = input.required<string>();
-  public isReadWrite = input<boolean>(true);
+  // TODO: Array<NamedWeekSchedule>, then remove title or make it fallback
+  public weekSchedule = input.required<WeekSchedule>();
+  public weekScheduleChange = output<WeekSchedule>();
 
-  public saveNewSchedule = output<WeekSchedule>();
+  public title = input.required<string>();
+  public isReadOnly = input<boolean>(false);
+
   private snackBar = inject(MatSnackBar);
-  public reset(): void {
-    this.events.set(
-      this.initialWeekSchedule().map((timeInterval) =>
-        this.mapper.mapToEvent(timeInterval, new Date(), this.title()),
-      ),
-    );
-  }
-  public save(): void {
-    this.saveNewSchedule.emit(
-      this.events().map((event) => this.mapper.mapFromEvent(event as EventDescriptor)),
-    );
-  }
-  // TOOD: later on this can be removed, as only MyTime is generated immediately, the other ones are going to be generated later
-  public fixCalendar(): void {
-    this.events.set([...this.events()]);
-  }
 
   public ngOnChanges(changes: SimpleChanges<typeof this>): void {
-    const changeOfSchedule = changes['initialWeekSchedule'];
+    const changeOfSchedule = changes['weekSchedule'];
     if (!changeOfSchedule) return;
     this.events.set(
       changeOfSchedule.currentValue.map((timeInterval) =>
@@ -71,15 +56,18 @@ export class AppCalendar implements OnChanges {
 
   public calendarOptions = computed<CalendarOptions>(() => ({
     ...baseCalendarOptions,
-    selectable: this.isReadWrite(),
+    selectable: !this.isReadOnly(),
     eventClick: this.removeEvent.bind(this),
     select: this.addEvent.bind(this),
     eventChange: this.changeEvent.bind(this),
   }));
 
   private removeEvent(eventClickArg: Pick<EventClickArg, 'event'>) {
-    const idOfRemoved = this.getIdOf(eventClickArg.event);
-    this.events.set(this.events().filter((event) => event.id !== idOfRemoved));
+    const intervalToRemove = this.mapper.mapFromEvent(eventClickArg.event);
+    const newSchedule = this.weekSchedule().filter(
+      (interval) => !isSameInterval(interval, intervalToRemove),
+    );
+    this.weekScheduleChange.emit(newSchedule);
   }
   private addEvent(dateSelectArg: EventDescriptor) {
     if (!this.atLeastSessionTime(dateSelectArg)) {
@@ -88,17 +76,12 @@ export class AppCalendar implements OnChanges {
       });
       return;
     }
-    const newEvent: EventInput = {
-      title: this.title(),
+    const newTimeInterval = this.mapper.mapFromEvent({
       start: dateSelectArg.start!,
       end: dateSelectArg.end!,
-      color: 'lightblue',
-      id: this.getIdOf(dateSelectArg),
-    };
-    this.events.set([...this.events(), newEvent]);
-  }
-  private getIdOf(eventDescriptor: EventDescriptor): string {
-    return this.mapper.mapToString(this.mapper.mapFromEvent(eventDescriptor));
+    });
+    const newSchedule = [...this.weekSchedule(), newTimeInterval];
+    this.weekScheduleChange.emit(newSchedule);
   }
   private changeEvent(eventChangeArg: EventChangeArg): void {
     if (!this.atLeastSessionTime(eventChangeArg.event)) {
@@ -109,8 +92,16 @@ export class AppCalendar implements OnChanges {
       return;
     }
 
-    this.removeEvent({ event: eventChangeArg.oldEvent });
-    this.addEvent(eventChangeArg.event);
+    const intervalToRemove = this.mapper.mapFromEvent(eventChangeArg.oldEvent);
+    const newTimeInterval = this.mapper.mapFromEvent({
+      start: eventChangeArg.event.start,
+      end: eventChangeArg.event.end,
+    });
+    const newSchedule = this.weekSchedule().map((interval) =>
+      isSameInterval(interval, intervalToRemove) ? newTimeInterval : interval,
+    );
+
+    this.weekScheduleChange.emit(newSchedule);
   }
   private atLeastSessionTime(eventDesc: EventDescriptor): boolean {
     const timeSpanInMilliSeconds = eventDesc.end!.valueOf() - eventDesc.start!.valueOf();

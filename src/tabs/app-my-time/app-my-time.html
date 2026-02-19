@@ -1,1 +1,5 @@
-<app-calendar title="my-time" [initialWeekSchedule]="mySchedule()" (saveNewSchedule)="handleSave($event)"></app-calendar>
+<div class="actions">
+  <button matButton (click)="save()">Save</button>
+  <button matButton (click)="reset()">Reset</button>
+</div>
+<app-calendar title="my-time" [(weekSchedule)]="mySchedule"></app-calendar>
