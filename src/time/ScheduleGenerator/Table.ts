@@ -15,4 +15,5 @@ export type Table = {
   clientInfos: Array<ClientInfo>;
   currentClientIndex: number;
   scheduleItems: Array<ScheduleItem>;
+  currentScheduleItemIndex: number;
 };

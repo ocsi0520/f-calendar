@@ -16,6 +16,7 @@ export class TableGenerator {
       clientInfos: this.getAllClientInfos(),
       currentClientIndex: 0,
       scheduleItems: this.scheduleItemsGenerator.generateAllPossibleScheduleItems(),
+      currentScheduleItemIndex: 0,
     };
   }
   private getAllEnabledClients(): Array<Client> {
