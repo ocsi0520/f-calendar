@@ -4,6 +4,7 @@ import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 import { Table } from '../Table';
 import { AvailableSpecification } from './AvailableSpecification';
 
+// TODO: unnecessary if ScheduleItemsNarrower is used
 export class AvailableForMe extends AvailableSpecification {
   private mySchedule: WeekSchedule;
   constructor(
