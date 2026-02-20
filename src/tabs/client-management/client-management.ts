@@ -8,6 +8,7 @@ import { AppCalendar } from '../../calendar/app-calendar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClientFieldsEditor } from './client-fields-editor/client-fields-editor';
 import { FormsModule } from '@angular/forms';
+import { ClientPairService } from '../../client/client-pair.service';
 
 @Component({
   selector: 'app-client-management',
@@ -24,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ClientManagement implements OnInit {
   private clientService = inject(ClientService);
+  private pairService = inject(ClientPairService);
   private snackBar = inject(MatSnackBar);
 
   public allClients = signal<Array<Client>>([]);
@@ -67,6 +69,7 @@ export class ClientManagement implements OnInit {
     );
     if (!isConfirmed) return;
 
+    this.pairService.removePairsByClientId(clientToBeDeleted.id);
     this.clientService.deleteClient(clientToBeDeleted);
     this.backupClient = null;
     this.selectedClient.set(null);
