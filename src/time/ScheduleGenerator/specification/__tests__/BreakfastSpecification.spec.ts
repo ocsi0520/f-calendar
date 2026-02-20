@@ -14,7 +14,12 @@ describe('BreakfastSpecification.check', () => {
     unitUnderTest = new BreakfastSpecification(timeManager, morningChecker);
   });
 
-  const makeTable = (items: ScheduleItem[]): Table => ({ clientInfos: [], currentClientIndex: 0, scheduleItems: items });
+  const makeTable = (items: ScheduleItem[]): Table => ({
+    clientInfos: [],
+    currentClientIndex: 0,
+    scheduleItems: items,
+    currentScheduleItemIndex: 0,
+  });
 
   it('returns true when only one occupied cell (no need for breakfast room)', () => {
     const table = makeTable([

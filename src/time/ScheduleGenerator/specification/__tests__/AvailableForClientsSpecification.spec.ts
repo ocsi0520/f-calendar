@@ -27,7 +27,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     sessionCountsInWeek: 1,
     comment: '',
     schedule,
-    disabled: false
+    disabled: false,
   });
 
   const createClientInfo = (client: Client): ClientInfo => ({
@@ -39,6 +39,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     clientInfos,
     currentClientIndex: 0,
     scheduleItems,
+    currentScheduleItemIndex: 0,
   });
 
   it('returns true when there are no occupied schedule items', () => {

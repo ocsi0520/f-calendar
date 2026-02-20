@@ -9,6 +9,7 @@ describe(methodName(NoSameDayForSameClientSpecification, 'check'), () => {
     clientInfos: [],
     currentClientIndex: 0,
     scheduleItems,
+    currentScheduleItemIndex: 0,
   });
 
   it('returns true when there are no schedule items', () => {

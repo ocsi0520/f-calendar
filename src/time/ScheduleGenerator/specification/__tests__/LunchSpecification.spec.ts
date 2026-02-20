@@ -22,6 +22,7 @@ describe(LunchSpecification.name, () => {
     clientInfos: [],
     currentClientIndex: 0,
     scheduleItems: items,
+    currentScheduleItemIndex: 0,
   });
 
   it('returns true when less than 4 occupied sessions', () => {
