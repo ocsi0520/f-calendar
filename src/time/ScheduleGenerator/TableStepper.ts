@@ -6,10 +6,18 @@ import { ClientInfo, ScheduleItem, Table } from './Table';
 @Injectable({ providedIn: 'root' })
 export class TableStepper {
   public step(table: Table, allSpecifications: ScheduleSpecification[]) {
+    if (this.isTableDone(table)) {
+      this.startNextVariation(table);
+      return;
+    }
     const hasReachedEndWithCurrentClient =
       table.currentScheduleItemIndex === table.scheduleItems.length;
     if (hasReachedEndWithCurrentClient) this.moveBack(table);
     else this.moveForward(table, allSpecifications);
+  }
+  private startNextVariation(table: Table) {
+    this.moveBackToPreviousClient(table);
+    this.moveBackWithCurrentClient(table);
   }
   private moveForward(table: Table, allSpecifications: ScheduleSpecification[]): void {
     this.registerClientToCurrentCell(table);
@@ -63,10 +71,6 @@ export class TableStepper {
   private moveBackWithCurrentClient(table: Table): void {
     const currentClientInfo = this.getCurrentClientInfo(table);
     const lastJoinedCellIndex = currentClientInfo.joinedAt.at(-1)!;
-    // TODO: remove
-    if (lastJoinedCellIndex === undefined) {
-      debugger;
-    }
 
     const lastJoinedCell = table.scheduleItems[lastJoinedCellIndex];
     lastJoinedCell.clientIdsInvolved = lastJoinedCell.clientIdsInvolved.filter(
@@ -85,5 +89,11 @@ export class TableStepper {
   }
   private checkSpecifications(table: Table, allSpecifications: ScheduleSpecification[]): boolean {
     return allSpecifications.every((spec) => spec.check(table));
+  }
+
+  // TODO: de-duplicate with ScheduleGenerator
+  private isTableDone(table: Table): boolean {
+    const lastClientInfo = table.clientInfos.at(-1)!;
+    return lastClientInfo.joinedAt.length === lastClientInfo.client.sessionCountsInWeek;
   }
 }

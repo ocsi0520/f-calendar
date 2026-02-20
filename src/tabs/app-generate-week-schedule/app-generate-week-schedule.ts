@@ -17,8 +17,14 @@ export class AppGenerateWeekSchedule {
   private scheduleGenerator = inject(ScheduleGenerator);
   public generatedData = signal<{ table: Table; schedule: DisplayableSchedule } | null>(null);
   public generateSchedule(): void {
-    const newTable = this.tableGenerator.generateTable();
-    this.generateNextIterationWith(newTable);
+    let newTable: Table | undefined;
+    try {
+      newTable = this.tableGenerator.generateTable();
+    } catch (e) {
+      // TODO: snackbar and avoid next generation
+      alert('error at generation: ' + (e as Error).message);
+    }
+    if (newTable) this.generateNextIterationWith(newTable);
   }
   public generateNextIteration(): void {
     const previousTable = this.generatedData()?.table;
@@ -27,7 +33,6 @@ export class AppGenerateWeekSchedule {
   }
 
   private generateNextIterationWith(table: Table): void {
-    if (!table) return;
     try {
       const schedule = this.scheduleGenerator.generateScheduleFrom(table);
       this.generatedData.set({

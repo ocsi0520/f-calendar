@@ -48,7 +48,9 @@ export class ScheduleGenerator {
 
   private generateFinishedTable(table: Table): Table {
     const allSpecifications = this.getAllSpecifications();
-    while (!this.isTableDone(table) || !this.isImpossibleToFinish(table)) {
+    // for next variation
+    if (this.isTableDone(table)) this.tableStepper.step(table, allSpecifications);
+    while (!this.isTableDone(table) && !this.isImpossibleToFinish(table)) {
       this.tableStepper.step(table, allSpecifications);
     }
     if (this.isImpossibleToFinish(table)) throw new Error('could not finish table');
