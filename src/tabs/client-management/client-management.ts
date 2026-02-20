@@ -43,7 +43,9 @@ export class ClientManagement implements OnInit {
   }
 
   public refreshClients(): void {
-    this.allClients.set(this.clientService.getAllClients());
+    const allClients = this.clientService.getAllClients();
+    allClients.sort((c1, c2) => c1.name.localeCompare(c2.name));
+    this.allClients.set(allClients);
   }
 
   public reset(): void {
