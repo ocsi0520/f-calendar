@@ -15,7 +15,7 @@ import { ClientPairService } from '../../client/client-pair.service';
 import { Table } from './Table';
 import { DisplayableSchedule } from '../Schedule';
 import { TableStepper } from './TableStepper';
-import { TableMapper } from './TableMapper';
+import { TableMapper } from './utils/TableMapper';
 
 // TODO: test
 @Injectable({ providedIn: 'root' })

@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { ScheduleItem } from './Table';
-import { sessionGranularityInMinutes, sessionSpan } from '../session-span';
-import { DayNumber, dayNumbers } from '../TimeInterval/TimeInterval-constants';
-import { isSameInterval, TimeInterval } from '../TimeInterval/TimeInterval';
-import { TimeIntervalManager } from '../TimeInterval/TimeIntervalManager';
+import { ScheduleItem } from '../Table';
+import { sessionGranularityInMinutes, sessionSpan } from '../../session-span';
+import { DayNumber, dayNumbers } from '../../TimeInterval/TimeInterval-constants';
+import { isSameInterval, TimeInterval } from '../../TimeInterval/TimeInterval';
+import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 
 @Injectable({
   providedIn: 'root',

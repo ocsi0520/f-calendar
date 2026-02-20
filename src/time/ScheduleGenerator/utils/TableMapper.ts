@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ScheduleItem, Table } from './Table';
-import { DisplayableSchedule } from '../Schedule';
+import { ScheduleItem, Table } from '../Table';
+import { DisplayableSchedule } from '../../Schedule';
 
 // TODO: test
 @Injectable({ providedIn: 'root' })

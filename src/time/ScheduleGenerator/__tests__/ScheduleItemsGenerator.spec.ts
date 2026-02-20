@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ScheduleItemsGenerator } from '../ScheduleItemsGenerator';
+import { ScheduleItemsGenerator } from '../utils/ScheduleItemsGenerator';
 import { TimeManager } from '../../TimeManager';
 import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 

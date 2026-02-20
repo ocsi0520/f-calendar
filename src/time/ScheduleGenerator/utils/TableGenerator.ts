@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { ScheduleItemsGenerator } from './ScheduleItemsGenerator';
-import { ClientInfo, Table } from './Table';
-import { ClientService } from '../../client/client.service';
-import { Client } from '../../client/Client';
+import { ClientInfo, Table } from '../Table';
+import { ClientService } from '../../../client/client.service';
+import { Client } from '../../../client/Client';
 
 // TODO: test
 @Injectable({

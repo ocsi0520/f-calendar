@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { AppCalendar } from '../../calendar/app-calendar';
 import { DisplayableSchedule } from '../../time/Schedule';
-import { TableGenerator } from '../../time/ScheduleGenerator/TableGenerator';
+import { TableGenerator } from '../../time/ScheduleGenerator/utils/TableGenerator';
 import { Table } from '../../time/ScheduleGenerator/Table';
 import { ScheduleGenerator } from '../../time/ScheduleGenerator/ScheduleGenerator';
 
