@@ -1,5 +1,9 @@
 <div class="wrapper">
-    <button matButton>Generate</button>
-    <button matButton>Next Variation</button>
+  <button matButton (click)="generateSchedule()">Generate</button>
+  <button [disabled]="!this.generatedData()" matButton (click)="generateNextIteration()">
+    Next Variation
+  </button>
 </div>
-<app-calendar title="summary" [(weekSchedule)]="weekSchedule" [isReadOnly]="false"></app-calendar>
+@if (this.generatedData(); as data) {
+  <app-calendar title="Summary" [weekSchedule]="data.schedule" [isReadOnly]="true"></app-calendar>
+}

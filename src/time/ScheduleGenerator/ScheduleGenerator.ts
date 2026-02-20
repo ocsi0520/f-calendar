@@ -13,7 +13,6 @@ import { NoSameDayForSameClientSpecification } from './specification/NoSameDayFo
 import { ProperPairsSpecification } from './specification/ProperPairsSpecification';
 import { ClientPairService } from '../../client/client-pair.service';
 import { Table } from './Table';
-import { TableGenerator } from './TableGenerator';
 import { DisplayableSchedule } from '../Schedule';
 import { TableStepper } from './TableStepper';
 import { TableMapper } from './TableMapper';
@@ -25,7 +24,6 @@ export class ScheduleGenerator {
   private myTimeService = inject(MyTimeService);
   private timeManager = inject(TimeManager);
   private pairService = inject(ClientPairService);
-  private tableGenerator = inject(TableGenerator);
   private tableStepper = inject(TableStepper);
   private tableMapper = inject(TableMapper);
 
@@ -42,14 +40,14 @@ export class ScheduleGenerator {
     ];
   }
 
-  public generateSchedule(): DisplayableSchedule {
-    const finishedTable = this.generateFinishedTable();
+  // TODO: CQS violation, separate it
+  public generateScheduleFrom(table: Table): DisplayableSchedule {
+    const finishedTable = this.generateFinishedTable(table);
     return this.tableMapper.mapToSchedule(finishedTable);
   }
 
-  private generateFinishedTable(): Table {
+  private generateFinishedTable(table: Table): Table {
     const allSpecifications = this.getAllSpecifications();
-    const table = this.tableGenerator.generateTable();
     while (!this.isTableDone(table) || !this.isImpossibleToFinish(table)) {
       this.tableStepper.step(table, allSpecifications);
     }
