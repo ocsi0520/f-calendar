@@ -8,7 +8,7 @@ import { ScheduleSpecification } from './specification';
 export class BreakfastSpecification implements ScheduleSpecification {
   private static BREAKFAST_IN_MINUTES = 45;
   constructor(
-    private readonly timeMapper: TimeManager,
+    private readonly timeManager: TimeManager,
     private readonly morningChecker: MorningChecker,
   ) {}
   public check(table: Table): boolean {
@@ -30,8 +30,8 @@ export class BreakfastSpecification implements ScheduleSpecification {
   private hasRoomForBreakfast(dayCells: ScheduleItem[]): boolean {
     if (dayCells.length < 2) return true;
     const [first, second] = dayCells.slice(0, 2);
-    const endOfFirst = this.timeMapper.timeToNumber(first.timeInterval.end);
-    const startOfSecond = this.timeMapper.timeToNumber(second.timeInterval.start);
+    const endOfFirst = this.timeManager.timeToNumber(first.timeInterval.end);
+    const startOfSecond = this.timeManager.timeToNumber(second.timeInterval.start);
     return startOfSecond - endOfFirst >= BreakfastSpecification.BREAKFAST_IN_MINUTES;
   }
 
