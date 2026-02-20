@@ -17,7 +17,7 @@ import {
   EventInput,
 } from '@fullcalendar/core/index.js';
 import { EventDescriptor } from '../time/TimeInterval/TimeInterval-constants';
-import { WeekSchedule } from '../time/Schedule';
+import { DisplayableSchedule } from '../time/Schedule';
 import { baseCalendarOptions } from './base-calendar-options';
 import { sessionSpan } from '../time/session-span';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -35,9 +35,8 @@ export class AppCalendar implements OnChanges {
 
   public events: WritableSignal<EventInput[]> = signal([]);
 
-  // TODO: Array<NamedWeekSchedule>, then remove title or make it fallback
-  public weekSchedule = input.required<WeekSchedule>();
-  public weekScheduleChange = output<WeekSchedule>();
+  public weekSchedule = input.required<DisplayableSchedule>();
+  public weekScheduleChange = output<DisplayableSchedule>();
 
   public title = input.required<string>();
   public isReadOnly = input<boolean>(false);
@@ -49,7 +48,7 @@ export class AppCalendar implements OnChanges {
     if (!changeOfSchedule) return;
     this.events.set(
       changeOfSchedule.currentValue.map((timeInterval) =>
-        this.mapper.mapToEvent(timeInterval, new Date(), this.title()),
+        this.mapper.mapToEvent(timeInterval, new Date(), timeInterval.displayName || this.title()),
       ),
     );
   }
