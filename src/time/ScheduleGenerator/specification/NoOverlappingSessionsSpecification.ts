@@ -8,7 +8,7 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
   public check({ scheduleItems }: Table): boolean {
     const occupiedItem = scheduleItems.filter((item) => item.clientIdsInvolved.length > 0);
     for (let i = 0; i < occupiedItem.length - 1; i++) {
-      if (this.areCellsOverlapping(scheduleItems[i], scheduleItems[i + 1])) return false;
+      if (this.areCellsOverlapping(occupiedItem[i], occupiedItem[i + 1])) return false;
     }
     return true;
   }

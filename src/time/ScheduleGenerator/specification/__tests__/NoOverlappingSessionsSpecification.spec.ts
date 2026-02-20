@@ -34,6 +34,19 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     expect(unitUnderTest.check(table)).toBe(true);
   });
 
+  it('returns true when two items are adjacent', () => {
+    const table = makeTable([
+      { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
+      { timeInterval: { dayNumber: 1, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 15] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 15], end: [9, 30] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 30], end: [9, 45] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [2] },
+    ]);
+
+    expect(unitUnderTest.check(table)).toBe(true);
+  });
+
   it('returns true when occupied items do not overlap on the same day', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
