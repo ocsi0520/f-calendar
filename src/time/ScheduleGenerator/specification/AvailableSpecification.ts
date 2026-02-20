@@ -8,6 +8,7 @@ export abstract class AvailableSpecification implements ScheduleSpecification {
   constructor(private readonly timeIntervalManager: TimeIntervalManager) {}
   public abstract check(table: Table): boolean;
 
+  // TODO: use this.timeIntervalManager.isIntervalWithinSchedule()
   protected withinSchedule(item: ScheduleItem, schedule: WeekSchedule): boolean {
     return schedule.some((timeInterval) => this.itemWithinInterval(item, timeInterval));
   }

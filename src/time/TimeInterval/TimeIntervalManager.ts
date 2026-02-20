@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { TimeInterval } from './TimeInterval';
 import { TimeManager } from '../TimeManager';
 import { DayNumber } from './TimeInterval-constants';
+import { WeekSchedule } from '../Schedule';
 
 @Injectable({
   providedIn: 'root',
@@ -75,5 +76,12 @@ export class TimeIntervalManager {
   public shiftEnd(interval: TimeInterval, shiftEndByMinutes: number): TimeInterval {
     const [start, end] = this.mapIntervalToNumbers(interval);
     return this.mapNumbersToInterval(interval.dayNumber, [start, end + shiftEndByMinutes]);
+  }
+
+  // TODO: test
+  public isIntervalWithinSchedule(interval: TimeInterval, schedule: WeekSchedule): boolean {
+    return schedule.some((scheduleInterval) =>
+      this.doesFirstIncludeSecond(scheduleInterval, interval),
+    );
   }
 }
