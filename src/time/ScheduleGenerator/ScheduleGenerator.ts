@@ -2,14 +2,11 @@ import { inject, Injectable } from '@angular/core';
 import { ScheduleSpecification } from './specification/specification';
 import { AvailableForClientsSpecification } from './specification/AvailableForClientsSpecification';
 import { TimeIntervalManager } from '../TimeInterval/TimeIntervalManager';
-import { AvailableForMe } from './specification/AvailableForMeSpecification';
-import { MyTimeService } from '../../client/my-time.service';
 import { BreakfastSpecification } from './specification/BreakfastSpecification';
 import { TimeManager } from '../TimeManager';
 import { MorningChecker } from './specification/MorningChecker';
 import { LunchSpecification } from './specification/LunchSpecification';
 import { NoOverlappingSessionsSpecification } from './specification/NoOverlappingSessionsSpecification';
-import { NoSameDayForSameClientSpecification } from './specification/NoSameDayForSameClientSpecification';
 import { ProperPairsSpecification } from './specification/ProperPairsSpecification';
 import { ClientPairService } from '../../client/client-pair.service';
 import { Table } from './Table';
@@ -21,7 +18,7 @@ import { TableMapper } from './utils/TableMapper';
 @Injectable({ providedIn: 'root' })
 export class ScheduleGenerator {
   private timeIntervalManager = inject(TimeIntervalManager);
-  private myTimeService = inject(MyTimeService);
+  // private myTimeService = inject(MyTimeService);
   private timeManager = inject(TimeManager);
   private pairService = inject(ClientPairService);
   private tableStepper = inject(TableStepper);
@@ -31,11 +28,13 @@ export class ScheduleGenerator {
     const morningChecker = new MorningChecker(this.timeManager);
     return [
       new AvailableForClientsSpecification(this.timeIntervalManager),
-      new AvailableForMe(this.myTimeService, this.timeIntervalManager),
+      // unnecessary because of narrower
+      // new AvailableForMe(this.myTimeService, this.timeIntervalManager),
       new BreakfastSpecification(this.timeManager, morningChecker),
       new LunchSpecification(morningChecker, this.timeIntervalManager),
       new NoOverlappingSessionsSpecification(this.timeIntervalManager),
-      new NoSameDayForSameClientSpecification(),
+      // unnecessary because of optimization in TableStepper
+      // new NoSameDayForSameClientSpecification(),
       new ProperPairsSpecification(this.pairService),
     ];
   }
