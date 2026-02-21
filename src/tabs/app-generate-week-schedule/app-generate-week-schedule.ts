@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { AppCalendar } from '../../calendar/app-calendar';
 import { DisplayableSchedule } from '../../time/Schedule';
@@ -33,15 +33,26 @@ export class AppGenerateWeekSchedule {
   }
 
   private generateNextIterationWith(table: Table): void {
+    const prevDate = new Date();
+    console.log('starting at', prevDate.toISOString());
+    let finalDate!: Date;
+    this.generatedData.set(null);
     try {
+      // TODO: do the generation on a separate thread/worker or whatever
+      // OR just make a simple setTimeout, so that the UI can show some loading
       const schedule = this.scheduleGenerator.generateScheduleFrom(table);
       this.generatedData.set({
         table: table,
         schedule,
       });
+      finalDate = new Date();
     } catch (e) {
+      finalDate = new Date();
       // TODO: snackbar and avoid next generation
       alert('error: ' + (e as Error).message);
+    } finally {
+      console.log('prevDate.toISOString()', prevDate.toISOString());
+      console.log('finalDate.toISOString()', finalDate.toISOString());
     }
   }
 }
