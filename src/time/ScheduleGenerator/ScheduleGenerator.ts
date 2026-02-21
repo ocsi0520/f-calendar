@@ -47,12 +47,16 @@ export class ScheduleGenerator {
   }
 
   private generateFinishedTable(table: Table): Table {
+    let trialCounter = 0;
     const allSpecifications = this.getAllSpecifications();
     // for next variation
     if (this.isTableDone(table)) this.tableStepper.step(table, allSpecifications);
     while (!this.isTableDone(table) && !this.isImpossibleToFinish(table)) {
+      if (trialCounter % 10_000_000 === 0) console.log(`counter: ${trialCounter}`);
       this.tableStepper.step(table, allSpecifications);
+      trialCounter++;
     }
+    console.log('total amount of tries: ' + trialCounter);
     if (this.isImpossibleToFinish(table)) throw new Error('could not finish table');
     return table;
   }
