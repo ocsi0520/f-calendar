@@ -40,7 +40,20 @@ export class TableStepper {
     if (hasAppointmentForAllSessions) {
       table.currentScheduleItemIndex = 0;
       table.currentClientIndex++;
-    } else table.currentScheduleItemIndex++;
+    } else {
+      // TODO: create a ClientStepper and store suitable cells for client there
+      table.currentScheduleItemIndex = this.findFirstNextDayCellIndex(table, currentClientInfo);
+    }
+  }
+
+  private findFirstNextDayCellIndex(table: Table, currentClientInfo: ClientInfo): number {
+    const lastCommitedCellIndex = currentClientInfo.joinedAt.at(-1)!;
+    const commitedCell = table.scheduleItems[lastCommitedCellIndex];
+    for (let i = lastCommitedCellIndex; i < table.scheduleItems.length; i++) {
+      if (table.scheduleItems[i].timeInterval.dayNumber > commitedCell.timeInterval.dayNumber)
+        return i;
+    }
+    return table.scheduleItems.length;
   }
 
   private revertLastRegistration(table: Table) {
