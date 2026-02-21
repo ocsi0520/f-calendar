@@ -49,7 +49,7 @@ export class TimeIntervalEventMapper {
       title: title || 'Meeting',
       start: this.getExactDate(timeInterval, 'start', mondayMidnightOfThatWeek),
       end: this.getExactDate(timeInterval, 'end', mondayMidnightOfThatWeek),
-      color: 'lightblue',
+      color: 'purple',
       id: this.primitiveMapper.mapToString(timeInterval),
     };
     return newEvent;

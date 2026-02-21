@@ -81,7 +81,7 @@ describe(TimeIntervalEventMapper.name, () => {
       const event = unitUnderTest.mapToEvent(interval, baseDate, 'Standup');
 
       expect(event.title).toBe('Standup');
-      expect(event.color).toBe('lightblue');
+      expect(event.color).toBe('purple');
 
       const start = new Date(event.start as Date);
       const end = new Date(event.end as Date);
