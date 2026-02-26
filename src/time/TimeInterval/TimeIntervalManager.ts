@@ -1,8 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TimeInterval } from './TimeInterval';
 import { TimeManager } from '../TimeManager';
 import { DayNumber } from './TimeInterval-constants';
 import { WeekSchedule } from '../Schedule';
+import { sessionGranularityInMinutes, sessionSpan } from '../session-span';
 
 @Injectable({
   providedIn: 'root',
@@ -83,5 +84,12 @@ export class TimeIntervalManager {
     return schedule.some((scheduleInterval) =>
       this.doesFirstIncludeSecond(scheduleInterval, interval),
     );
+  }
+  public shiftByGranularity(interval: TimeInterval): TimeInterval {
+    return this.shiftInterval(interval, sessionGranularityInMinutes);
+  }
+
+  public shiftBySessionLength(interval: TimeInterval): TimeInterval {
+    return this.shiftInterval(interval, sessionSpan.inMinutes);
   }
 }
