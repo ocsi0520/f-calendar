@@ -1,33 +1,43 @@
-import { TimeManager } from '../../../TimeManager';
 import { ScheduleItem, Table } from '../../Table';
 import { MorningChecker } from './MorningChecker';
-import { ScheduleSpecification } from '../specification';
+import { Result, ScheduleSpecification } from '../specification';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 
 export class BreakfastSpecification implements ScheduleSpecification {
   private static BREAKFAST_IN_MINUTES = 45;
   constructor(
-    private readonly timeManager: TimeManager,
+    private readonly timeIntervalManager: TimeIntervalManager,
     private readonly morningChecker: MorningChecker,
   ) {}
   public check(
     _table: Table,
     sameDayCells: Array<ScheduleItem>,
-    _currentCell: ScheduleItem,
-  ): boolean {
+    currentCell: ScheduleItem,
+  ): Result {
     const occupiedDayCells = sameDayCells.filter(
       (scheduleItem) => scheduleItem.clientIdsInvolved.length,
     );
     const needBreakfastRoom = this.morningChecker.isMorningSession(occupiedDayCells[0]);
-    if (!needBreakfastRoom) return true;
+    if (!needBreakfastRoom) return { passed: true };
 
-    return this.hasRoomForBreakfast(occupiedDayCells);
+    if (this.hasRoomForBreakfast(occupiedDayCells)) return { passed: true };
+
+    return {
+      passed: false,
+      nextTryHint: {
+        firstValidInterval: this.timeIntervalManager.shiftByGranularity(currentCell.timeInterval),
+      },
+    };
   }
 
   private hasRoomForBreakfast(dayCells: ScheduleItem[]): boolean {
     if (dayCells.length < 2) return true;
     const [first, second] = dayCells.slice(0, 2);
-    const endOfFirst = this.timeManager.timeToNumber(first.timeInterval.end);
-    const startOfSecond = this.timeManager.timeToNumber(second.timeInterval.start);
-    return startOfSecond - endOfFirst >= BreakfastSpecification.BREAKFAST_IN_MINUTES;
+    return (
+      this.timeIntervalManager.getMinutesBetweenIntervals(
+        first.timeInterval,
+        second.timeInterval,
+      ) >= BreakfastSpecification.BREAKFAST_IN_MINUTES
+    );
   }
 }

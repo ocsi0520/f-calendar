@@ -33,7 +33,7 @@ export class ScheduleGenerator {
       new AvailableForClientsSpecification(this.timeIntervalManager),
       // unnecessary because of narrower
       // new AvailableForMe(this.myTimeService, this.timeIntervalManager),
-      new BreakfastSpecification(this.timeManager, morningChecker),
+      new BreakfastSpecification(this.timeIntervalManager, morningChecker),
       new LunchSpecification(morningChecker, this.timeIntervalManager),
       new NoOverlappingSessionsSpecification(this.timeIntervalManager),
       // unnecessary because of optimization in TableStepper
