@@ -1,9 +1,9 @@
-import { groupBy } from '../../../utils/groupby';
-import { DayNumber } from '../../TimeInterval/TimeInterval-constants';
-import { TimeManager } from '../../TimeManager';
-import { ScheduleItem, Table } from '../Table';
+import { groupBy } from '../../../../utils/groupby';
+import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
+import { TimeManager } from '../../../TimeManager';
+import { ScheduleItem, Table } from '../../Table';
 import { MorningChecker } from './MorningChecker';
-import { ScheduleSpecification } from './specification';
+import { ScheduleSpecification } from '../specification';
 
 export class BreakfastSpecification implements ScheduleSpecification {
   private static BREAKFAST_IN_MINUTES = 45;

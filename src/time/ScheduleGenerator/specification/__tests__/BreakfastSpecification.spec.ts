@@ -1,6 +1,6 @@
 import { TimeManager } from '../../../TimeManager';
-import { BreakfastSpecification } from '../BreakfastSpecification';
-import { MorningChecker } from '../MorningChecker';
+import { BreakfastSpecification } from '../rules/BreakfastSpecification';
+import { MorningChecker } from '../rules/MorningChecker';
 import { ScheduleItem, Table } from '../../Table';
 
 describe('BreakfastSpecification.check', () => {

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { TimeManager } from '../../../TimeManager';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
-import { MorningChecker } from '../MorningChecker';
-import { LunchSpecification } from '../LunchSpecification';
+import { MorningChecker } from '../rules/MorningChecker';
+import { LunchSpecification } from '../rules/LunchSpecification';
 import { ScheduleItem, Table } from '../../Table';
 
 // TODO: 2 overlapping with and without morning sessions

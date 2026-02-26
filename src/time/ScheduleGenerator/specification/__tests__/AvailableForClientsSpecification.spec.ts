@@ -1,4 +1,4 @@
-import { AvailableForClientsSpecification } from '../AvailableForClientsSpecification';
+import { AvailableForClientsSpecification } from '../rules/AvailableForClientsSpecification';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { ScheduleItem, Table, ClientInfo } from '../../Table';
 import { Client } from '../../../../client/Client';

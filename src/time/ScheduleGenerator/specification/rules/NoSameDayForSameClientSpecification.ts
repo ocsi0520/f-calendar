@@ -1,7 +1,7 @@
-import { groupBy } from '../../../utils/groupby';
-import { DayNumber } from '../../TimeInterval/TimeInterval-constants';
-import { ScheduleItem, Table } from '../Table';
-import { ScheduleSpecification } from './specification';
+import { groupBy } from '../../../../utils/groupby';
+import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
+import { ScheduleItem, Table } from '../../Table';
+import { ScheduleSpecification } from '../specification';
 
 export class NoSameDayForSameClientSpecification implements ScheduleSpecification {
   public check(table: Table): boolean {

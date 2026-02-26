@@ -1,5 +1,5 @@
-import { TimeManager } from '../../TimeManager';
-import { ScheduleItem } from '../Table';
+import { TimeManager } from '../../../TimeManager';
+import { ScheduleItem } from '../../Table';
 
 export class MorningChecker {
   constructor(private readonly timeMapper: TimeManager) {}

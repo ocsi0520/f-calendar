@@ -1,10 +1,10 @@
-import { groupBy } from '../../../utils/groupby';
-import { TimeInterval } from '../../TimeInterval/TimeInterval';
-import { DayNumber } from '../../TimeInterval/TimeInterval-constants';
-import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
-import { ScheduleItem, Table } from '../Table';
+import { groupBy } from '../../../../utils/groupby';
+import { TimeInterval } from '../../../TimeInterval/TimeInterval';
+import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
+import { ScheduleItem, Table } from '../../Table';
 import { MorningChecker } from './MorningChecker';
-import { ScheduleSpecification } from './specification';
+import { ScheduleSpecification } from '../specification';
 
 export class LunchSpecification implements ScheduleSpecification {
   private static LUNCH_IN_MINUTES = 60;

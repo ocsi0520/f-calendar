@@ -1,4 +1,4 @@
-import { NoOverlappingSessionsSpecification } from '../NoOverlappingSessionsSpecification';
+import { NoOverlappingSessionsSpecification } from '../rules/NoOverlappingSessionsSpecification';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { ScheduleItem, Table } from '../../Table';
 import { methodName } from '../../../../utils/test-name';

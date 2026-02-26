@@ -1,6 +1,6 @@
-import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
-import { ScheduleItem, Table } from '../Table';
-import { ScheduleSpecification } from './specification';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
+import { ScheduleItem, Table } from '../../Table';
+import { ScheduleSpecification } from '../specification';
 
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
   constructor(private readonly timeIntervalManager: TimeIntervalManager) {}

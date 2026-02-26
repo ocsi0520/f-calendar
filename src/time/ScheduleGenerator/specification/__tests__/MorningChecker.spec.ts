@@ -1,5 +1,5 @@
 import { TimeManager } from '../../../TimeManager';
-import { MorningChecker } from '../MorningChecker';
+import { MorningChecker } from '../rules/MorningChecker';
 import { ScheduleItem } from '../../Table';
 import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
 

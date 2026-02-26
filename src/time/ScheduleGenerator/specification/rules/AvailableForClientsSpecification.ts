@@ -1,4 +1,4 @@
-import { ClientInfo, ScheduleItem, Table } from '../Table';
+import { ClientInfo, ScheduleItem, Table } from '../../Table';
 import { AvailableSpecification } from './AvailableSpecification';
 
 export class AvailableForClientsSpecification extends AvailableSpecification {

@@ -1,6 +1,6 @@
 import { methodName } from '../../../../utils/test-name';
 import { ScheduleItem, Table } from '../../Table';
-import { NoSameDayForSameClientSpecification } from '../NoSameDayForSameClientSpecification';
+import { NoSameDayForSameClientSpecification } from '../rules/NoSameDayForSameClientSpecification';
 
 describe(methodName(NoSameDayForSameClientSpecification, 'check'), () => {
   const unitUnderTest = new NoSameDayForSameClientSpecification();

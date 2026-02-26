@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AvailableForMe } from '../AvailableForMeSpecification';
+import { AvailableForMe } from '../rules/AvailableForMeSpecification';
 import { MyTimeService } from '../../../../client/my-time.service';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { TimeIntervalMapper } from '../../../TimeInterval/TimeIntervalMapper';

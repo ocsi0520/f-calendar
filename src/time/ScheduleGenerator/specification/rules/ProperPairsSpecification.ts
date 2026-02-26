@@ -1,6 +1,6 @@
-import { ClientPairService } from '../../../client/client-pair.service';
-import { ScheduleItem, Table } from '../Table';
-import { ScheduleSpecification } from './specification';
+import { ClientPairService } from '../../../../client/client-pair.service';
+import { ScheduleItem, Table } from '../../Table';
+import { ScheduleSpecification } from '../specification';
 
 export class ProperPairsSpecification implements ScheduleSpecification {
   constructor(private readonly pairService: ClientPairService) {}

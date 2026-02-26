@@ -1,8 +1,8 @@
-import { TimeInterval } from '../../TimeInterval/TimeInterval';
-import { WeekSchedule } from '../../Schedule';
-import { ScheduleItem, Table } from '../Table';
-import { ScheduleSpecification } from './specification';
-import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
+import { TimeInterval } from '../../../TimeInterval/TimeInterval';
+import { WeekSchedule } from '../../../Schedule';
+import { ScheduleItem, Table } from '../../Table';
+import { ScheduleSpecification } from '../specification';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 
 export abstract class AvailableSpecification implements ScheduleSpecification {
   constructor(private readonly timeIntervalManager: TimeIntervalManager) {}

@@ -1,7 +1,7 @@
-import { MyTimeService } from '../../../client/my-time.service';
-import { WeekSchedule } from '../../Schedule';
-import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
-import { Table } from '../Table';
+import { MyTimeService } from '../../../../client/my-time.service';
+import { WeekSchedule } from '../../../Schedule';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
+import { Table } from '../../Table';
 import { AvailableSpecification } from './AvailableSpecification';
 
 // TODO: unnecessary if ScheduleItemsNarrower is used

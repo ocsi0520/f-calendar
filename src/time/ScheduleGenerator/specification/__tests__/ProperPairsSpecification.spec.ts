@@ -1,6 +1,6 @@
 import { methodName } from '../../../../utils/test-name';
 import { ScheduleItem, Table } from '../../Table';
-import { ProperPairsSpecification } from '../ProperPairsSpecification';
+import { ProperPairsSpecification } from '../rules/ProperPairsSpecification';
 import { ClientPairService } from '../../../../client/client-pair.service';
 
 describe(methodName(ProperPairsSpecification, 'check'), () => {
