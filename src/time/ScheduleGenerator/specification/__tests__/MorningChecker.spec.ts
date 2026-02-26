@@ -2,6 +2,7 @@ import { TimeManager } from '../../../TimeManager';
 import { MorningChecker } from '../rules/MorningChecker';
 import { ScheduleItem } from '../../Table';
 import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
+import { Time } from '../../../Time';
 
 describe(MorningChecker.name, () => {
   let timeManager: TimeManager;
@@ -12,7 +13,7 @@ describe(MorningChecker.name, () => {
     unitUnderTest = new MorningChecker(timeManager);
   });
 
-  const makeItem = (day: DayNumber, start: [number, number], end: [number, number]): ScheduleItem => ({
+  const makeItem = (day: DayNumber, start: Time, end: Time): ScheduleItem => ({
     timeInterval: { dayNumber: day, start: start as any, end: end as any },
     clientIdsInvolved: [1],
   });
