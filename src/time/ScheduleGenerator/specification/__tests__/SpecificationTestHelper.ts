@@ -7,9 +7,7 @@ export const makeTable = (scheduleItems: Array<ScheduleItem>): Table => ({
   scheduleItems,
   currentScheduleItemIndex: 0,
 });
-export const selectForSpec = (
-  table: Table,
-): Parameters<ScheduleSpecification['check']> => {
+export const selectForSpec = (table: Table): Parameters<ScheduleSpecification['check']> => {
   const currentCell = table.scheduleItems[table.currentScheduleItemIndex];
   const sameDayCells = table.scheduleItems.filter(
     (cell) => cell.timeInterval.dayNumber === currentCell.timeInterval.dayNumber,

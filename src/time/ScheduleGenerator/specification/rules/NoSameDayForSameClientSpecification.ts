@@ -3,6 +3,7 @@ import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
 import { ScheduleItem, Table } from '../../Table';
 import { ScheduleSpecification } from '../specification';
 
+// TODO: delete
 export class NoSameDayForSameClientSpecification implements ScheduleSpecification {
   public check(table: Table): boolean {
     const occupiedCells = table.scheduleItems.filter(

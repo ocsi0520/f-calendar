@@ -1,3 +1,4 @@
+import { sessionGranularityInMinutes, sessionSpan } from '../../../session-span';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { ScheduleItem, Table } from '../../Table';
 import { ScheduleSpecification } from '../specification';
@@ -5,14 +6,50 @@ import { ScheduleSpecification } from '../specification';
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
   constructor(private readonly timeIntervalManager: TimeIntervalManager) {}
 
-  public check({ scheduleItems }: Table): boolean {
-    const occupiedItem = scheduleItems.filter((item) => item.clientIdsInvolved.length > 0);
-    for (let i = 0; i < occupiedItem.length - 1; i++) {
-      if (this.areCellsOverlapping(occupiedItem[i], occupiedItem[i + 1])) return false;
+  public check(
+    _table: Table,
+    sameDayCells: Array<ScheduleItem>,
+    currentCell: ScheduleItem,
+  ): boolean {
+    const [firstIndexToCheck, lastIndexToCheck] = this.getMeaningfulIndexes(
+      sameDayCells,
+      currentCell,
+    );
+    for (let i = firstIndexToCheck; i <= lastIndexToCheck; i++) {
+      const cellToCheck = sameDayCells[i];
+      if (this.isSameOrNonOccupied(currentCell, cellToCheck)) continue;
+
+      if (
+        this.timeIntervalManager.areIntervalsOverlapping(
+          currentCell.timeInterval,
+          cellToCheck.timeInterval,
+        )
+      )
+        return false;
     }
     return true;
   }
-  private areCellsOverlapping(cell1: ScheduleItem, cell2: ScheduleItem): boolean {
-    return this.timeIntervalManager.areIntervalsOverlapping(cell1.timeInterval, cell2.timeInterval);
+
+  private isSameOrNonOccupied(currentCell: ScheduleItem, cellToExamine: ScheduleItem): boolean {
+    return currentCell === cellToExamine || cellToExamine.clientIdsInvolved.length === 0;
+  }
+
+  private getMeaningfulIndexes(
+    sameDayCells: Array<ScheduleItem>,
+    currentCell: ScheduleItem,
+  ): [firstIndexToCheck: number, lastIndexToCheck: number] {
+    const indexOfCurrentCell = sameDayCells.indexOf(currentCell);
+    // basically 5
+    const shiftBetweenValidSessionsInGranularity =
+      sessionSpan.inMinutes / sessionGranularityInMinutes;
+    const firstIndexToCheck = Math.max(
+      0,
+      indexOfCurrentCell - shiftBetweenValidSessionsInGranularity,
+    );
+    const lastIndexToCheck = Math.min(
+      sameDayCells.length - 1,
+      indexOfCurrentCell + shiftBetweenValidSessionsInGranularity,
+    );
+    return [firstIndexToCheck, lastIndexToCheck];
   }
 }
