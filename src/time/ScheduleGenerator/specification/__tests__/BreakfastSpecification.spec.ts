@@ -1,7 +1,7 @@
 import { TimeManager } from '../../../TimeManager';
 import { BreakfastSpecification } from '../rules/BreakfastSpecification';
 import { MorningChecker } from '../rules/MorningChecker';
-import { ScheduleItem, Table } from '../../Table';
+import { makeTable, selectForSpec } from './SpecificationTestHelper';
 
 describe('BreakfastSpecification.check', () => {
   let timeManager: TimeManager;
@@ -14,19 +14,12 @@ describe('BreakfastSpecification.check', () => {
     unitUnderTest = new BreakfastSpecification(timeManager, morningChecker);
   });
 
-  const makeTable = (items: ScheduleItem[]): Table => ({
-    clientInfos: [],
-    currentClientIndex: 0,
-    scheduleItems: items,
-    currentScheduleItemIndex: 0,
-  });
-
   it('returns true when only one occupied cell (no need for breakfast room)', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 0] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
   it('returns true when there is enough gap for breakfast between first two sessions', () => {
@@ -35,7 +28,7 @@ describe('BreakfastSpecification.check', () => {
       { timeInterval: { dayNumber: 1, start: [10, 0], end: [11, 15] }, clientIdsInvolved: [2] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
   it('returns false when there is not enough gap for breakfast between first two sessions', () => {
@@ -44,7 +37,7 @@ describe('BreakfastSpecification.check', () => {
       { timeInterval: { dayNumber: 1, start: [9, 45], end: [11, 0] }, clientIdsInvolved: [2] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(false);
+    expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });
 
   it('ignores days where first session is not in the morning', () => {
@@ -54,6 +47,6 @@ describe('BreakfastSpecification.check', () => {
       { timeInterval: { dayNumber: 1, start: [10, 30], end: [11, 15] }, clientIdsInvolved: [2] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 });

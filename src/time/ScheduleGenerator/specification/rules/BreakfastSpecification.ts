@@ -1,5 +1,3 @@
-import { groupBy } from '../../../../utils/groupby';
-import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
 import { TimeManager } from '../../../TimeManager';
 import { ScheduleItem, Table } from '../../Table';
 import { MorningChecker } from './MorningChecker';
@@ -11,20 +9,18 @@ export class BreakfastSpecification implements ScheduleSpecification {
     private readonly timeManager: TimeManager,
     private readonly morningChecker: MorningChecker,
   ) {}
-  public check(table: Table): boolean {
-    const occupiedCells = table.scheduleItems.filter(
+  public check(
+    _table: Table,
+    sameDayCells: Array<ScheduleItem>,
+    _currentCell: ScheduleItem,
+  ): boolean {
+    const occupiedDayCells = sameDayCells.filter(
       (scheduleItem) => scheduleItem.clientIdsInvolved.length,
     );
-    const cellsByDay = this.groupCellsByDay(occupiedCells);
-    for (let dayNumber in cellsByDay) {
-      const dayCells = cellsByDay[Number(dayNumber) as DayNumber];
-      const needBreakfastRoom = this.morningChecker.isMorningSession(dayCells[0]);
-      if (!needBreakfastRoom) continue;
+    const needBreakfastRoom = this.morningChecker.isMorningSession(occupiedDayCells[0]);
+    if (!needBreakfastRoom) return true;
 
-      const hasBreakfastRoom = this.hasRoomForBreakfast(dayCells);
-      if (!hasBreakfastRoom) return false;
-    }
-    return true;
+    return this.hasRoomForBreakfast(occupiedDayCells);
   }
 
   private hasRoomForBreakfast(dayCells: ScheduleItem[]): boolean {
@@ -33,9 +29,5 @@ export class BreakfastSpecification implements ScheduleSpecification {
     const endOfFirst = this.timeManager.timeToNumber(first.timeInterval.end);
     const startOfSecond = this.timeManager.timeToNumber(second.timeInterval.start);
     return startOfSecond - endOfFirst >= BreakfastSpecification.BREAKFAST_IN_MINUTES;
-  }
-
-  private groupCellsByDay(cells: Array<ScheduleItem>): Record<DayNumber, Array<ScheduleItem>> {
-    return groupBy(cells, (cell) => cell.timeInterval.dayNumber);
   }
 }
