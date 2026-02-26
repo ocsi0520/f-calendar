@@ -1,16 +1,15 @@
 import { NoOverlappingSessionsSpecification } from '../rules/NoOverlappingSessionsSpecification';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { methodName } from '../../../../utils/test-name';
-import { TestBed } from '@angular/core/testing';
 import { makeTable, selectForSpec } from './SpecificationTestHelper';
+import { TimeManager } from '../../../TimeManager';
 
 describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
   let unitUnderTest: NoOverlappingSessionsSpecification;
-  let timeIntervalManager: TimeIntervalManager;
 
   beforeEach(() => {
-    timeIntervalManager = TestBed.inject(TimeIntervalManager);
-    unitUnderTest = new NoOverlappingSessionsSpecification(timeIntervalManager);
+    const timeManager = new TimeManager();
+    unitUnderTest = new NoOverlappingSessionsSpecification(new TimeIntervalManager(timeManager));
   });
 
   it('returns true when no items are occupied (empty clientIdsInvolved)', () => {
@@ -63,7 +62,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-    it('returns true when middle item is on different day', () => {
+  it('returns true when middle item is on different day', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 15], end: [8, 30] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 2, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [2] },

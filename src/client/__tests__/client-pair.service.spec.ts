@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ClientPairService } from '../client-pair.service';
 import { methodName } from '../../utils/test-name';
@@ -8,11 +7,7 @@ describe(ClientPairService.name, () => {
 
   beforeEach(() => {
     localStorage.clear();
-    TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      providers: [ClientPairService],
-    });
-    unitUnderTest = TestBed.inject(ClientPairService);
+    unitUnderTest = new ClientPairService();
   });
 
   it('should be created', () => {

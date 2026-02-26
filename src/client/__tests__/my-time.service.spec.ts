@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from '../../time/TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from '../../time/TimeInterval/TimeIntervalEventMapper';
@@ -12,10 +11,10 @@ describe(MyTimeService.name, () => {
   const interval3: TimeInterval = { dayNumber: 3, start: [11, 0], end: [15, 0] };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
-    });
-    unitUnderTest = TestBed.inject(MyTimeService);
+    const primitiveMapper = new TimeIntervalPrimitiveMapper();
+    unitUnderTest = new MyTimeService(
+      new TimeIntervalMapper(primitiveMapper, new TimeIntervalEventMapper(primitiveMapper)),
+    );
     localStorage.clear();
   });
   it('should return empty', () => {

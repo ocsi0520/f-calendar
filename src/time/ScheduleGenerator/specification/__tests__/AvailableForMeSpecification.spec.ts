@@ -5,7 +5,7 @@ import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { TimeIntervalMapper } from '../../../TimeInterval/TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from '../../../TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from '../../../TimeInterval/TimeIntervalEventMapper';
-import { ScheduleItem, Table } from '../../Table';
+import { Table } from '../../Table';
 import { methodName } from '../../../../utils/test-name';
 import { WeekSchedule } from '../../../Schedule';
 import { makeTable, selectForSpec } from './SpecificationTestHelper';
@@ -45,7 +45,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       const expectedValue = expectedFalseAtIndexes.includes(i) ? false : true;
       expect(unitUnderTest.check(...selectForSpec(table))).toBe(expectedValue);
     }
-  }
+  };
 
   it('returns true when all occupied items fall within my schedule', () => {
     unitUnderTest = createUnitUnderTestWithSchedule([

@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { TimeIntervalManager } from './TimeIntervalManager';
 import { TimeManager } from '../TimeManager';
 import { TimeInterval, isSameInterval } from './TimeInterval';
@@ -8,8 +7,7 @@ describe(TimeIntervalManager.name, () => {
   let unitUnderTest: TimeIntervalManager;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [TimeIntervalManager, TimeManager] });
-    unitUnderTest = TestBed.inject(TimeIntervalManager);
+    unitUnderTest = new TimeIntervalManager(new TimeManager());
   });
 
   // Inline TimeInterval objects using `Hour` and `Minute` types

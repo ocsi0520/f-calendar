@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { ClientService } from '../client.service';
 import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from '../../time/TimeInterval/TimeIntervalPrimitiveMapper';
@@ -16,21 +15,21 @@ describe(ClientService.name, () => {
     name: 'Kis Gizella',
     schedule: [],
     sessionCountsInWeek: 2,
-    disabled: false
+    disabled: false,
   };
   const newTestClient2: Omit<Client, 'id'> = {
     comment: 'comment',
     name: 'Kis Amanda',
     schedule: [],
     sessionCountsInWeek: 3,
-    disabled: false
+    disabled: false,
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
-    });
-    unitUnderTest = TestBed.inject(ClientService);
+    const primitiveMapper = new TimeIntervalPrimitiveMapper();
+    unitUnderTest = new ClientService(
+      new TimeIntervalMapper(primitiveMapper, new TimeIntervalEventMapper(primitiveMapper)),
+    );
     localStorage.clear();
   });
 
@@ -97,7 +96,7 @@ describe(ClientService.name, () => {
         schedule: [],
         sessionCountsInWeek: 4,
         id: 1,
-        disabled: false
+        disabled: false,
       });
       expect(unitUnderTest.getAllClients()).empty;
     });

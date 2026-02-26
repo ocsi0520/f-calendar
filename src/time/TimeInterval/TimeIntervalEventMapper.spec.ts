@@ -1,5 +1,4 @@
 // https://www.calendar-365.com/calendar/2024/January.html
-import { TestBed } from '@angular/core/testing';
 import { TimeIntervalEventMapper } from './TimeIntervalEventMapper';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
 import { TimeInterval } from './TimeInterval';
@@ -9,10 +8,7 @@ describe(TimeIntervalEventMapper.name, () => {
   let unitUnderTest: TimeIntervalEventMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TimeIntervalEventMapper, TimeIntervalPrimitiveMapper],
-    });
-    unitUnderTest = TestBed.inject(TimeIntervalEventMapper);
+    unitUnderTest = new TimeIntervalEventMapper(new TimeIntervalPrimitiveMapper());
   });
 
   describe(methodName(TimeIntervalEventMapper, 'mapFromEvent'), () => {

@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { TimeIntervalMapper } from './TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from './TimeIntervalEventMapper';
@@ -13,13 +12,9 @@ describe(TimeIntervalMapper.name, () => {
   let eventMapper: TimeIntervalEventMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TimeIntervalMapper, TimeIntervalPrimitiveMapper, TimeIntervalEventMapper],
-    });
-    primitiveMapper = TestBed.inject(TimeIntervalPrimitiveMapper);
-    eventMapper = TestBed.inject(TimeIntervalEventMapper);
-
-    unitUnderTest = TestBed.inject(TimeIntervalMapper);
+    primitiveMapper = new TimeIntervalPrimitiveMapper();
+    eventMapper = new TimeIntervalEventMapper(primitiveMapper);
+    unitUnderTest = new TimeIntervalMapper(primitiveMapper, eventMapper);
   });
 
   it('should delegate mapToString call to primitiveMapper', () => {

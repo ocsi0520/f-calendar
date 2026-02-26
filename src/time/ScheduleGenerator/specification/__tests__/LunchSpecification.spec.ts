@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { TimeManager } from '../../../TimeManager';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { MorningChecker } from '../rules/MorningChecker';
@@ -7,15 +6,14 @@ import { makeTable, selectForSpec } from './SpecificationTestHelper';
 
 // TODO: 2 overlapping with and without morning sessions
 describe(LunchSpecification.name, () => {
-  let timeIntervalManager: TimeIntervalManager;
-  let morningChecker: MorningChecker;
   let unitUnderTest: LunchSpecification;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [TimeIntervalManager, TimeManager] });
-    timeIntervalManager = TestBed.inject(TimeIntervalManager);
-    morningChecker = new MorningChecker(new TimeManager());
-    unitUnderTest = new LunchSpecification(morningChecker, timeIntervalManager);
+    const timeManager = new TimeManager();
+    unitUnderTest = new LunchSpecification(
+      new MorningChecker(timeManager),
+      new TimeIntervalManager(timeManager),
+    );
   });
 
   it('returns true when less than 4 occupied sessions', () => {

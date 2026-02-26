@@ -4,18 +4,18 @@ import { ClientInfo } from '../../Table';
 import { Client } from '../../../../client/Client';
 import { methodName } from '../../../../utils/test-name';
 import { WeekSchedule } from '../../../Schedule';
-import { TestBed } from '@angular/core/testing';
 import { makeTable, selectForSpec } from './SpecificationTestHelper';
+import { TimeManager } from '../../../TimeManager';
 
 // TODO: revise test
 
 describe(methodName(AvailableForClientsSpecification, 'check'), () => {
-  let timeIntervalManager: TimeIntervalManager;
   let unitUnderTest: AvailableForClientsSpecification;
 
   beforeEach(() => {
-    timeIntervalManager = TestBed.inject(TimeIntervalManager);
-    unitUnderTest = new AvailableForClientsSpecification(timeIntervalManager);
+    unitUnderTest = new AvailableForClientsSpecification(
+      new TimeIntervalManager(new TimeManager()),
+    );
   });
 
   const createClient = (
@@ -60,7 +60,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
       [createClientInfo(client1), createClientInfo(client2)],
     );
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
-  
+
     table.currentScheduleItemIndex = table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
@@ -136,16 +136,20 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
       ],
       [createClientInfo(client1), createClientInfo(client2)],
     );
-    table.currentScheduleItemIndex = 0; table.currentClientIndex = 0;
+    table.currentScheduleItemIndex = 0;
+    table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 0; table.currentClientIndex = 1;
+    table.currentScheduleItemIndex = 0;
+    table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 1; table.currentClientIndex = 0;
+    table.currentScheduleItemIndex = 1;
+    table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 2; table.currentClientIndex = 1; 
+    table.currentScheduleItemIndex = 2;
+    table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
@@ -161,16 +165,20 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
       [createClientInfo(client1), createClientInfo(client2)],
     );
 
-    table.currentScheduleItemIndex = 0; table.currentClientIndex = 0;
+    table.currentScheduleItemIndex = 0;
+    table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 0; table.currentClientIndex = 1;
+    table.currentScheduleItemIndex = 0;
+    table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 1; table.currentClientIndex = 0;
+    table.currentScheduleItemIndex = 1;
+    table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 2; table.currentClientIndex = 1; 
+    table.currentScheduleItemIndex = 2;
+    table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });
 
@@ -213,9 +221,11 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
       [createClientInfo(client)],
     );
 
-    table.currentScheduleItemIndex = 0; table.currentClientIndex = 0;
+    table.currentScheduleItemIndex = 0;
+    table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
-    table.currentScheduleItemIndex = 2; table.currentClientIndex = 0;
+    table.currentScheduleItemIndex = 2;
+    table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 });

@@ -1,18 +1,12 @@
-import { TestBed } from '@angular/core/testing';
 import { TimeIntervalDeduplicator } from '../TimeIntervalDeduplicator';
 import { TimeIntervalPrimitiveMapper } from '../../../TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeInterval } from '../../../TimeInterval/TimeInterval';
 
 describe(TimeIntervalDeduplicator.name, () => {
   let unitUnderTest: TimeIntervalDeduplicator;
-  let mapper: TimeIntervalPrimitiveMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TimeIntervalDeduplicator, TimeIntervalPrimitiveMapper],
-    });
-    unitUnderTest = TestBed.inject(TimeIntervalDeduplicator);
-    mapper = TestBed.inject(TimeIntervalPrimitiveMapper);
+    unitUnderTest = new TimeIntervalDeduplicator(new TimeIntervalPrimitiveMapper());
   });
 
   it('should handle 0 items', () => {
