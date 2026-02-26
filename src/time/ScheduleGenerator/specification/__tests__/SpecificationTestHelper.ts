@@ -1,8 +1,8 @@
-import { ScheduleItem, Table } from '../../Table';
+import { ClientInfo, ScheduleItem, Table } from '../../Table';
 import { ScheduleSpecification } from '../specification';
 
-export const makeTable = (scheduleItems: Array<ScheduleItem>): Table => ({
-  clientInfos: [],
+export const makeTable = (scheduleItems: Array<ScheduleItem>, clientInfos: Array<ClientInfo> = []): Table => ({
+  clientInfos,
   currentClientIndex: 0,
   scheduleItems,
   currentScheduleItemIndex: 0,
