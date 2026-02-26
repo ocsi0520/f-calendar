@@ -1,32 +1,31 @@
-import { groupBy } from '../../../../utils/groupby';
 import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
-import { ScheduleItem, Table } from '../../Table';
+import { ClientInfo, ScheduleItem, Table } from '../../Table';
 import { ScheduleSpecification } from '../specification';
 
 // TODO: delete
 export class NoSameDayForSameClientSpecification implements ScheduleSpecification {
-  public check(table: Table): boolean {
-    const occupiedCells = table.scheduleItems.filter(
-      (scheduleItem) => scheduleItem.clientIdsInvolved.length,
-    );
-    const cellsByDay = this.groupCellsByDay(occupiedCells);
-    for (let dayNumber in cellsByDay) {
-      const dayCells = cellsByDay[Number(dayNumber) as DayNumber];
-      const dayHasClientDuplication = this.dayHasClientIdDuplication(dayCells);
-      if (dayHasClientDuplication) return false;
+  public check(
+    table: Table,
+    cellsOnSameDay: Array<ScheduleItem>,
+    _currentCell: ScheduleItem,
+  ): boolean {
+    const currentClientId = this.getCurrentClientInfo(table).client.id;
+    let counterOfSameClientId = 0;
+    for (let cell of cellsOnSameDay) {
+      const indexOfClientId = cell.clientIdsInvolved.indexOf(currentClientId);
+      if (indexOfClientId === -1) continue;
+
+      const lastIndexOfClientId = cell.clientIdsInvolved.lastIndexOf(currentClientId);
+
+      const multipleRegistrationsForSameCell = indexOfClientId !== lastIndexOfClientId;
+      if (multipleRegistrationsForSameCell) return false;
+
+      if (++counterOfSameClientId > 1) return false;
     }
     return true;
   }
-  private groupCellsByDay(cells: Array<ScheduleItem>): Record<DayNumber, Array<ScheduleItem>> {
-    return groupBy(cells, (cell) => cell.timeInterval.dayNumber);
-  }
-  private dayHasClientIdDuplication(dayCells: ScheduleItem[]): boolean {
-    const clientIdsInvolvedInThatDay = dayCells.map((dayCell) => dayCell.clientIdsInvolved).flat(1);
-    const set = new Set<number>();
-    for (let clientId of clientIdsInvolvedInThatDay) {
-      if (set.has(clientId)) return true;
-      set.add(clientId);
-    }
-    return false;
+
+  private getCurrentClientInfo(table: Table): ClientInfo {
+    return table.clientInfos[table.currentClientIndex];
   }
 }
