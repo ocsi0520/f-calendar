@@ -38,7 +38,7 @@ export class ScheduleGenerator {
       new NoOverlappingSessionsSpecification(this.timeIntervalManager),
       // unnecessary because of optimization in TableStepper
       // new NoSameDayForSameClientSpecification(),
-      new ProperPairsSpecification(this.pairService),
+      new ProperPairsSpecification(this.pairService, this.timeIntervalManager),
     ];
   }
 

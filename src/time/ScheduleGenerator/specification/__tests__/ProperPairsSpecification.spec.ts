@@ -1,7 +1,10 @@
 import { methodName } from '../../../../utils/test-name';
 import { ProperPairsSpecification } from '../rules/ProperPairsSpecification';
 import { ClientPairService } from '../../../../client/client-pair.service';
-import { makeTable, selectForSpec } from './SpecificationTestHelper';
+import { createExpectedResult, makeTable, selectForSpec } from './SpecificationTestHelper';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
+import { TimeManager } from '../../../TimeManager';
+import { Table } from '../../Table';
 
 describe(methodName(ProperPairsSpecification, 'check'), () => {
   let pairService: ClientPairService;
@@ -10,17 +13,27 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
   beforeEach(() => {
     localStorage.clear();
     pairService = new ClientPairService();
-    unitUnderTest = new ProperPairsSpecification(pairService);
+    unitUnderTest = new ProperPairsSpecification(
+      pairService,
+      new TimeIntervalManager(new TimeManager()),
+    );
   });
+
+  const acceptAll = (table: Table): void => {
+    for (
+      table.currentScheduleItemIndex = 0;
+      table.currentScheduleItemIndex < table.scheduleItems.length;
+      table.currentScheduleItemIndex++
+    )
+      expect(unitUnderTest.check(...selectForSpec(table))).toEqual(createExpectedResult(true));
+  };
 
   it('returns true when no clients are assigned to any cells', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [] },
       { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [] },
     ]);
-
-    expect(unitUnderTest.check(table, table.scheduleItems, table.scheduleItems[0])).toBe(true);
-    expect(unitUnderTest.check(table, table.scheduleItems, table.scheduleItems[1])).toBe(true);
+    acceptAll(table);
   });
 
   it('returns true when all items have only single clients', () => {
@@ -29,8 +42,7 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [2] },
       { timeInterval: { dayNumber: 2, start: [10, 0], end: [11, 45] }, clientIdsInvolved: [3] },
     ]);
-
-    expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
+    acceptAll(table);
   });
 
   it('returns true when items have pairs that exist in the pairService', () => {
@@ -42,7 +54,7 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [3, 4] },
     ]);
 
-    expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
+    acceptAll(table);
   });
 
   it('returns false when an item has a pair that does not exist in the pairService', () => {
@@ -50,7 +62,8 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1, 2] },
     ]);
 
-    expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
+    const expected = createExpectedResult({ dayNumber: 1, start: [8, 45], end: [10, 0] });
+    expect(unitUnderTest.check(...selectForSpec(table))).toEqual(expected);
   });
 
   it('returns false when an item has more than 2 clients', () => {
@@ -61,7 +74,8 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
       },
     ]);
 
-    expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
+    const expected = createExpectedResult({ dayNumber: 1, start: [8, 45], end: [10, 0] });
+    expect(unitUnderTest.check(...selectForSpec(table))).toEqual(expected);
   });
 
   it('returns true for mixed items with singles, valid pairs, and empty items', () => {
@@ -73,7 +87,7 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [10, 45], end: [12, 0] }, clientIdsInvolved: [2, 3] },
     ]);
 
-    expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
+    acceptAll(table);
   });
 
   it('returns false when one pair is invalid among multiple items', () => {
@@ -85,7 +99,8 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
     ]);
     table.currentScheduleItemIndex = 1;
 
-    expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
+    const expected = createExpectedResult({ dayNumber: 1, start: [10, 0], end: [11, 15] });
+    expect(unitUnderTest.check(...selectForSpec(table))).toEqual(expected);
   });
 
   it('returns false when one item has 3+ clients even if other items are valid', () => {
@@ -103,6 +118,7 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
     ]);
     table.currentScheduleItemIndex = 1;
 
-    expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
+    const expected = createExpectedResult({ dayNumber: 1, start: [10, 0], end: [11, 15] });
+    expect(unitUnderTest.check(...selectForSpec(table))).toEqual(expected);
   });
 });

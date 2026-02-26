@@ -1,7 +1,11 @@
+import { TimeInterval } from '../../../TimeInterval/TimeInterval';
 import { ClientInfo, ScheduleItem, Table } from '../../Table';
-import { ScheduleSpecification } from '../specification';
+import { Result, ScheduleSpecification } from '../specification';
 
-export const makeTable = (scheduleItems: Array<ScheduleItem>, clientInfos: Array<ClientInfo> = []): Table => ({
+export const makeTable = (
+  scheduleItems: Array<ScheduleItem>,
+  clientInfos: Array<ClientInfo> = [],
+): Table => ({
   clientInfos,
   currentClientIndex: 0,
   scheduleItems,
@@ -13,4 +17,10 @@ export const selectForSpec = (table: Table): Parameters<ScheduleSpecification['c
     (cell) => cell.timeInterval.dayNumber === currentCell.timeInterval.dayNumber,
   );
   return [table, sameDayCells, currentCell];
+};
+
+export const createExpectedResult = (value: true | TimeInterval): Result => {
+  return value === true
+    ? { passed: true }
+    : { passed: false, nextTryHint: { firstValidInterval: value } };
 };
