@@ -1,5 +1,5 @@
 import { TimeInterval } from '../../TimeInterval/TimeInterval';
-import { Table } from '../Table';
+import { ScheduleItem, Table } from '../Table';
 
 // TODO: there should be 3 types of specification:
 // - item-specification (cell/session)
@@ -16,5 +16,11 @@ export type NextTryHint = {
 export type Result = { passed: true } | { passed: false; nextTryHint: NextTryHint };
 
 export interface ScheduleSpecification {
-  check(table: Table): boolean;
+  /**
+   * 
+   * @param table the whole table
+   * @param cellsOnSameDay cells on the same day as `currentCell`, including `currentCell`
+   * @param currentCell the currently modified cell
+   */
+  check(table: Table, cellsOnSameDay: Array<ScheduleItem>, currentCell: ScheduleItem): boolean;
 }

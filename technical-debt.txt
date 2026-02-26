@@ -19,3 +19,5 @@ which could improve the codebase.
 5.) string is human-readable, but number is more convenient and shorter for storing in local storage
 
 6.) make "storage services" (MyTimeService, ClientPairService, ClientService) async, so that later on can switch to an actual BE
+
+7.) proper naming: session or schedule item or cell
