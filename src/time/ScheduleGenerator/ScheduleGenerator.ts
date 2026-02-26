@@ -13,6 +13,7 @@ import { Table } from './Table';
 import { DisplayableSchedule } from '../Schedule';
 import { TableStepper } from './TableStepper';
 import { TableMapper } from './utils/TableMapper';
+import { SpecificationManager } from './specification/SpecificationManager';
 
 // TODO: test
 @Injectable({ providedIn: 'root' })
@@ -39,6 +40,10 @@ export class ScheduleGenerator {
     ];
   }
 
+  private getSpecificationManager(): SpecificationManager {
+    return new SpecificationManager(this.timeIntervalManager, this.getAllSpecifications());
+  }
+
   // TODO: CQS violation, separate it
   public generateScheduleFrom(table: Table): DisplayableSchedule {
     const finishedTable = this.generateFinishedTable(table);
@@ -47,12 +52,12 @@ export class ScheduleGenerator {
 
   private generateFinishedTable(table: Table): Table {
     let trialCounter = 0;
-    const allSpecifications = this.getAllSpecifications();
+    const specManager = this.getSpecificationManager();
     // for next variation
-    if (this.isTableDone(table)) this.tableStepper.step(table, allSpecifications);
+    if (this.isTableDone(table)) this.tableStepper.step(table, specManager);
     while (!this.isTableDone(table) && !this.isImpossibleToFinish(table)) {
       if (trialCounter % 10_000_000 === 0) console.log(`counter: ${trialCounter}`);
-      this.tableStepper.step(table, allSpecifications);
+      this.tableStepper.step(table, specManager);
       trialCounter++;
     }
     console.log('total amount of tries: ' + trialCounter);

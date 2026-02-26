@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ScheduleSpecification } from './specification/specification';
 import { ClientInfo, ScheduleItem, Table } from './Table';
+import { SpecificationManager } from './specification/SpecificationManager';
 
 // TODO: test
 @Injectable({ providedIn: 'root' })
 export class TableStepper {
-  public step(table: Table, allSpecifications: ScheduleSpecification[]) {
+  public step(table: Table, specManager: SpecificationManager) {
     if (this.isTableDone(table)) {
       this.startNextVariation(table);
       return;
@@ -13,15 +13,15 @@ export class TableStepper {
     const hasReachedEndWithCurrentClient =
       table.currentScheduleItemIndex === table.scheduleItems.length;
     if (hasReachedEndWithCurrentClient) this.moveBack(table);
-    else this.moveForward(table, allSpecifications);
+    else this.moveForward(table, specManager);
   }
   private startNextVariation(table: Table) {
     this.moveBackToPreviousClient(table);
     this.moveBackWithCurrentClient(table);
   }
-  private moveForward(table: Table, allSpecifications: ScheduleSpecification[]): void {
+  private moveForward(table: Table, specManager: SpecificationManager): void {
     this.registerClientToCurrentCell(table);
-    if (this.checkSpecifications(table, allSpecifications)) {
+    if (this.checkSpecifications(table, specManager)) {
       this.commitLastRegistration(table);
     } else {
       this.revertLastRegistration(table);
@@ -100,8 +100,9 @@ export class TableStepper {
   private getCurrentCell(table: Table): ScheduleItem {
     return table.scheduleItems[table.currentScheduleItemIndex];
   }
-  private checkSpecifications(table: Table, allSpecifications: ScheduleSpecification[]): boolean {
-    return allSpecifications.every((spec) => spec.check(table));
+  private checkSpecifications(table: Table, specManager: SpecificationManager): boolean {
+    // TODO: use next hint
+    return specManager.checkSpecifications(table).passed;
   }
 
   // TODO: de-duplicate with ScheduleGenerator

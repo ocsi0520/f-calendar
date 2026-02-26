@@ -1,3 +1,4 @@
+import { TimeInterval } from '../../TimeInterval/TimeInterval';
 import { Table } from '../Table';
 
 // TODO: there should be 3 types of specification:
@@ -8,6 +9,12 @@ import { Table } from '../Table';
 // i.e. WithinAvailabiltyForClient and WithinAvailabiltyForMe could be item-specification
 
 // OR just simply add the 'changedCell'
+
+export type NextTryHint = {
+  firstValidInterval: TimeInterval
+};
+export type Result = { passed: true } | { passed: false; nextTryHint: NextTryHint };
+
 export interface ScheduleSpecification {
   check(table: Table): boolean;
 }
