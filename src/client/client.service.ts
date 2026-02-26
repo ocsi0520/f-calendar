@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Client } from './Client';
 import { WeekSchedule } from '../time/Schedule';
 import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
@@ -12,7 +12,7 @@ export class ClientService {
   // currently working w/ local storage, later on we can move on to a proper BE call
   private static CLIENT_KEY = 'calendar_clients';
   private static CLIENT_ID_KEY = 'calendar_clients_id';
-  private mapper = inject(TimeIntervalMapper);
+  constructor(private readonly mapper: TimeIntervalMapper) {}
 
   public addClient(newClient: Omit<Client, 'id'>): void {
     const allClients = this.getAllClients();

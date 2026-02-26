@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WeekSchedule } from '../time/Schedule';
 import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 
@@ -8,7 +8,8 @@ import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
 export class MyTimeService {
   // currently working w/ local storage, later on we can move on to a proper BE call
   private static STORAGE_KEY = 'my_time';
-  private mapper = inject(TimeIntervalMapper);
+
+  constructor(private readonly mapper: TimeIntervalMapper) {}
 
   public saveSchedule(newSchedule: WeekSchedule) {
     const stringifiedSchedules = newSchedule.map((timeInterval) =>

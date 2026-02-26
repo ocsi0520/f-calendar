@@ -8,7 +8,7 @@ import { WeekSchedule } from '../Schedule';
   providedIn: 'root',
 })
 export class TimeIntervalManager {
-  private timeManager = inject(TimeManager);
+  constructor(private timeManager: TimeManager) {}
 
   public areIntervalsOverlapping(interval1: TimeInterval, interval2: TimeInterval): boolean {
     if (interval1.dayNumber !== interval2.dayNumber) return false;

@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ScheduleItem } from '../Table';
-import { sessionGranularityInMinutes, sessionSpan } from '../../session-span';
+import { sessionGranularityInMinutes } from '../../session-span';
 import { DayNumber, dayNumbers } from '../../TimeInterval/TimeInterval-constants';
 import { isSameInterval, TimeInterval } from '../../TimeInterval/TimeInterval';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
@@ -9,7 +9,8 @@ import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
   providedIn: 'root',
 })
 export class ScheduleItemsGenerator {
-  private timeIntervalManager = inject(TimeIntervalManager);
+  constructor(private timeIntervalManager: TimeIntervalManager) {}
+
   public generateAllPossibleScheduleItems(): Array<ScheduleItem> {
     return dayNumbers.map(this.generateAllPossibleScheduleItemsFor.bind(this)).flat(1);
   }
@@ -27,6 +28,7 @@ export class ScheduleItemsGenerator {
         clientIdsInvolved: [],
         timeInterval,
       });
+      // TODO: separate method for this in timeIntervalManager
       timeInterval = this.timeIntervalManager.shiftInterval(
         timeInterval,
         sessionGranularityInMinutes,

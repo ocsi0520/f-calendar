@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ScheduleSpecification } from './specification/specification';
 import { AvailableForClientsSpecification } from './specification/rules/AvailableForClientsSpecification';
 import { TimeIntervalManager } from '../TimeInterval/TimeIntervalManager';
@@ -18,12 +18,14 @@ import { SpecificationManager } from './specification/SpecificationManager';
 // TODO: test
 @Injectable({ providedIn: 'root' })
 export class ScheduleGenerator {
-  private timeIntervalManager = inject(TimeIntervalManager);
-  // private myTimeService = inject(MyTimeService);
-  private timeManager = inject(TimeManager);
-  private pairService = inject(ClientPairService);
-  private tableStepper = inject(TableStepper);
-  private tableMapper = inject(TableMapper);
+  constructor(
+    private timeIntervalManager: TimeIntervalManager,
+    // private myTimeService: MyTimeService,
+    private timeManager: TimeManager,
+    private pairService: ClientPairService,
+    private tableStepper: TableStepper,
+    private tableMapper: TableMapper,
+  ) {}
 
   private getAllSpecifications(): Array<ScheduleSpecification> {
     const morningChecker = new MorningChecker(this.timeManager);

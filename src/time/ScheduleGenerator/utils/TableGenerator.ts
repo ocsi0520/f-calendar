@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ScheduleItemsGenerator } from './ScheduleItemsGenerator';
 import { ClientInfo, Table } from '../Table';
 import { ClientService } from '../../../client/client.service';
@@ -11,10 +11,12 @@ import { ScheduleItemsNarrower } from './ScheduleItemsNarrower';
   providedIn: 'root',
 })
 export class TableGenerator {
-  private scheduleItemsGenerator = inject(ScheduleItemsGenerator);
-  private clientService = inject(ClientService);
-  private myTimeService = inject(MyTimeService);
-  private itemsNarrower = inject(ScheduleItemsNarrower);
+  constructor(
+    private scheduleItemsGenerator: ScheduleItemsGenerator,
+    private clientService: ClientService,
+    private myTimeService: MyTimeService,
+    private itemsNarrower: ScheduleItemsNarrower,
+  ) {}
 
   public generateTable(): Table {
     const allPossibleCells = this.scheduleItemsGenerator.generateAllPossibleScheduleItems();

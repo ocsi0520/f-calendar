@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TimeInterval } from './TimeInterval';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
@@ -9,8 +9,10 @@ import { EventDescriptor } from './TimeInterval-constants';
   providedIn: 'root',
 })
 export class TimeIntervalMapper {
-  private primitiveMapper = inject(TimeIntervalPrimitiveMapper);
-  private eventMapper = inject(TimeIntervalEventMapper);
+  constructor(
+    private primitiveMapper: TimeIntervalPrimitiveMapper,
+    private eventMapper: TimeIntervalEventMapper,
+  ) {}
 
   public mapToString(timeInterval: TimeInterval): string {
     return this.primitiveMapper.mapToString(timeInterval);

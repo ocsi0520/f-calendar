@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TimeInterval } from '../../TimeInterval/TimeInterval';
 import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 
 @Injectable({ providedIn: 'root' })
 export class TimeIntervalDeduplicator {
-  private mapper = inject(TimeIntervalPrimitiveMapper);
+  constructor(private mapper: TimeIntervalPrimitiveMapper) {}
 
   public deDuplicate(timeIntervals: Array<TimeInterval>): Array<TimeInterval> {
     const setOfRepresentations = timeIntervals

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WeekSchedule } from '../../Schedule';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 import { ScheduleItem } from '../Table';
@@ -13,9 +13,11 @@ import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrim
   providedIn: 'root',
 })
 export class ScheduleItemsNarrower {
-  private timeIntervalManager = inject(TimeIntervalManager);
-  private deduplicator = inject(TimeIntervalDeduplicator);
-  private timeIntervalPrimitiveMapper = inject(TimeIntervalPrimitiveMapper);
+  constructor(
+    private timeIntervalManager: TimeIntervalManager,
+    private deduplicator: TimeIntervalDeduplicator,
+    private timeIntervalPrimitiveMapper: TimeIntervalPrimitiveMapper,
+  ) {}
 
   public getSuitableCells(
     allPossibleCells: Array<ScheduleItem>,

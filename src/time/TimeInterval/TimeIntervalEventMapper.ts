@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TimeInterval } from './TimeInterval';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { TimeIntervalPrimitiveMapper } from './TimeIntervalPrimitiveMapper';
@@ -18,7 +18,7 @@ const localeOptions = {
   providedIn: 'root',
 })
 export class TimeIntervalEventMapper {
-  private primitiveMapper = inject(TimeIntervalPrimitiveMapper);
+  constructor(private primitiveMapper: TimeIntervalPrimitiveMapper) {}
 
   public mapFromEvent(eventDescriptor: EventDescriptor): TimeInterval {
     if (!eventDescriptor.start || !eventDescriptor.end)
