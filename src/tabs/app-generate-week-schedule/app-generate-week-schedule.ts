@@ -53,6 +53,7 @@ export class AppGenerateWeekSchedule {
     } finally {
       console.log('prevDate.toISOString()', prevDate.toISOString());
       console.log('finalDate.toISOString()', finalDate.toISOString());
+      console.log('difference in seconds:', (finalDate.valueOf() - prevDate.valueOf()) / 1_000);
     }
   }
 }
