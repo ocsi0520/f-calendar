@@ -1,22 +1,26 @@
 import { MyTimeService } from '../../../../client/my-time.service';
 import { WeekSchedule } from '../../../Schedule';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
-import { Table } from '../../Table';
-import { AvailableSpecification } from './AvailableSpecification';
+import { ScheduleItem, Table } from '../../Table';
+import { ScheduleSpecification } from '../specification';
 
 // TODO: unnecessary if ScheduleItemsNarrower is used
-export class AvailableForMe extends AvailableSpecification {
+export class AvailableForMe implements ScheduleSpecification {
   private mySchedule: WeekSchedule;
   constructor(
     private readonly myTimeService: MyTimeService,
-    timeIntervalManager: TimeIntervalManager,
+    private readonly timeIntervalManager: TimeIntervalManager,
   ) {
-    super(timeIntervalManager);
     this.mySchedule = this.myTimeService.loadSchedule();
   }
-  public check(table: Table): boolean {
-    return this.getAllOccupiedCells(table).every((item) =>
-      this.withinSchedule(item, this.mySchedule),
+  public check(
+    _table: Table,
+    _cellsOnSameDay: Array<ScheduleItem>,
+    currentCell: ScheduleItem,
+  ): boolean {
+    return this.timeIntervalManager.isIntervalWithinSchedule(
+      currentCell.timeInterval,
+      this.mySchedule,
     );
   }
 }

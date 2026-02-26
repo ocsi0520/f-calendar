@@ -8,6 +8,7 @@ import { TimeIntervalEventMapper } from '../../../TimeInterval/TimeIntervalEvent
 import { ScheduleItem, Table } from '../../Table';
 import { methodName } from '../../../../utils/test-name';
 import { WeekSchedule } from '../../../Schedule';
+import { makeTable, selectForSpec } from './SpecificationTestHelper';
 
 describe(methodName(AvailableForMe, 'check'), () => {
   let myTimeService: MyTimeService;
@@ -38,22 +39,13 @@ describe(methodName(AvailableForMe, 'check'), () => {
     return new AvailableForMe(myTimeService, timeIntervalManager);
   };
 
-  const makeTable = (scheduleItems: ScheduleItem[]): Table => ({
-    clientInfos: [],
-    currentClientIndex: 0,
-    scheduleItems,
-    currentScheduleItemIndex: 0,
-  });
-
-  it('returns true when there are no occupied schedule items', () => {
-    unitUnderTest = createUnitUnderTestWithSchedule([]);
-    const table = makeTable([
-      { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [] },
-      { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [] },
-    ]);
-
-    expect(unitUnderTest.check(table)).toBe(true);
-  });
+  const testSpec = (table: Table, expectedFalseAtIndexes: Array<number>): void => {
+    for (let i = 0; i < table.scheduleItems.length; i++) {
+      table.currentScheduleItemIndex = i;
+      const expectedValue = expectedFalseAtIndexes.includes(i) ? false : true;
+      expect(unitUnderTest.check(...selectForSpec(table))).toBe(expectedValue);
+    }
+  }
 
   it('returns true when all occupied items fall within my schedule', () => {
     unitUnderTest = createUnitUnderTestWithSchedule([
@@ -64,8 +56,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 15] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 2, start: [10, 0], end: [11, 15] }, clientIdsInvolved: [2] },
     ]);
-
-    expect(unitUnderTest.check(table)).toBe(true);
+    testSpec(table, []);
   });
 
   it('returns false when an occupied item does not fall within my schedule', () => {
@@ -75,8 +66,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [10, 0] }, clientIdsInvolved: [1] },
     ]);
-
-    expect(unitUnderTest.check(table)).toBe(false);
+    testSpec(table, [0]);
   });
 
   it('returns false when an occupied item extends beyond my schedule end time', () => {
@@ -87,7 +77,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [9, 0], end: [12, 0] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(false);
+    testSpec(table, [0]);
   });
 
   it('returns false when an occupied item starts before my schedule', () => {
@@ -98,7 +88,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(false);
+    testSpec(table, [0]);
   });
 
   it('returns false when an occupied item is on a day with no availability', () => {
@@ -109,7 +99,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 2, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(false);
+    testSpec(table, [0]);
   });
 
   it('returns true when item exactly matches schedule boundaries', () => {
@@ -120,7 +110,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 15] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    testSpec(table, []);
   });
 
   it('returns true when item is at the start boundary of my schedule', () => {
@@ -131,7 +121,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [10, 0] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    testSpec(table, []);
   });
 
   it('returns true when item is at the end boundary of my schedule', () => {
@@ -142,7 +132,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [15, 45], end: [17, 0] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    testSpec(table, []);
   });
 
   it('returns true when multiple occupied items all fall within my schedule', () => {
@@ -154,8 +144,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [10, 0], end: [11, 15] }, clientIdsInvolved: [2] },
       { timeInterval: { dayNumber: 1, start: [12, 0], end: [13, 15] }, clientIdsInvolved: [3] },
     ]);
-
-    expect(unitUnderTest.check(table)).toBe(true);
+    testSpec(table, []);
   });
 
   it('returns false when one of multiple occupied items falls outside my schedule', () => {
@@ -167,7 +156,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 15] }, clientIdsInvolved: [2] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(false);
+    testSpec(table, [1]);
   });
 
   it('returns true when item falls within one of multiple schedule intervals on the same day', () => {
@@ -179,7 +168,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [13, 0], end: [14, 15] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    testSpec(table, []);
   });
 
   it('returns false when item starts in one interval but extends into a gap', () => {
@@ -191,7 +180,7 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [1] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(false);
+    testSpec(table, [0]);
   });
 
   it('returns true with mixed occupied and unoccupied items', () => {
@@ -204,6 +193,6 @@ describe(methodName(AvailableForMe, 'check'), () => {
       { timeInterval: { dayNumber: 1, start: [10, 0], end: [11, 15] }, clientIdsInvolved: [2] },
     ]);
 
-    expect(unitUnderTest.check(table)).toBe(true);
+    testSpec(table, []);
   });
 });
