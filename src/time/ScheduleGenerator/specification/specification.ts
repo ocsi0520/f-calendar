@@ -22,5 +22,5 @@ export interface ScheduleSpecification {
    * @param cellsOnSameDay cells on the same day as `currentCell`, including `currentCell`
    * @param currentCell the currently modified cell
    */
-  check(table: Table, cellsOnSameDay: Array<ScheduleItem>, currentCell: ScheduleItem): boolean;
+  check(table: Table, cellsOnSameDay: Array<ScheduleItem>, currentCell: ScheduleItem): Result | boolean;
 }

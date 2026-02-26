@@ -14,7 +14,7 @@ export class SpecificationManager {
     const currentCell = this.getCurrentCell(table);
     const cellsOnSameDay = this.getCellsWithSameDay(table, currentCell);
     const hasPassed = this.allSpecifications.every((spec) =>
-      spec.check(table, cellsOnSameDay, currentCell),
+      this.evaluateResult(spec.check(table, cellsOnSameDay, currentCell)),
     );
     if (hasPassed) return { passed: true };
     else {
@@ -36,5 +36,10 @@ export class SpecificationManager {
     return table.scheduleItems.filter(
       (cell) => cell.timeInterval.dayNumber === currentCell.timeInterval.dayNumber,
     );
+  }
+
+  private evaluateResult(result: Result | boolean): boolean {
+    if (typeof result === 'boolean') return result;
+    return result.passed;
   }
 }
