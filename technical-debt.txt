@@ -1,0 +1,21 @@
+Since I was rushing with the implementation - even though it eventually just made me slower - there are some things
+which could improve the codebase.
+
+1.)
+    Time - could be day-hour-minute instead of hour-minute
+    Interval - as a result it would be day-hour-minute pair
+        so theoretically we could handle multi-days as well
+
+    Time could be represented as a simple number: the minutes passed from monday 00:00
+    this is actually done in interval already
+
+2.) the utilities should be refactored
+
+3.) SpecificationResult should include a simple Time instead of a TimeInterval
+    as it now restricts the session interval (so it can be only 75 mins, but what if this changes in the future)
+
+4.) try to handle dynamic session times, meaning not only one type of session could be stored/handled
+
+5.) string is human-readable, but number is more convenient and shorter for storing in local storage
+
+6.) make "storage services" (MyTimeService, ClientPairService, ClientService) async, so that later on can switch to an actual BE
