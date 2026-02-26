@@ -12,17 +12,15 @@ export class LunchSpecification implements ScheduleSpecification {
     private readonly morningChecker: MorningChecker,
     private readonly timeIntervalManager: TimeIntervalManager,
   ) {}
-  public check(table: Table): boolean {
-    const occupiedCells = table.scheduleItems.filter(
+  public check(
+    _table: Table,
+    sameDayCells: Array<ScheduleItem>,
+    _currentCell: ScheduleItem,
+  ): boolean {
+    const occupiedSameDayCells = sameDayCells.filter(
       (scheduleItem) => scheduleItem.clientIdsInvolved.length,
     );
-    const cellsByDay = this.groupCellsByDay(occupiedCells);
-    for (let dayNumber in cellsByDay) {
-      const dayCells = cellsByDay[Number(dayNumber) as DayNumber];
-      const hasRoomForLunch = this.hasRoomForLunch(dayCells);
-      if (!hasRoomForLunch) return false;
-    }
-    return true;
+    return this.hasRoomForLunch(occupiedSameDayCells);
   }
 
   private hasRoomForLunch(occupiedDayCells: ScheduleItem[]): boolean {
@@ -64,9 +62,5 @@ export class LunchSpecification implements ScheduleSpecification {
         sessionsWithinLunchPeriod[1].timeInterval,
       ) >= LunchSpecification.LUNCH_IN_MINUTES
     );
-  }
-
-  private groupCellsByDay(cells: Array<ScheduleItem>): Record<DayNumber, Array<ScheduleItem>> {
-    return groupBy(cells, (cell) => cell.timeInterval.dayNumber);
   }
 }
