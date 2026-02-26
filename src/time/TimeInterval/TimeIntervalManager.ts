@@ -11,6 +11,11 @@ import { sessionGranularityInMinutes, sessionSpan } from '../session-span';
 export class TimeIntervalManager {
   constructor(private timeManager: TimeManager) {}
 
+  // edge-case if the intervals are the same
+  // lunch case:
+  // lunch interval: 13.30-14.30; session interval: 13.30-14.45 OR
+  // lunch interval: 13.30-14.30; session interval: 13.15-14.30
+  //  should be treated as overlapping (regardless of the order)
   public areIntervalsOverlapping(interval1: TimeInterval, interval2: TimeInterval): boolean {
     if (interval1.dayNumber !== interval2.dayNumber) return false;
 
@@ -19,8 +24,8 @@ export class TimeIntervalManager {
 
     if (start1 === start2 && end1 === end2) return true;
 
-    if (start2 < start1 && start1 < end2) return true;
-    if (start1 < start2 && start2 < end1) return true;
+    if (start2 <= start1 && start1 < end2) return true;
+    if (start1 <= start2 && start2 < end1) return true;
     return false;
   }
 
