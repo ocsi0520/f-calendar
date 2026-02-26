@@ -1,7 +1,8 @@
 import { sessionGranularityInMinutes, sessionSpan } from '../../../session-span';
+import { TimeInterval } from '../../../TimeInterval/TimeInterval';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { ScheduleItem, Table } from '../../Table';
-import { ScheduleSpecification } from '../specification';
+import { Result, ScheduleSpecification } from '../specification';
 
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
   constructor(private readonly timeIntervalManager: TimeIntervalManager) {}
@@ -10,7 +11,7 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     _table: Table,
     sameDayCells: Array<ScheduleItem>,
     currentCell: ScheduleItem,
-  ): boolean {
+  ): Result {
     const [firstIndexToCheck, lastIndexToCheck] = this.getMeaningfulIndexes(
       sameDayCells,
       currentCell,
@@ -25,9 +26,12 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
           cellToCheck.timeInterval,
         )
       )
-        return false;
+        return {
+          passed: false,
+          nextTryHint: { firstValidInterval: this.getFirstTimeIntervalRightAfter(cellToCheck) },
+        };
     }
-    return true;
+    return { passed: true };
   }
 
   private isSameOrNonOccupied(currentCell: ScheduleItem, cellToExamine: ScheduleItem): boolean {
@@ -51,5 +55,8 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
       indexOfCurrentCell + shiftBetweenValidSessionsInGranularity,
     );
     return [firstIndexToCheck, lastIndexToCheck];
+  }
+  private getFirstTimeIntervalRightAfter(cell: ScheduleItem): TimeInterval {
+    return this.timeIntervalManager.shiftBySessionLength(cell.timeInterval);
   }
 }

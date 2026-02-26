@@ -1,4 +1,3 @@
-import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
 import { ClientInfo, ScheduleItem, Table } from '../../Table';
 import { ScheduleSpecification } from '../specification';
 
