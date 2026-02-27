@@ -9,7 +9,7 @@ which could improve the codebase.
     Time could be represented as a simple number: the minutes passed from monday 00:00
     this is actually done in interval already
 
-2.) the utilities should be refactored
+2.) the utilities should be refactored (especially TimeIntervalManager)
 
 3.) SpecificationResult should include a simple Time instead of a TimeInterval
     as it now restricts the session interval (so it can be only 75 mins, but what if this changes in the future)
@@ -21,3 +21,5 @@ which could improve the codebase.
 6.) make "storage services" (MyTimeService, ClientPairService, ClientService) async, so that later on can switch to an actual BE
 
 7.) proper naming: session or schedule item or cell
+
+8.) differentiate WeekTime (daynumber, hour, minute) from DayTime (hour, minute)

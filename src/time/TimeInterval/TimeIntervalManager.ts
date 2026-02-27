@@ -97,4 +97,15 @@ export class TimeIntervalManager {
   public shiftBySessionLength(interval: TimeInterval): TimeInterval {
     return this.shiftInterval(interval, sessionSpan.inMinutes);
   }
+
+  public isIntervalAtOrAfterSecond(interval: TimeInterval, secondInterval: TimeInterval): boolean {
+    // TODO: proper DayTime and WeekTime and manage them instead of polluting TimeIntervalManager
+    if (interval.dayNumber < secondInterval.dayNumber) return false;
+    if (interval.dayNumber > secondInterval.dayNumber) return true;
+
+    const [startOfInterval] = this.mapIntervalToNumbers(interval);
+    const [startOfSecond] = this.mapIntervalToNumbers(secondInterval);
+
+    return startOfInterval >= startOfSecond;
+  }
 }
