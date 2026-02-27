@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ClientInfo, ScheduleItem, Table } from './Table';
-import { SpecificationManager } from './specification/SpecificationManager';
+import { ClientInfo, ScheduleItem, Table } from '../Table';
+import { SpecificationManager } from '../specification/SpecificationManager';
 
 // TODO: test
 @Injectable({ providedIn: 'root' })

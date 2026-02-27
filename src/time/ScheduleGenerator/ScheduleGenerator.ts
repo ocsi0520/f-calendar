@@ -11,7 +11,7 @@ import { ProperPairsSpecification } from './specification/rules/ProperPairsSpeci
 import { ClientPairService } from '../../client/client-pair.service';
 import { Table } from './Table';
 import { DisplayableSchedule } from '../Schedule';
-import { TableStepper } from './TableStepper';
+import { TableStepper } from './Stepper/TableStepper';
 import { TableMapper } from './utils/TableMapper';
 import { SpecificationManager } from './specification/SpecificationManager';
 
