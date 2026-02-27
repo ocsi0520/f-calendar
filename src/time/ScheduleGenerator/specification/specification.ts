@@ -11,16 +11,21 @@ import { ScheduleItem, Table } from '../Table';
 // OR just simply add the 'changedCell'
 
 export type NextTryHint = {
-  firstValidInterval: TimeInterval
+  firstValidInterval: TimeInterval;
 };
-export type Result = { passed: true } | { passed: false; nextTryHint: NextTryHint };
+export type FailResult = { passed: false; nextTryHint: NextTryHint };
+export type Result = { passed: true } | FailResult;
 
 export interface ScheduleSpecification {
   /**
-   * 
+   *
    * @param table the whole table
    * @param cellsOnSameDay cells on the same day as `currentCell`, including `currentCell`
    * @param currentCell the currently modified cell
    */
-  check(table: Table, cellsOnSameDay: Array<ScheduleItem>, currentCell: ScheduleItem): Result | boolean;
+  check(
+    table: Table,
+    cellsOnSameDay: Array<ScheduleItem>,
+    currentCell: ScheduleItem,
+  ): Result | boolean;
 }
