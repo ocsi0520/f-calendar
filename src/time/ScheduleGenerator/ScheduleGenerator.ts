@@ -55,8 +55,9 @@ export class ScheduleGenerator {
   private generateFinishedTable(table: Table): Table {
     let trialCounter = 0;
     const specManager = this.getSpecificationManager();
-    // for next variation
-    if (this.isTableDone(table)) this.tableStepper.step(table, specManager);
+
+    if (this.isTableDone(table)) this.tableStepper.startNextVariation(table);
+
     while (!this.isTableDone(table) && !this.isImpossibleToFinish(table)) {
       if (trialCounter % 10_000_000 === 0) console.log(`counter: ${trialCounter}`);
       this.tableStepper.step(table, specManager);
