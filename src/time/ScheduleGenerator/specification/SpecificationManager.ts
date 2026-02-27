@@ -1,9 +1,6 @@
 import { Result, ScheduleSpecification } from './specification';
 import { ScheduleItem, Table } from '../Table';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
-import { sessionGranularityInMinutes } from '../../session-span';
-
-type FailResult = Result & { passed: false };
 
 export class SpecificationManager {
   /**
@@ -19,8 +16,16 @@ export class SpecificationManager {
   ) {}
 
   public checkSpecifications(table: Table): Result {
-    const failedResult = this.getFirstFailedResult(table);
-    return failedResult || { passed: true };
+    // from table, we can get the current cell, day and whole week later
+    const currentCell = this.getCurrentCell(table);
+    const cellsOnSameDay = this.getCellsWithSameDay(table, currentCell);
+
+    for (let spec of this.allSpecifications) {
+      const result = this.getResult(spec.check(table, cellsOnSameDay, currentCell), currentCell);
+      if (!result.passed) return result;
+    }
+
+    return { passed: true };
   }
 
   private getCurrentCell(table: Table): ScheduleItem {
@@ -34,19 +39,6 @@ export class SpecificationManager {
     );
   }
 
-  private getFirstFailedResult(table: Table): FailResult | null {
-    // from table, we can get the current cell, day and whole week later
-    const currentCell = this.getCurrentCell(table);
-    const cellsOnSameDay = this.getCellsWithSameDay(table, currentCell);
-
-    for (let spec of this.allSpecifications) {
-      const result = this.getResult(spec.check(table, cellsOnSameDay, currentCell), currentCell);
-      if (!result.passed) return result;
-    }
-
-    return null;
-  }
-
   // TODO: later on delete this one
   private getResult(
     result: Result | boolean,
@@ -56,10 +48,11 @@ export class SpecificationManager {
 
     if (result) return { passed: true };
 
-    const shiftedByGranularity = this.timeIntervalManager.shiftInterval(
-      currentInterval,
-      sessionGranularityInMinutes,
-    );
-    return { passed: false, nextTryHint: { firstValidInterval: shiftedByGranularity } };
+    return {
+      passed: false,
+      nextTryHint: {
+        firstValidInterval: this.timeIntervalManager.shiftByGranularity(currentInterval),
+      },
+    };
   }
 }
