@@ -21,6 +21,8 @@ export class TableStepper {
   }
   private moveForward(table: Table, specManager: SpecificationManager): void {
     this.registerClientToCurrentCell(table);
+    // TODO: if(!result.passed) { revertLastReg(table) } this.clientStepper.step(table, result)
+    // so the revert logic is still here, but the step itself is moved into clientStepper
     if (this.checkSpecifications(table, specManager)) {
       this.commitLastRegistration(table);
     } else {
