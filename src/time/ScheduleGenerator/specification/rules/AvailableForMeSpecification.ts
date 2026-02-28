@@ -1,10 +1,10 @@
 import { MyTimeService } from '../../../../client/my-time.service';
 import { WeekSchedule } from '../../../Schedule';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
-import { ScheduleItem, Table } from '../../Table';
+import { ScheduleCell, Table } from '../../Table';
 import { ScheduleSpecification } from '../specification';
 
-// TODO: unnecessary if ScheduleItemsNarrower is used
+// TODO: unnecessary if ScheduleCellsNarrower is used
 export class AvailableForMe implements ScheduleSpecification {
   private mySchedule: WeekSchedule;
   constructor(
@@ -15,8 +15,8 @@ export class AvailableForMe implements ScheduleSpecification {
   }
   public check(
     _table: Table,
-    _cellsOnSameDay: Array<ScheduleItem>,
-    currentCell: ScheduleItem,
+    _cellsOnSameDay: Array<ScheduleCell>,
+    currentCell: ScheduleCell,
   ): boolean {
     return this.timeIntervalManager.isIntervalWithinSchedule(
       currentCell.timeInterval,

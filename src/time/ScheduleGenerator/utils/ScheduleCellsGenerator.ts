@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ScheduleItem } from '../Table';
+import { ScheduleCell } from '../Table';
 import { DayNumber, dayNumbers } from '../../TimeInterval/TimeInterval-constants';
 import { isSameInterval, TimeInterval } from '../../TimeInterval/TimeInterval';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
@@ -7,15 +7,15 @@ import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 @Injectable({
   providedIn: 'root',
 })
-export class ScheduleItemsGenerator {
+export class ScheduleCellsGenerator {
   constructor(private timeIntervalManager: TimeIntervalManager) {}
 
-  public generateAllPossibleScheduleItems(): Array<ScheduleItem> {
-    return dayNumbers.map(this.generateAllPossibleScheduleItemsFor.bind(this)).flat(1);
+  public generateAllPossibleScheduleCells(): Array<ScheduleCell> {
+    return dayNumbers.map(this.generateAllPossibleScheduleCellsFor.bind(this)).flat(1);
   }
 
-  private generateAllPossibleScheduleItemsFor(dayNumber: DayNumber): Array<ScheduleItem> {
-    const result: Array<ScheduleItem> = [];
+  private generateAllPossibleScheduleCellsFor(dayNumber: DayNumber): Array<ScheduleCell> {
+    const result: Array<ScheduleCell> = [];
     let timeInterval: TimeInterval = {
       dayNumber,
       start: [7, 0],

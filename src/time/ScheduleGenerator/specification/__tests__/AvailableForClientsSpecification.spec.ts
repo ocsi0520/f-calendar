@@ -36,7 +36,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     joinedAt: [],
   });
 
-  it('returns true when there are no occupied schedule items', () => {
+  it('returns true when there are no occupied schedule cells', () => {
     const client = createClient(1, [{ dayNumber: 1, start: [7, 0], end: [12, 0] }]);
     const table = makeTable(
       [
@@ -49,7 +49,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-  it('returns true when all occupied items fall within all clients schedules', () => {
+  it('returns true when all occupied cells fall within all clients schedules', () => {
     const client1 = createClient(1, [{ dayNumber: 1, start: [7, 0], end: [12, 0] }]);
     const client2 = createClient(2, [{ dayNumber: 2, start: [8, 0], end: [18, 0] }]);
     const table = makeTable(
@@ -61,11 +61,11 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     );
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = table.currentClientIndex = 1;
+    table.currentScheduleCellIndex = table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-  it('returns false when an occupied item does not fall within a clients schedule', () => {
+  it('returns false when an occupied cell does not fall within a clients schedule', () => {
     const client = createClient(1, [{ dayNumber: 1, start: [9, 0], end: [11, 0] }]);
     const table = makeTable(
       [{ timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 15] }, clientIdsInvolved: [1] }],
@@ -75,7 +75,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });
 
-  it('returns false when an occupied item extends beyond a clients schedule end time', () => {
+  it('returns false when an occupied cell extends beyond a clients schedule end time', () => {
     const client = createClient(1, [{ dayNumber: 1, start: [8, 0], end: [10, 0] }]);
     const table = makeTable(
       [{ timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [1] }],
@@ -85,7 +85,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });
 
-  it('returns false when an occupied item is on a day with no client availability', () => {
+  it('returns false when an occupied cell is on a day with no client availability', () => {
     const client = createClient(1, [{ dayNumber: 2, start: [7, 0], end: [18, 0] }]);
     const table = makeTable(
       [{ timeInterval: { dayNumber: 1, start: [8, 0], end: [10, 0] }, clientIdsInvolved: [1] }],
@@ -95,7 +95,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });
 
-  it('returns true when item exactly matches schedule boundaries', () => {
+  it('returns true when cell exactly matches schedule boundaries', () => {
     const client = createClient(1, [{ dayNumber: 1, start: [8, 0], end: [10, 0] }]);
     const table = makeTable(
       [{ timeInterval: { dayNumber: 1, start: [8, 0], end: [10, 0] }, clientIdsInvolved: [1] }],
@@ -105,7 +105,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-  it('returns true when item is at the start boundary of clients schedule', () => {
+  it('returns true when cell is at the start boundary of clients schedule', () => {
     const client = createClient(1, [{ dayNumber: 1, start: [8, 0], end: [10, 0] }]);
     const table = makeTable(
       [{ timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 0] }, clientIdsInvolved: [1] }],
@@ -115,7 +115,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-  it('returns true when item is at the end boundary of clients schedule', () => {
+  it('returns true when cell is at the end boundary of clients schedule', () => {
     const client = createClient(1, [{ dayNumber: 1, start: [8, 0], end: [10, 0] }]);
     const table = makeTable(
       [{ timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 0] }, clientIdsInvolved: [1] }],
@@ -125,7 +125,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-  it('returns true when multiple occupied items all fall within all clients schedules', () => {
+  it('returns true when multiple occupied cells all fall within all clients schedules', () => {
     const client1 = createClient(1, [{ dayNumber: 1, start: [7, 0], end: [12, 0] }]);
     const client2 = createClient(2, [{ dayNumber: 1, start: [8, 0], end: [18, 0] }]);
     const table = makeTable(
@@ -136,24 +136,24 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
       ],
       [createClientInfo(client1), createClientInfo(client2)],
     );
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 1;
+    table.currentScheduleCellIndex = 1;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 2;
+    table.currentScheduleCellIndex = 2;
     table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-  it('returns false when one client has an occupied item outside their schedule', () => {
+  it('returns false when one client has an occupied cell outside their schedule', () => {
     const client1 = createClient(1, [{ dayNumber: 1, start: [7, 0], end: [12, 0] }]);
     const client2 = createClient(2, [{ dayNumber: 1, start: [8, 0], end: [11, 30] }]);
     const table = makeTable(
@@ -165,24 +165,24 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
       [createClientInfo(client1), createClientInfo(client2)],
     );
 
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 1;
+    table.currentScheduleCellIndex = 1;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 2;
+    table.currentScheduleCellIndex = 2;
     table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });
 
-  it('returns true when item falls within one of multiple schedule intervals on the same day', () => {
+  it('returns true when cell falls within one of multiple schedule intervals on the same day', () => {
     const client = createClient(1, [
       { dayNumber: 1, start: [7, 0], end: [9, 0] },
       { dayNumber: 1, start: [10, 0], end: [12, 0] },
@@ -194,7 +194,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });
 
-  it('returns false when item starts in one interval but extends into a gap', () => {
+  it('returns false when cell starts in one interval but extends into a gap', () => {
     const client = createClient(1, [
       { dayNumber: 1, start: [7, 0], end: [9, 0] },
       { dayNumber: 1, start: [10, 0], end: [12, 0] },
@@ -207,7 +207,7 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });
 
-  it('returns true with mixed occupied and unoccupied items', () => {
+  it('returns true with mixed occupied and unoccupied cells', () => {
     const client = createClient(1, [
       { dayNumber: 1, start: [7, 0], end: [12, 0] },
       { dayNumber: 2, start: [8, 0], end: [18, 0] },
@@ -221,10 +221,10 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
       [createClientInfo(client)],
     );
 
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
-    table.currentScheduleItemIndex = 2;
+    table.currentScheduleCellIndex = 2;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
   });

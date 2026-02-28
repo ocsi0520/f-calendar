@@ -20,6 +20,4 @@ which could improve the codebase.
 
 6.) make "storage services" (MyTimeService, ClientPairService, ClientService) async, so that later on can switch to an actual BE
 
-7.) proper naming: session or schedule item or cell
-
-8.) differentiate WeekTime (daynumber, hour, minute) from DayTime (hour, minute)
+7.) differentiate WeekTime (daynumber, hour, minute) from DayTime (hour, minute)

@@ -1,20 +1,20 @@
-import { ScheduleItemsGenerator } from '../utils/ScheduleItemsGenerator';
+import { ScheduleCellsGenerator } from '../utils/ScheduleCellsGenerator';
 import { TimeManager } from '../../TimeManager';
 import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 
-describe(ScheduleItemsGenerator.name, () => {
-  let unitUnderTest: ScheduleItemsGenerator;
+describe(ScheduleCellsGenerator.name, () => {
+  let unitUnderTest: ScheduleCellsGenerator;
   let timeManager: TimeManager;
   let primitiveMapper: TimeIntervalPrimitiveMapper;
 
   beforeEach(() => {
     timeManager = new TimeManager();
-    unitUnderTest = new ScheduleItemsGenerator(new TimeIntervalManager(timeManager));
+    unitUnderTest = new ScheduleCellsGenerator(new TimeIntervalManager(timeManager));
     primitiveMapper = new TimeIntervalPrimitiveMapper();
   });
 
-  const allItemsInStringFormat = [
+  const allCellsInStringFormat = [
     '1T07:00_-_08:15',
     '1T07:15_-_08:30',
     '1T07:30_-_08:45',
@@ -387,12 +387,12 @@ describe(ScheduleItemsGenerator.name, () => {
     '7T19:45_-_21:00',
   ];
 
-  it('should generate all items', () => {
-    const result = unitUnderTest.generateAllPossibleScheduleItems();
+  it('should generate all cells', () => {
+    const result = unitUnderTest.generateAllPossibleScheduleCells();
     for (let i = 0; i < result.length; i++) {
       expect(result[i].clientIdsInvolved).empty;
       expect(primitiveMapper.mapToString(result[i].timeInterval)).toEqual(
-        allItemsInStringFormat[i],
+        allCellsInStringFormat[i],
       );
     }
   });

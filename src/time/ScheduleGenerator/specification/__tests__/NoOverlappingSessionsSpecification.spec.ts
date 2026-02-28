@@ -17,18 +17,18 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
 
   const acceptAllNonEmpty = (table: Table): void => {
     for (
-      table.currentScheduleItemIndex = 0;
-      table.currentScheduleItemIndex < table.scheduleItems.length;
-      table.currentScheduleItemIndex++
+      table.currentScheduleCellIndex = 0;
+      table.currentScheduleCellIndex < table.scheduleCells.length;
+      table.currentScheduleCellIndex++
     ) {
       const isEmptyCell =
-        table.scheduleItems[table.currentScheduleItemIndex].clientIdsInvolved.length === 0;
+        table.scheduleCells[table.currentScheduleCellIndex].clientIdsInvolved.length === 0;
       if (isEmptyCell) continue;
       expect(unitUnderTest.check(...selectForSpec(table))).toEqual(createExpectedResult(true));
     }
   };
 
-  it('returns true when no items are occupied (empty clientIdsInvolved)', () => {
+  it('returns true when no cells are occupied (empty clientIdsInvolved)', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [] },
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 15] }, clientIdsInvolved: [] },
@@ -37,7 +37,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true when two items are adjacent', () => {
+  it('returns true when two cells are adjacent', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [] },
@@ -50,7 +50,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true when occupied items do not overlap on the same day', () => {
+  it('returns true when occupied cells do not overlap on the same day', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [2] },
@@ -60,7 +60,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true when occupied items are exactly adjacent (no overlap)', () => {
+  it('returns true when occupied cells are exactly adjacent (no overlap)', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [2] },
@@ -69,7 +69,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true when occupied items are on different days', () => {
+  it('returns true when occupied cells are on different days', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 2, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [1] },
@@ -78,7 +78,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true when middle item is on different day', () => {
+  it('returns true when middle cell is on different day', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 15], end: [8, 30] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 2, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [2] },
@@ -88,24 +88,24 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns false when occupied items overlap: first starts before second ends', () => {
+  it('returns false when occupied cells overlap: first starts before second ends', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [8, 30], end: [9, 45] }, clientIdsInvolved: [2] },
     ]);
 
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
       createExpectedResult({ dayNumber: 1, start: [9, 45], end: [11, 0] }),
     );
 
-    table.currentScheduleItemIndex = 1;
+    table.currentScheduleCellIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
       createExpectedResult({ dayNumber: 1, start: [8, 45], end: [10, 0] }),
     );
   });
 
-  it('returns true with mixed occupied and unoccupied items when no overlaps exist', () => {
+  it('returns true with mixed occupied and unoccupied cells when no overlaps exist', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 15], end: [8, 30] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [8, 15], end: [9, 30] }, clientIdsInvolved: [] },
@@ -115,25 +115,25 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns false when occupied items overlap even with unoccupied items between them', () => {
+  it('returns false when occupied cells overlap even with unoccupied cells between them', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [8, 15], end: [9, 30] }, clientIdsInvolved: [] },
       { timeInterval: { dayNumber: 1, start: [8, 30], end: [9, 45] }, clientIdsInvolved: [2] },
     ]);
 
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
       createExpectedResult({ dayNumber: 1, start: [9, 45], end: [11, 0] }),
     );
 
-    table.currentScheduleItemIndex = 2;
+    table.currentScheduleCellIndex = 2;
     expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
       createExpectedResult({ dayNumber: 1, start: [9, 0], end: [10, 15] }),
     );
   });
 
-  it('returns true when only one item is occupied', () => {
+  it('returns true when only one cell is occupied', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [] },
@@ -142,7 +142,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true for multiple non-overlapping occupied items across multiple days', () => {
+  it('returns true for multiple non-overlapping occupied cells across multiple days', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [2] },
@@ -153,7 +153,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true for multiple non-overlapping occupied items across multiple days', () => {
+  it('returns true for multiple non-overlapping occupied cells across multiple days', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [2] },
@@ -179,7 +179,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
       createExpectedResult({ dayNumber: 1, start: [8, 45], end: [10, 0] }),
       null,
       null,
-      // first it finds the 0-indexed item, so it'll calculate from that one
+      // first it finds the 0-indexed cell, so it'll calculate from that one
       createExpectedResult({ dayNumber: 1, start: [8, 45], end: [10, 0] }),
       null,
       null,
@@ -197,7 +197,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     ];
     for (let i = 0; i < expectedResults.length; i++) {
       if (expectedResults[i] === null) continue;
-      table.currentScheduleItemIndex = i;
+      table.currentScheduleCellIndex = i;
       expect(unitUnderTest.check(...selectForSpec(table))).toEqual(expectedResults[i]);
     }
   });

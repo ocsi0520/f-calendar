@@ -1,7 +1,7 @@
 import { TimeInterval } from '../../../TimeInterval/TimeInterval';
 import { DayNumber } from '../../../TimeInterval/TimeInterval-constants';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
-import { ScheduleItem, Table } from '../../Table';
+import { ScheduleCell, Table } from '../../Table';
 import { MorningChecker } from './MorningChecker';
 import { Result, ScheduleSpecification } from '../specification';
 
@@ -13,11 +13,11 @@ export class LunchSpecification implements ScheduleSpecification {
   ) {}
   public check(
     _table: Table,
-    sameDayCells: Array<ScheduleItem>,
-    currentCell: ScheduleItem,
+    sameDayCells: Array<ScheduleCell>,
+    currentCell: ScheduleCell,
   ): Result {
     const occupiedSameDayCells = sameDayCells.filter(
-      (scheduleItem) => scheduleItem.clientIdsInvolved.length,
+      (scheduleCell) => scheduleCell.clientIdsInvolved.length,
     );
     if (this.hasRoomForLunch(occupiedSameDayCells)) return { passed: true };
 
@@ -30,14 +30,14 @@ export class LunchSpecification implements ScheduleSpecification {
     };
   }
 
-  private hasRoomForLunch(occupiedDayCells: ScheduleItem[]): boolean {
+  private hasRoomForLunch(occupiedDayCells: ScheduleCell[]): boolean {
     if (occupiedDayCells.length < 4) return true;
 
     return this.hasRoomForLunchWithPeriod(occupiedDayCells, this.getLunchPeriod(occupiedDayCells));
   }
 
   private hasRoomForLunchWithPeriod(
-    occupiedDayCells: ScheduleItem[],
+    occupiedDayCells: ScheduleCell[],
     lunchPeriod: TimeInterval,
   ): boolean {
     const sessionsWithinLunchPeriod = occupiedDayCells.filter((cell) =>
@@ -74,7 +74,7 @@ export class LunchSpecification implements ScheduleSpecification {
     return !neitherEarlierNorLaterLunchIsPossible;
   }
 
-  private getLunchPeriod([firstCell]: ScheduleItem[]): TimeInterval {
+  private getLunchPeriod([firstCell]: ScheduleCell[]): TimeInterval {
     const dayNumber: DayNumber = firstCell.timeInterval.dayNumber;
     const laterLunchWhenBreakfast: TimeInterval = {
       dayNumber,

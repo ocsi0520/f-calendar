@@ -1,12 +1,12 @@
-import { ClientInfo, ScheduleItem, Table } from '../../Table';
+import { ClientInfo, ScheduleCell, Table } from '../../Table';
 import { ScheduleSpecification } from '../specification';
 
 // TODO: delete
 export class NoSameDayForSameClientSpecification implements ScheduleSpecification {
   public check(
     table: Table,
-    cellsOnSameDay: Array<ScheduleItem>,
-    _currentCell: ScheduleItem,
+    cellsOnSameDay: Array<ScheduleCell>,
+    _currentCell: ScheduleCell,
   ): boolean {
     const currentClientId = this.getCurrentClientInfo(table).client.id;
     let counterOfSameClientId = 0;

@@ -69,7 +69,7 @@ describe(LunchSpecification.name, () => {
       { timeInterval: { dayNumber: 1, start: [14, 0], end: [15, 15] }, clientIdsInvolved: [3] },
       { timeInterval: { dayNumber: 1, start: [16, 15], end: [17, 30] }, clientIdsInvolved: [4] },
     ]);
-    table.currentScheduleItemIndex = 2;
+    table.currentScheduleCellIndex = 2;
 
     expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
       createExpectedResult({ dayNumber: 1, start: [14, 15], end: [15, 30] }),
@@ -84,7 +84,7 @@ describe(LunchSpecification.name, () => {
       { timeInterval: { dayNumber: 1, start: [14, 45], end: [16, 0] }, clientIdsInvolved: [3] },
       { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 15] }, clientIdsInvolved: [4] },
     ]);
-    table.currentScheduleItemIndex = 2;
+    table.currentScheduleCellIndex = 2;
 
     // For morning sessions lunch period is 13:30-15:00; sessions at 13:45 and 14:45 overlap the adjusted window
     expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
@@ -113,7 +113,7 @@ describe(LunchSpecification.name, () => {
         { timeInterval: { dayNumber: 1, start: [13, 0], end: [14, 15] }, clientIdsInvolved: [3] },
         { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 15] }, clientIdsInvolved: [4] },
       ]);
-      table.currentScheduleItemIndex = 2;
+      table.currentScheduleCellIndex = 2;
 
       expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
         createExpectedResult({ dayNumber: 1, start: [13, 15], end: [14, 30] }),
@@ -138,7 +138,7 @@ describe(LunchSpecification.name, () => {
         { timeInterval: { dayNumber: 1, start: [14, 15], end: [15, 30] }, clientIdsInvolved: [3] },
         { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 15] }, clientIdsInvolved: [4] },
       ]);
-      table.currentScheduleItemIndex = 2;
+      table.currentScheduleCellIndex = 2;
 
       expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
         createExpectedResult({ dayNumber: 1, start: [14, 30], end: [15, 45] }),
@@ -166,7 +166,7 @@ describe(LunchSpecification.name, () => {
         { timeInterval: { dayNumber: 1, start: [12, 30], end: [13, 45] }, clientIdsInvolved: [3] },
         { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 15] }, clientIdsInvolved: [4] },
       ]);
-      table.currentScheduleItemIndex = 2;
+      table.currentScheduleCellIndex = 2;
 
       expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
         createExpectedResult({ dayNumber: 1, start: [12, 45], end: [14, 0] }),
@@ -191,7 +191,7 @@ describe(LunchSpecification.name, () => {
         { timeInterval: { dayNumber: 1, start: [13, 45], end: [15, 0] }, clientIdsInvolved: [3] },
         { timeInterval: { dayNumber: 1, start: [16, 0], end: [17, 0] }, clientIdsInvolved: [4] },
       ]);
-      table.currentScheduleItemIndex = 2;
+      table.currentScheduleCellIndex = 2;
 
       expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
         createExpectedResult({ dayNumber: 1, start: [14, 0], end: [15, 15] }),

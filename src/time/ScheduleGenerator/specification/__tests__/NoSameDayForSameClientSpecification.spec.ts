@@ -82,19 +82,19 @@ describe(methodName(NoSameDayForSameClientSpecification, 'check'), () => {
       ],
       createClientInfos(1, 2),
     );
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 1;
+    table.currentScheduleCellIndex = 1;
     table.currentClientIndex = 1;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(true);
 
-    table.currentScheduleItemIndex = 2;
+    table.currentScheduleCellIndex = 2;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
 
-    table.currentScheduleItemIndex = 3;
+    table.currentScheduleCellIndex = 3;
     table.currentClientIndex = 0;
     expect(unitUnderTest.check(...selectForSpec(table))).toBe(false);
   });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ClientInfo, ScheduleItem, Table } from '../Table';
+import { ClientInfo, ScheduleCell, Table } from '../Table';
 import { SpecificationManager } from '../specification/SpecificationManager';
 import { ClientStepper } from './ClientStepper';
 
@@ -20,7 +20,7 @@ export class TableStepper {
   }
 
   private moveForward(table: Table, specManager: SpecificationManager): void {
-    const currentCell = table.scheduleItems[table.currentScheduleItemIndex];
+    const currentCell = table.scheduleCells[table.currentScheduleCellIndex];
     const currentClientInfo = table.clientInfos[table.currentClientIndex];
 
     this.registerClientToCurrentCell(table, currentClientInfo, currentCell);
@@ -32,13 +32,13 @@ export class TableStepper {
   private registerClientToCurrentCell(
     table: Table,
     currentClientInfo: ClientInfo,
-    currentCell: ScheduleItem,
+    currentCell: ScheduleCell,
   ) {
     currentCell.clientIdsInvolved.push(currentClientInfo.client.id);
-    currentClientInfo.joinedAt.push(table.currentScheduleItemIndex);
+    currentClientInfo.joinedAt.push(table.currentScheduleCellIndex);
   }
 
-  private revertLastRegistration(currentClientInfo: ClientInfo, currentCell: ScheduleItem) {
+  private revertLastRegistration(currentClientInfo: ClientInfo, currentCell: ScheduleCell) {
     currentCell.clientIdsInvolved.splice(-1, 1);
     currentClientInfo.joinedAt.splice(-1, 1);
   }

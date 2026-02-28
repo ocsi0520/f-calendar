@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { WeekSchedule } from '../../Schedule';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
-import { ScheduleItem } from '../Table';
+import { ScheduleCell } from '../Table';
 import { Client } from '../../../client/Client';
 import { groupBy } from '../../../utils/groupby';
 import { TimeIntervalDeduplicator } from './TimeIntervalDeduplicator';
 import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 
-// TODO: refactor, and make ScheduleItemsGenerator TimeIntervalGenerator
+// TODO: refactor, and make ScheduleCellsGenerator TimeIntervalGenerator
 // TODO: test
 @Injectable({
   providedIn: 'root',
 })
-export class ScheduleItemsNarrower {
+export class ScheduleCellsNarrower {
   constructor(
     private timeIntervalManager: TimeIntervalManager,
     private deduplicator: TimeIntervalDeduplicator,
@@ -20,12 +20,12 @@ export class ScheduleItemsNarrower {
   ) {}
 
   public getSuitableCells(
-    allPossibleCells: Array<ScheduleItem>,
+    allPossibleCells: Array<ScheduleCell>,
     clientsInvolved: Array<Client>,
     myTime: WeekSchedule,
-  ): Array<ScheduleItem> {
+  ): Array<ScheduleCell> {
     const cellsForMe = this.getAllPossibleCellsForMe(allPossibleCells, myTime);
-    const cellsToMakeUnique: Array<ScheduleItem> = [];
+    const cellsToMakeUnique: Array<ScheduleCell> = [];
     for (let client of clientsInvolved) {
       const possibleCellsForClient = this.getAllPossibleCellsForClient(cellsForMe, client);
       this.validateClientCells(client, possibleCellsForClient);
@@ -35,27 +35,27 @@ export class ScheduleItemsNarrower {
   }
 
   private getAllPossibleCellsForMe(
-    cells: Array<ScheduleItem>,
+    cells: Array<ScheduleCell>,
     myTime: WeekSchedule,
-  ): Array<ScheduleItem> {
+  ): Array<ScheduleCell> {
     return cells.filter((cell) => this.withinSchedule(cell, myTime));
   }
 
   private getAllPossibleCellsForClient(
-    cellsSuitableForMe: Array<ScheduleItem>,
+    cellsSuitableForMe: Array<ScheduleCell>,
     client: Client,
-  ): Array<ScheduleItem> {
+  ): Array<ScheduleCell> {
     return cellsSuitableForMe.filter((cell) => this.withinSchedule(cell, client.schedule));
   }
 
-  private withinSchedule(item: ScheduleItem, schedule: WeekSchedule): boolean {
-    return this.timeIntervalManager.isIntervalWithinSchedule(item.timeInterval, schedule);
+  private withinSchedule(cell: ScheduleCell, schedule: WeekSchedule): boolean {
+    return this.timeIntervalManager.isIntervalWithinSchedule(cell.timeInterval, schedule);
   }
 
-  private validateClientCells(client: Client, possibleCellsForClient: ScheduleItem[]): void {
+  private validateClientCells(client: Client, possibleCellsForClient: ScheduleCell[]): void {
     const clientCellsGroupedByDay = groupBy(
       possibleCellsForClient,
-      (item) => item.timeInterval.dayNumber,
+      (cell) => cell.timeInterval.dayNumber,
     );
     const dayNumberWithPossibleSessions = Object.keys(clientCellsGroupedByDay);
     const hasDayForAllNeededSessions =
@@ -66,8 +66,8 @@ export class ScheduleItemsNarrower {
       );
   }
 
-  private makeCellsUnique(cells: Array<ScheduleItem>): Array<ScheduleItem> {
-    const deDuplicatedCells: Array<ScheduleItem> = this.deduplicator
+  private makeCellsUnique(cells: Array<ScheduleCell>): Array<ScheduleCell> {
+    const deDuplicatedCells: Array<ScheduleCell> = this.deduplicator
       .deDuplicate(cells.map((cell) => cell.timeInterval))
       .map((timeInterval) => ({
         timeInterval,

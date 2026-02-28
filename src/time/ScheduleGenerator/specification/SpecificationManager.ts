@@ -1,5 +1,5 @@
 import { Result, ScheduleSpecification } from './specification';
-import { ScheduleItem, Table } from '../Table';
+import { ScheduleCell, Table } from '../Table';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 
 export class SpecificationManager {
@@ -28,13 +28,13 @@ export class SpecificationManager {
     return { passed: true };
   }
 
-  private getCurrentCell(table: Table): ScheduleItem {
-    return table.scheduleItems[table.currentScheduleItemIndex];
+  private getCurrentCell(table: Table): ScheduleCell {
+    return table.scheduleCells[table.currentScheduleCellIndex];
   }
 
   // TODO: this could be cached in a simple array i.e. at construction or for the first time
-  private getCellsWithSameDay(table: Table, currentCell: ScheduleItem): Array<ScheduleItem> {
-    return table.scheduleItems.filter(
+  private getCellsWithSameDay(table: Table, currentCell: ScheduleCell): Array<ScheduleCell> {
+    return table.scheduleCells.filter(
       (cell) => cell.timeInterval.dayNumber === currentCell.timeInterval.dayNumber,
     );
   }
@@ -42,7 +42,7 @@ export class SpecificationManager {
   // TODO: later on delete this one
   private getResult(
     result: Result | boolean,
-    { timeInterval: currentInterval }: ScheduleItem,
+    { timeInterval: currentInterval }: ScheduleCell,
   ): Result {
     if (typeof result !== 'boolean') return result;
 

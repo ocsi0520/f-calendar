@@ -1,19 +1,19 @@
 import { TimeInterval } from '../../../TimeInterval/TimeInterval';
-import { ClientInfo, ScheduleItem, Table } from '../../Table';
+import { ClientInfo, ScheduleCell, Table } from '../../Table';
 import { Result, ScheduleSpecification } from '../specification';
 
 export const makeTable = (
-  scheduleItems: Array<ScheduleItem>,
+  scheduleCells: Array<ScheduleCell>,
   clientInfos: Array<ClientInfo> = [],
 ): Table => ({
   clientInfos,
   currentClientIndex: 0,
-  scheduleItems,
-  currentScheduleItemIndex: 0,
+  scheduleCells,
+  currentScheduleCellIndex: 0,
 });
 export const selectForSpec = (table: Table): Parameters<ScheduleSpecification['check']> => {
-  const currentCell = table.scheduleItems[table.currentScheduleItemIndex];
-  const sameDayCells = table.scheduleItems.filter(
+  const currentCell = table.scheduleCells[table.currentScheduleCellIndex];
+  const sameDayCells = table.scheduleCells.filter(
     (cell) => cell.timeInterval.dayNumber === currentCell.timeInterval.dayNumber,
   );
   return [table, sameDayCells, currentCell];

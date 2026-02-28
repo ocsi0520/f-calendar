@@ -37,7 +37,7 @@ describe('BreakfastSpecification.check', () => {
       { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 15] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [9, 45], end: [11, 0] }, clientIdsInvolved: [2] },
     ]);
-    table.currentScheduleItemIndex = 1;
+    table.currentScheduleCellIndex = 1;
 
     expect(unitUnderTest.check(...selectForSpec(table))).toEqual(
       createExpectedResult({ dayNumber: 1, start: [10, 0], end: [11, 15] }),

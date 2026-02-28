@@ -1,4 +1,4 @@
-import { ScheduleItem, Table } from '../../Table';
+import { ScheduleCell, Table } from '../../Table';
 import { MorningChecker } from './MorningChecker';
 import { Result, ScheduleSpecification } from '../specification';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
@@ -11,11 +11,11 @@ export class BreakfastSpecification implements ScheduleSpecification {
   ) {}
   public check(
     _table: Table,
-    sameDayCells: Array<ScheduleItem>,
-    currentCell: ScheduleItem,
+    sameDayCells: Array<ScheduleCell>,
+    currentCell: ScheduleCell,
   ): Result {
     const occupiedDayCells = sameDayCells.filter(
-      (scheduleItem) => scheduleItem.clientIdsInvolved.length,
+      (scheduleCell) => scheduleCell.clientIdsInvolved.length,
     );
     const needBreakfastRoom = this.morningChecker.isMorningSession(occupiedDayCells[0]);
     if (!needBreakfastRoom) return { passed: true };
@@ -30,7 +30,7 @@ export class BreakfastSpecification implements ScheduleSpecification {
     };
   }
 
-  private hasRoomForBreakfast(dayCells: ScheduleItem[]): boolean {
+  private hasRoomForBreakfast(dayCells: ScheduleCell[]): boolean {
     if (dayCells.length < 2) return true;
     const [first, second] = dayCells.slice(0, 2);
     return (

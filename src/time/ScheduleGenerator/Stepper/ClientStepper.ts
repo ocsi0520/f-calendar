@@ -9,7 +9,7 @@ export class ClientStepper {
   constructor(private timeIntervalManager: TimeIntervalManager) {}
 
   public hasReachedEndWithClient(table: Table): boolean {
-    return table.currentScheduleItemIndex >= table.scheduleItems.length;
+    return table.currentScheduleCellIndex >= table.scheduleCells.length;
   }
 
   // only when client is registered succesfully or revoked last registration
@@ -46,13 +46,13 @@ export class ClientStepper {
     const currentClientInfo = this.getCurrentClientInfo(table);
     const lastJoinedCellIndex = currentClientInfo.joinedAt.at(-1)!;
 
-    const lastJoinedCell = table.scheduleItems[lastJoinedCellIndex];
+    const lastJoinedCell = table.scheduleCells[lastJoinedCellIndex];
     lastJoinedCell.clientIdsInvolved = lastJoinedCell.clientIdsInvolved.filter(
       (clientId) => clientId !== currentClientInfo.client.id,
     );
 
     currentClientInfo.joinedAt.splice(-1, 1);
-    table.currentScheduleItemIndex = lastJoinedCellIndex + 1;
+    table.currentScheduleCellIndex = lastJoinedCellIndex + 1;
   }
 
   private stepWithCurrentClient(
@@ -60,7 +60,7 @@ export class ClientStepper {
     currentClientInfo: ClientInfo,
     checkResult: Result,
   ): void {
-    table.currentScheduleItemIndex = this.findNextCellIndexForClient(
+    table.currentScheduleCellIndex = this.findNextCellIndexForClient(
       table,
       currentClientInfo,
       checkResult,
@@ -68,7 +68,7 @@ export class ClientStepper {
   }
 
   private switchToNextClient(table: Table): void {
-    table.currentScheduleItemIndex = 0;
+    table.currentScheduleCellIndex = 0;
     table.currentClientIndex++;
   }
 
@@ -84,12 +84,12 @@ export class ClientStepper {
   private getFirstIndexOfCellOnNextDay(table: Table, currentClientInfo: ClientInfo): number {
     const lastCommitedCellIndex = currentClientInfo.joinedAt.at(-1)!;
     const dayNumberOflastCommitedCell =
-      table.scheduleItems[lastCommitedCellIndex].timeInterval.dayNumber;
+      table.scheduleCells[lastCommitedCellIndex].timeInterval.dayNumber;
 
-    for (let i = lastCommitedCellIndex + 1; i < table.scheduleItems.length; i++) {
-      if (table.scheduleItems[i].timeInterval.dayNumber > dayNumberOflastCommitedCell) return i;
+    for (let i = lastCommitedCellIndex + 1; i < table.scheduleCells.length; i++) {
+      if (table.scheduleCells[i].timeInterval.dayNumber > dayNumberOflastCommitedCell) return i;
     }
-    return table.scheduleItems.length;
+    return table.scheduleCells.length;
   }
 
   private getFirstIndexWhichSatisfiesHint(
@@ -99,12 +99,12 @@ export class ClientStepper {
   ): number {
     const hintInterval = checkResult.nextTryHint.firstValidInterval;
 
-    for (let i = table.currentScheduleItemIndex + 1; i < table.scheduleItems.length; i++) {
-      const cell = table.scheduleItems[i];
+    for (let i = table.currentScheduleCellIndex + 1; i < table.scheduleCells.length; i++) {
+      const cell = table.scheduleCells[i];
       if (this.timeIntervalManager.isIntervalAtOrAfterSecond(cell.timeInterval, hintInterval))
         return i;
     }
-    return table.scheduleItems.length;
+    return table.scheduleCells.length;
   }
 
   private getCurrentClientInfo(table: Table): ClientInfo {

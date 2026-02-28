@@ -1,6 +1,6 @@
 import { ClientPairService } from '../../../../client/client-pair.service';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
-import { ScheduleItem, Table } from '../../Table';
+import { ScheduleCell, Table } from '../../Table';
 import { Result, ScheduleSpecification } from '../specification';
 
 export class ProperPairsSpecification implements ScheduleSpecification {
@@ -10,8 +10,8 @@ export class ProperPairsSpecification implements ScheduleSpecification {
   ) {}
   public check(
     _table: Table,
-    _cellsOnSameDay: Array<ScheduleItem>,
-    currentCell: ScheduleItem,
+    _cellsOnSameDay: Array<ScheduleCell>,
+    currentCell: ScheduleCell,
   ): Result {
     const { clientIdsInvolved } = currentCell;
     if (clientIdsInvolved.length < 2) return this.getPassedResult();
@@ -22,7 +22,7 @@ export class ProperPairsSpecification implements ScheduleSpecification {
     else return this.getNonPassedResult(currentCell);
   }
 
-  private getNonPassedResult(currentCell: ScheduleItem): Result {
+  private getNonPassedResult(currentCell: ScheduleCell): Result {
     const nextPossibleInterval = this.timeIntervalManager.shiftBySessionLength(
       currentCell.timeInterval,
     );

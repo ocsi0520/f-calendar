@@ -1,19 +1,19 @@
 import { Client } from '../../client/Client';
 import { TimeInterval } from '../TimeInterval/TimeInterval';
 
-export type ScheduleItem = {
+export type ScheduleCell = {
   timeInterval: TimeInterval;
   clientIdsInvolved: Array<Client['id']>;
 };
 
 export type ClientInfo = {
   client: Client;
-  joinedAt: number[]; // the indexes within ScheduleItems
+  joinedAt: number[]; // the indexes within ScheduleCells
 };
 
 export type Table = {
   clientInfos: Array<ClientInfo>;
   currentClientIndex: number;
-  scheduleItems: Array<ScheduleItem>;
-  currentScheduleItemIndex: number;
+  scheduleCells: Array<ScheduleCell>;
+  currentScheduleCellIndex: number;
 };

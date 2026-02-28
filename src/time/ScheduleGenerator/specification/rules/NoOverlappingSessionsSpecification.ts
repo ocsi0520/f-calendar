@@ -1,7 +1,7 @@
 import { sessionGranularityInMinutes, sessionSpan } from '../../../session-span';
 import { TimeInterval } from '../../../TimeInterval/TimeInterval';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
-import { ScheduleItem, Table } from '../../Table';
+import { ScheduleCell, Table } from '../../Table';
 import { Result, ScheduleSpecification } from '../specification';
 
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
@@ -9,8 +9,8 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
 
   public check(
     _table: Table,
-    sameDayCells: Array<ScheduleItem>,
-    currentCell: ScheduleItem,
+    sameDayCells: Array<ScheduleCell>,
+    currentCell: ScheduleCell,
   ): Result {
     const [firstIndexToCheck, lastIndexToCheck] = this.getMeaningfulIndexes(
       sameDayCells,
@@ -34,13 +34,13 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     return { passed: true };
   }
 
-  private isSameOrNonOccupied(currentCell: ScheduleItem, cellToExamine: ScheduleItem): boolean {
+  private isSameOrNonOccupied(currentCell: ScheduleCell, cellToExamine: ScheduleCell): boolean {
     return currentCell === cellToExamine || cellToExamine.clientIdsInvolved.length === 0;
   }
 
   private getMeaningfulIndexes(
-    sameDayCells: Array<ScheduleItem>,
-    currentCell: ScheduleItem,
+    sameDayCells: Array<ScheduleCell>,
+    currentCell: ScheduleCell,
   ): [firstIndexToCheck: number, lastIndexToCheck: number] {
     const indexOfCurrentCell = sameDayCells.indexOf(currentCell);
     // basically 5
@@ -56,7 +56,7 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     );
     return [firstIndexToCheck, lastIndexToCheck];
   }
-  private getFirstTimeIntervalRightAfter(cell: ScheduleItem): TimeInterval {
+  private getFirstTimeIntervalRightAfter(cell: ScheduleCell): TimeInterval {
     return this.timeIntervalManager.shiftBySessionLength(cell.timeInterval);
   }
 }

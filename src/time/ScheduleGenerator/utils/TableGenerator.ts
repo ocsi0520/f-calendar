@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ScheduleItemsGenerator } from './ScheduleItemsGenerator';
+import { ScheduleCellsGenerator } from './ScheduleCellsGenerator';
 import { ClientInfo, Table } from '../Table';
 import { ClientService } from '../../../client/client.service';
 import { Client } from '../../../client/Client';
 import { MyTimeService } from '../../../client/my-time.service';
-import { ScheduleItemsNarrower } from './ScheduleItemsNarrower';
+import { ScheduleCellsNarrower } from './ScheduleCellsNarrower';
 
 // TODO: test
 @Injectable({
@@ -12,16 +12,16 @@ import { ScheduleItemsNarrower } from './ScheduleItemsNarrower';
 })
 export class TableGenerator {
   constructor(
-    private scheduleItemsGenerator: ScheduleItemsGenerator,
+    private scheduleCellsGenerator: ScheduleCellsGenerator,
     private clientService: ClientService,
     private myTimeService: MyTimeService,
-    private itemsNarrower: ScheduleItemsNarrower,
+    private cellsNarrower: ScheduleCellsNarrower,
   ) {}
 
   public generateTable(): Table {
-    const allPossibleCells = this.scheduleItemsGenerator.generateAllPossibleScheduleItems();
+    const allPossibleCells = this.scheduleCellsGenerator.generateAllPossibleScheduleCells();
     const clientsInvolved = this.getAllEnabledClients();
-    const allSuitableCells = this.itemsNarrower.getSuitableCells(
+    const allSuitableCells = this.cellsNarrower.getSuitableCells(
       allPossibleCells,
       clientsInvolved,
       this.myTimeService.loadSchedule(),
@@ -29,8 +29,8 @@ export class TableGenerator {
     return {
       clientInfos: this.getAllClientInfosOf(clientsInvolved),
       currentClientIndex: 0,
-      scheduleItems: allSuitableCells,
-      currentScheduleItemIndex: 0,
+      scheduleCells: allSuitableCells,
+      currentScheduleCellIndex: 0,
     };
   }
 

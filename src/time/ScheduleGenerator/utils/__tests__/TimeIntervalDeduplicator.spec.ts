@@ -9,12 +9,12 @@ describe(TimeIntervalDeduplicator.name, () => {
     unitUnderTest = new TimeIntervalDeduplicator(new TimeIntervalPrimitiveMapper());
   });
 
-  it('should handle 0 items', () => {
+  it('should handle 0 cells', () => {
     const result = unitUnderTest.deDuplicate([]);
     expect(result).toEqual([]);
   });
 
-  it('should handle only unique items', () => {
+  it('should handle only unique cells', () => {
     const a: TimeInterval = { dayNumber: 1, start: [8, 0], end: [9, 15] };
     const b: TimeInterval = { dayNumber: 2, start: [8, 0], end: [9, 15] };
 
