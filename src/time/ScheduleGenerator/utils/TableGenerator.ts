@@ -4,7 +4,7 @@ import { ClientInfo, ScheduleCell, Table } from '../Table';
 import { ClientService } from '../../../client/client.service';
 import { Client } from '../../../client/Client';
 import { MyTimeService } from '../../../client/my-time.service';
-import { ScheduleCellsNarrower } from './ScheduleCellsNarrower';
+import { ScheduleCellIntervalsNarrower } from './ScheduleCellIntervalsNarrower';
 
 // TODO: test
 @Injectable({
@@ -15,17 +15,12 @@ export class TableGenerator {
     private scheduleCellIntervalsGenerator: ScheduleCellIntervalsGenerator,
     private clientService: ClientService,
     private myTimeService: MyTimeService,
-    private cellsNarrower: ScheduleCellsNarrower,
+    private cellIntervalsNarrower: ScheduleCellIntervalsNarrower,
   ) {}
 
   public generateTable(): Table {
-    const allPossibleCells = this.getAllPossibleCells();
     const clientsInvolved = this.getAllEnabledClients();
-    const allSuitableCells = this.cellsNarrower.getSuitableCells(
-      allPossibleCells,
-      clientsInvolved,
-      this.myTimeService.loadSchedule(),
-    );
+    const allSuitableCells = this.getAllSuitablells(clientsInvolved);
     return {
       clientInfos: this.getAllClientInfosOf(clientsInvolved),
       currentClientIndex: 0,
@@ -45,12 +40,13 @@ export class TableGenerator {
     }));
   }
 
-  private getAllPossibleCells(): Array<ScheduleCell> {
-    return this.scheduleCellIntervalsGenerator
-      .generateAllPossibleScheduleCells()
-      .map((timeInterval) => ({
-        timeInterval,
-        clientIdsInvolved: [],
-      }));
+  private getAllSuitablells(clientsInvolved: Array<Client>): Array<ScheduleCell> {
+    return this.cellIntervalsNarrower
+      .getSuitableTimeIntervals(
+        this.scheduleCellIntervalsGenerator.generateAllPossibleScheduleCells(),
+        clientsInvolved,
+        this.myTimeService.loadSchedule(),
+      )
+      .map((timeInterval) => ({ timeInterval, clientIdsInvolved: [] }));
   }
 }
