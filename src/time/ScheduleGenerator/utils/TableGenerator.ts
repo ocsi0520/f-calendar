@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ScheduleCellIntervalsGenerator } from './ScheduleCellIntervalsGenerator';
+import { ScheduleCellIntervalsGenerator } from './schedule-cell-generator/ScheduleCellIntervalsGenerator';
 import { ClientInfo, ScheduleCell, Table } from '../Table';
 import { ClientService } from '../../../client/client.service';
 import { Client } from '../../../client/Client';
 import { MyTimeService } from '../../../client/my-time.service';
-import { ScheduleCellIntervalsNarrower } from './ScheduleCellIntervalsNarrower';
+import { ScheduleCellIntervalsNarrower } from './schedule-cell-generator/ScheduleCellIntervalsNarrower';
 
 // TODO: test
 @Injectable({

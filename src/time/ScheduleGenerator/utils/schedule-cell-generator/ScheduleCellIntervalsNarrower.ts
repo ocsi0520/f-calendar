@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { WeekSchedule } from '../../Schedule';
-import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
-import { Client } from '../../../client/Client';
-import { TimeInterval } from '../../TimeInterval/TimeInterval';
+import { WeekSchedule } from '../../../Schedule';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
+import { Client } from '../../../../client/Client';
+import { TimeInterval } from '../../../TimeInterval/TimeInterval';
 
 // TODO: test
 @Injectable({

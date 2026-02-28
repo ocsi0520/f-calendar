@@ -1,7 +1,7 @@
-import { ScheduleCellIntervalsGenerator } from '../utils/ScheduleCellIntervalsGenerator';
-import { TimeManager } from '../../TimeManager';
-import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
-import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
+import { ScheduleCellIntervalsGenerator } from '../ScheduleCellIntervalsGenerator';
+import { TimeManager } from '../../../../TimeManager';
+import { TimeIntervalPrimitiveMapper } from '../../../../TimeInterval/TimeIntervalPrimitiveMapper';
+import { TimeIntervalManager } from '../../../../TimeInterval/TimeIntervalManager';
 
 describe(ScheduleCellIntervalsGenerator.name, () => {
   let unitUnderTest: ScheduleCellIntervalsGenerator;

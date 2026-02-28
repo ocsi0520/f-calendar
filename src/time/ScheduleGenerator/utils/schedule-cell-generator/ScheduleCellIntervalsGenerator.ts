@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DayNumber, dayNumbers } from '../../TimeInterval/TimeInterval-constants';
-import { isSameInterval, TimeInterval } from '../../TimeInterval/TimeInterval';
-import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
+import { DayNumber, dayNumbers } from '../../../TimeInterval/TimeInterval-constants';
+import { isSameInterval, TimeInterval } from '../../../TimeInterval/TimeInterval';
+import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 
 @Injectable({
   providedIn: 'root',
