@@ -20,6 +20,9 @@ describe(methodName(NoSameDayForSameClientSpecification, 'check'), () => {
     ids.map((anId) => ({
       client: createClient(anId),
       joinedAt: [],
+      currentIndexOfPossibleCells: 0,
+      possibleCellIndexes: [],
+      uniqueDays: 1,
     }));
 
   it('returns true when same client appears on different days', () => {

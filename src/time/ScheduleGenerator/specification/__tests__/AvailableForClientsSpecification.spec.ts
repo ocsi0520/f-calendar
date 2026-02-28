@@ -34,6 +34,9 @@ describe(methodName(AvailableForClientsSpecification, 'check'), () => {
   const createClientInfo = (client: Client): ClientInfo => ({
     client,
     joinedAt: [],
+    currentIndexOfPossibleCells: 0,
+    possibleCellIndexes: [],
+    uniqueDays: 1,
   });
 
   it('returns true when there are no occupied schedule cells', () => {
