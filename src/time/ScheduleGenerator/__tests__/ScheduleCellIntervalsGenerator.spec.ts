@@ -1,16 +1,16 @@
-import { ScheduleCellsGenerator } from '../utils/ScheduleCellsGenerator';
+import { ScheduleCellIntervalsGenerator } from '../utils/ScheduleCellIntervalsGenerator';
 import { TimeManager } from '../../TimeManager';
 import { TimeIntervalPrimitiveMapper } from '../../TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeIntervalManager } from '../../TimeInterval/TimeIntervalManager';
 
-describe(ScheduleCellsGenerator.name, () => {
-  let unitUnderTest: ScheduleCellsGenerator;
+describe(ScheduleCellIntervalsGenerator.name, () => {
+  let unitUnderTest: ScheduleCellIntervalsGenerator;
   let timeManager: TimeManager;
   let primitiveMapper: TimeIntervalPrimitiveMapper;
 
   beforeEach(() => {
     timeManager = new TimeManager();
-    unitUnderTest = new ScheduleCellsGenerator(new TimeIntervalManager(timeManager));
+    unitUnderTest = new ScheduleCellIntervalsGenerator(new TimeIntervalManager(timeManager));
     primitiveMapper = new TimeIntervalPrimitiveMapper();
   });
 
@@ -390,10 +390,7 @@ describe(ScheduleCellsGenerator.name, () => {
   it('should generate all cells', () => {
     const result = unitUnderTest.generateAllPossibleScheduleCells();
     for (let i = 0; i < result.length; i++) {
-      expect(result[i].clientIdsInvolved).empty;
-      expect(primitiveMapper.mapToString(result[i].timeInterval)).toEqual(
-        allCellsInStringFormat[i],
-      );
+      expect(primitiveMapper.mapToString(result[i])).toEqual(allCellsInStringFormat[i]);
     }
   });
 });

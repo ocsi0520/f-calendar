@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ScheduleCellsGenerator } from './ScheduleCellsGenerator';
-import { ClientInfo, Table } from '../Table';
+import { ScheduleCellIntervalsGenerator } from './ScheduleCellIntervalsGenerator';
+import { ClientInfo, ScheduleCell, Table } from '../Table';
 import { ClientService } from '../../../client/client.service';
 import { Client } from '../../../client/Client';
 import { MyTimeService } from '../../../client/my-time.service';
@@ -12,14 +12,14 @@ import { ScheduleCellsNarrower } from './ScheduleCellsNarrower';
 })
 export class TableGenerator {
   constructor(
-    private scheduleCellsGenerator: ScheduleCellsGenerator,
+    private scheduleCellIntervalsGenerator: ScheduleCellIntervalsGenerator,
     private clientService: ClientService,
     private myTimeService: MyTimeService,
     private cellsNarrower: ScheduleCellsNarrower,
   ) {}
 
   public generateTable(): Table {
-    const allPossibleCells = this.scheduleCellsGenerator.generateAllPossibleScheduleCells();
+    const allPossibleCells = this.getAllPossibleCells();
     const clientsInvolved = this.getAllEnabledClients();
     const allSuitableCells = this.cellsNarrower.getSuitableCells(
       allPossibleCells,
@@ -43,5 +43,14 @@ export class TableGenerator {
       client,
       joinedAt: [],
     }));
+  }
+
+  private getAllPossibleCells(): Array<ScheduleCell> {
+    return this.scheduleCellIntervalsGenerator
+      .generateAllPossibleScheduleCells()
+      .map((timeInterval) => ({
+        timeInterval,
+        clientIdsInvolved: [],
+      }));
   }
 }
