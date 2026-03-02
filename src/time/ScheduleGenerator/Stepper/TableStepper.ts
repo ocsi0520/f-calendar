@@ -6,7 +6,12 @@ import { ClientStepper } from './ClientStepper';
 // TODO: test
 @Injectable({ providedIn: 'root' })
 export class TableStepper {
+  private maxClientIndex = 0;
   constructor(private readonly clientStepper: ClientStepper) {}
+
+  public getMaxClientIndex(): number {
+    return this.maxClientIndex;
+  }
 
   public step(table: Table, specManager: SpecificationManager) {
     const hasReachedEndWithCurrentClient = this.clientStepper.hasReachedEndWithClient(table);
@@ -22,6 +27,7 @@ export class TableStepper {
   private moveForward(table: Table, specManager: SpecificationManager): void {
     const currentCell = table.scheduleCells[table.currentScheduleCellIndex];
     const currentClientInfo = table.clientInfos[table.currentClientIndex];
+    this.maxClientIndex = Math.max(this.maxClientIndex, table.currentClientIndex);
 
     this.registerClientToCurrentCell(table, currentClientInfo, currentCell);
     const checkResult = specManager.checkSpecifications(table);
