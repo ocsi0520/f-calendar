@@ -27,6 +27,7 @@ export class LunchSpecification implements ScheduleSpecification {
         // TODO: better
         firstValidInterval: this.timeIntervalManager.shiftByGranularity(currentCell.timeInterval),
       },
+      name: LunchSpecification.name,
     };
   }
 

@@ -27,6 +27,7 @@ export class BreakfastSpecification implements ScheduleSpecification {
       nextTryHint: {
         firstValidInterval: this.timeIntervalManager.shiftByGranularity(currentCell.timeInterval),
       },
+      name: BreakfastSpecification.name,
     };
   }
 

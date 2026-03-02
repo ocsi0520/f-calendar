@@ -53,6 +53,7 @@ export class SpecificationManager {
       nextTryHint: {
         firstValidInterval: this.timeIntervalManager.shiftByGranularity(currentInterval),
       },
+      name: 'some available stuff'
     };
   }
 }

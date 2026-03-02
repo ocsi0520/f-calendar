@@ -31,6 +31,7 @@ export class ProperPairsSpecification implements ScheduleSpecification {
       nextTryHint: {
         firstValidInterval: nextPossibleInterval,
       },
+      name: ProperPairsSpecification.name,
     };
   }
 

@@ -13,7 +13,7 @@ import { ScheduleCell, Table } from '../Table';
 export type NextTryHint = {
   firstValidInterval: TimeInterval;
 };
-export type FailResult = { passed: false; nextTryHint: NextTryHint };
+export type FailResult = { passed: false; nextTryHint: NextTryHint; name: string };
 export type Result = { passed: true } | FailResult;
 
 export interface ScheduleSpecification {

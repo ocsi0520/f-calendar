@@ -1,6 +1,7 @@
 import { TimeInterval } from '../../../TimeInterval/TimeInterval';
 import { ClientInfo, ScheduleCell, Table } from '../../Table';
 import { Result, ScheduleSpecification } from '../specification';
+import { expect } from 'vitest';
 
 export const makeTable = (
   scheduleCells: Array<ScheduleCell>,
@@ -22,5 +23,5 @@ export const selectForSpec = (table: Table): Parameters<ScheduleSpecification['c
 export const createExpectedResult = (value: true | TimeInterval): Result => {
   return value === true
     ? { passed: true }
-    : { passed: false, nextTryHint: { firstValidInterval: value } };
+    : { passed: false, nextTryHint: { firstValidInterval: value }, name: expect.any(String) };
 };

@@ -29,6 +29,7 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
         return {
           passed: false,
           nextTryHint: { firstValidInterval: this.getFirstTimeIntervalRightAfter(cellToCheck) },
+          name: NoOverlappingSessionsSpecification.name,
         };
     }
     return { passed: true };
