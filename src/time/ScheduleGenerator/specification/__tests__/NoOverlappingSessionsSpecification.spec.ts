@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect } from 'vitest'
+import { beforeEach, describe, it, expect } from 'vitest';
 import { NoOverlappingSessionsSpecification } from '../rules/NoOverlappingSessionsSpecification';
 import { TimeIntervalManager } from '../../../TimeInterval/TimeIntervalManager';
 import { methodName } from '../../../../utils/test-name';
@@ -153,7 +153,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true for multiple non-overlapping occupied cells across multiple days', () => {
+  it('returns true for only one', () => {
     const table = makeTable([
       { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
       { timeInterval: { dayNumber: 1, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [2] },
@@ -199,6 +199,86 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
       if (expectedResults[i] === null) continue;
       table.currentScheduleCellIndex = i;
       expect(unitUnderTest.check(...selectForSpec(table))).toEqual(expectedResults[i]);
+    }
+  });
+
+  it('returns true for all occupied cells (mixed with non-occupied cells)', () => {
+    const table = makeTable([
+      { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
+      { timeInterval: { dayNumber: 1, start: [7, 45], end: [9, 0] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 0], end: [9, 15] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 15], end: [9, 30] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 30], end: [9, 45] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [2, 3] },
+      { timeInterval: { dayNumber: 1, start: [9, 0], end: [10, 15] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [9, 15], end: [10, 30] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [9, 30], end: [10, 45] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [9, 45], end: [11, 0] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [10, 0], end: [11, 15] }, clientIdsInvolved: [4] },
+      { timeInterval: { dayNumber: 1, start: [10, 15], end: [11, 30] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [10, 30], end: [11, 45] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [10, 45], end: [12, 0] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [11, 0], end: [12, 15] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [11, 15], end: [12, 30] }, clientIdsInvolved: [5] },
+      { timeInterval: { dayNumber: 1, start: [11, 30], end: [12, 45] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [11, 45], end: [13, 0] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [12, 0], end: [13, 15] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [12, 15], end: [13, 30] }, clientIdsInvolved: [] },
+      { timeInterval: { dayNumber: 1, start: [12, 30], end: [13, 45] }, clientIdsInvolved: [6] },
+    ]);
+    const expectedResults: Array<Result | null> = [
+      /*07:30*/ createExpectedResult(true),
+      /*07:45*/ null,
+      /*08:00*/ null,
+      /*08:15*/ null,
+      /*08:30*/ null,
+      /*08:45*/ createExpectedResult(true),
+      /*09:00*/ null,
+      /*09:15*/ null,
+      /*09:30*/ null,
+      /*09:45*/ null,
+      /*10:00*/ createExpectedResult(true),
+      /*10:15*/ null,
+      /*10:30*/ null,
+      /*10:45*/ null,
+      /*11:00*/ null,
+      /*11:15*/ createExpectedResult(true),
+      /*11:30*/ null,
+      /*11:45*/ null,
+      /*12:00*/ null,
+      /*12:15*/ null,
+      /*12:30*/ createExpectedResult(true),
+    ];
+    for (let i = 0; i < expectedResults.length; i++) {
+      if (expectedResults[i] === null) continue;
+      table.currentScheduleCellIndex = i;
+      expect(unitUnderTest.check(...selectForSpec(table)), `wrong at ${i}`).toEqual(
+        expectedResults[i],
+      );
+    }
+  });
+
+  it('returns true for all occupied cells (mixed with non-occupied cells)', () => {
+    const table = makeTable([
+      { timeInterval: { dayNumber: 1, start: [7, 30], end: [8, 45] }, clientIdsInvolved: [1] },
+      { timeInterval: { dayNumber: 1, start: [8, 45], end: [10, 0] }, clientIdsInvolved: [2, 3] },
+      { timeInterval: { dayNumber: 1, start: [10, 0], end: [11, 15] }, clientIdsInvolved: [4] },
+      { timeInterval: { dayNumber: 1, start: [11, 15], end: [12, 30] }, clientIdsInvolved: [5] },
+      { timeInterval: { dayNumber: 1, start: [12, 30], end: [13, 45] }, clientIdsInvolved: [6] },
+    ]);
+    const expectedResults: Array<Result | null> = [
+      /*07:30*/ createExpectedResult(true),
+      /*08:45*/ createExpectedResult(true),
+      /*10:00*/ createExpectedResult(true),
+      /*11:15*/ createExpectedResult(true),
+      /*12:30*/ createExpectedResult(true),
+    ];
+    for (let i = 0; i < expectedResults.length; i++) {
+      if (expectedResults[i] === null) continue;
+      table.currentScheduleCellIndex = i;
+      expect(unitUnderTest.check(...selectForSpec(table)), `wrong at ${i}`).toEqual(
+        expectedResults[i],
+      );
     }
   });
 });
