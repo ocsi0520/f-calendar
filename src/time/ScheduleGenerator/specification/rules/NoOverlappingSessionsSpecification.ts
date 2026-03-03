@@ -28,11 +28,29 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
       )
         return {
           passed: false,
-          nextTryHint: { firstValidInterval: this.getFirstTimeIntervalRightAfter(cellToCheck) },
+          nextTryHint: { firstValidInterval: this.getFirstValidInterval(currentCell, cellToCheck) },
           name: NoOverlappingSessionsSpecification.name,
         };
     }
     return { passed: true };
+  }
+  private getFirstValidInterval(
+    currentCell: ScheduleCell,
+    cellToCheck: ScheduleCell,
+  ): TimeInterval {
+    const currentCellIsAfter = this.timeIntervalManager.isIntervalAtOrAfterBase(
+      currentCell.timeInterval,
+      cellToCheck.timeInterval,
+    );
+    // TODO: absolute mind-blowing question, WHY?!?!
+    // WHY NOT SIMPLY this.getFirstTimeIntervalRightAfter(cellToCheck); ????
+    // moreover even if this.timeIntervalManager.shiftByGranularity(cellToCheck.timeInterval)
+    // it still changes
+    if (!currentCellIsAfter)
+      return cellToCheck.timeInterval;
+      // return this.timeIntervalManager.shiftByGranularity(cellToCheck.timeInterval);
+
+    return this.getFirstTimeIntervalRightAfter(cellToCheck);
   }
 
   private isSameOrNonOccupied(currentCell: ScheduleCell, cellToExamine: ScheduleCell): boolean {
