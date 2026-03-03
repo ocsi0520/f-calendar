@@ -131,4 +131,20 @@ describe(TimeIntervalManager.name, () => {
       expect(unitUnderTest.getMinutesBetweenIntervals(earlier, later)).toBe(-15);
     });
   });
+
+  describe(methodName(TimeIntervalManager, 'shiftByGranularity'), () => {
+    it('should shift interval by 15 mins', () => {
+      const interval: TimeInterval = { dayNumber: 1, start: [8, 0], end: [9, 15] };
+      const shifted = unitUnderTest.shiftByGranularity(interval);
+      expect(isSameInterval(shifted, { dayNumber: 1, start: [8, 15], end: [9, 30] })).toBe(true);
+    });
+  });
+
+  describe(methodName(TimeIntervalManager, 'shiftBySessionLength'), () => {
+    it('should shift interval by 75 mins', () => {
+      const interval: TimeInterval = { dayNumber: 1, start: [8, 0], end: [9, 15] };
+      const shifted = unitUnderTest.shiftBySessionLength(interval);
+      expect(isSameInterval(shifted, { dayNumber: 1, start: [9, 15], end: [10, 30] })).toBe(true);
+    });
+  });
 });
