@@ -15,6 +15,9 @@ import { TableStepper } from './Stepper/TableStepper';
 import { TableMapper } from './utils/TableMapper';
 import { SpecificationManager } from './specification/SpecificationManager';
 import { TimeIntervalPrimitiveMapper } from '../TimeInterval/TimeIntervalPrimitiveMapper';
+import { NoSameDayForSameClientSpecification } from './specification/rules/NoSameDayForSameClientSpecification';
+import { AvailableForMe } from './specification/rules/AvailableForMeSpecification';
+import { MyTimeService } from '../../client/my-time.service';
 
 type DebugClientInfo = {
   sessionCount: number;
@@ -27,7 +30,7 @@ type DebugClientInfo = {
 export class ScheduleGenerator {
   constructor(
     private timeIntervalManager: TimeIntervalManager,
-    // private myTimeService: MyTimeService,
+    private myTimeService: MyTimeService,
     private timeManager: TimeManager,
     private pairService: ClientPairService,
     private tableStepper: TableStepper,
@@ -40,12 +43,12 @@ export class ScheduleGenerator {
     return [
       new AvailableForClientsSpecification(this.timeIntervalManager),
       // unnecessary because of narrower
-      // new AvailableForMe(this.myTimeService, this.timeIntervalManager),
+      new AvailableForMe(this.myTimeService, this.timeIntervalManager),
       new BreakfastSpecification(this.timeIntervalManager, morningChecker),
       new LunchSpecification(morningChecker, this.timeIntervalManager),
       new NoOverlappingSessionsSpecification(this.timeIntervalManager),
       // unnecessary because of optimization in TableStepper
-      // new NoSameDayForSameClientSpecification(),
+      new NoSameDayForSameClientSpecification(),
       new ProperPairsSpecification(this.pairService, this.timeIntervalManager),
     ];
   }

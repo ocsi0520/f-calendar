@@ -77,8 +77,13 @@ export class ClientStepper {
     currentClientInfo: ClientInfo,
     checkResult: Result,
   ): number {
-    if (checkResult.passed) return this.getFirstIndexOfCellOnNextDay(table, currentClientInfo);
-    else return this.getFirstIndexWhichSatisfiesHint(table, currentClientInfo, checkResult);
+    if (checkResult.passed) {
+      return table.currentScheduleCellIndex + 1;
+      // return this.getFirstIndexOfCellOnNextDay(table, currentClientInfo)
+    } else {
+      return table.currentScheduleCellIndex + 1;
+      // return this.getFirstIndexWhichSatisfiesHint(table, currentClientInfo, checkResult)
+    }
   }
 
   private getFirstIndexOfCellOnNextDay(table: Table, currentClientInfo: ClientInfo): number {
