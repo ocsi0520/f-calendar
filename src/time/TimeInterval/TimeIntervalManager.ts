@@ -98,14 +98,14 @@ export class TimeIntervalManager {
     return this.shiftInterval(interval, sessionSpan.inMinutes);
   }
 
-  public isIntervalAtOrAfterSecond(interval: TimeInterval, secondInterval: TimeInterval): boolean {
+  public isIntervalAtOrAfterBase(examined: TimeInterval, base: TimeInterval): boolean {
     // TODO: proper DayTime and WeekTime and manage them instead of polluting TimeIntervalManager
-    if (interval.dayNumber < secondInterval.dayNumber) return false;
-    if (interval.dayNumber > secondInterval.dayNumber) return true;
+    if (examined.dayNumber > base.dayNumber) return true;
+    if (examined.dayNumber < base.dayNumber) return false;
 
-    const [startOfInterval] = this.mapIntervalToNumbers(interval);
-    const [startOfSecond] = this.mapIntervalToNumbers(secondInterval);
+    if (examined.start[0] > base.start[0]) return true;
+    if (examined.start[0] < base.start[0]) return false;
 
-    return startOfInterval >= startOfSecond;
+    return examined.start[1] >= base.start[1];
   }
 }

@@ -101,7 +101,7 @@ export class ClientStepper {
 
     for (let i = table.currentScheduleCellIndex + 1; i < table.scheduleCells.length; i++) {
       const cell = table.scheduleCells[i];
-      if (this.timeIntervalManager.isIntervalAtOrAfterSecond(cell.timeInterval, hintInterval))
+      if (this.timeIntervalManager.isIntervalAtOrAfterBase(cell.timeInterval, hintInterval))
         return i;
     }
     return table.scheduleCells.length;
