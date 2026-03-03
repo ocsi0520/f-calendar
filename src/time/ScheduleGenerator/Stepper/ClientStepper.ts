@@ -78,11 +78,9 @@ export class ClientStepper {
     checkResult: Result,
   ): number {
     if (checkResult.passed) {
-      return table.currentScheduleCellIndex + 1;
-      // return this.getFirstIndexOfCellOnNextDay(table, currentClientInfo)
+      return this.getFirstIndexOfCellOnNextDay(table, currentClientInfo);
     } else {
-      return table.currentScheduleCellIndex + 1;
-      // return this.getFirstIndexWhichSatisfiesHint(table, currentClientInfo, checkResult)
+      return this.getFirstIndexWhichSatisfiesHint(table, currentClientInfo, checkResult);
     }
   }
 
@@ -104,7 +102,7 @@ export class ClientStepper {
   ): number {
     const hintInterval = checkResult.nextTryHint.firstValidInterval;
 
-    for (let i = table.currentScheduleCellIndex + 1; i < table.scheduleCells.length; i++) {
+    for (let i = table.currentScheduleCellIndex; i < table.scheduleCells.length; i++) {
       const cell = table.scheduleCells[i];
       if (this.timeIntervalManager.isIntervalAtOrAfterBase(cell.timeInterval, hintInterval))
         return i;

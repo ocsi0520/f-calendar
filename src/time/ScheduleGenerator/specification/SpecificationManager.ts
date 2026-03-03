@@ -44,7 +44,15 @@ export class SpecificationManager {
     result: Result | boolean,
     { timeInterval: currentInterval }: ScheduleCell,
   ): Result {
-    if (typeof result !== 'boolean') return result;
+    if (typeof result !== 'boolean')
+      return result.passed
+        ? result
+        : {
+            ...result,
+            nextTryHint: {
+              firstValidInterval: this.timeIntervalManager.shiftByGranularity(currentInterval),
+            },
+          };
 
     if (result) return { passed: true };
 
@@ -53,7 +61,7 @@ export class SpecificationManager {
       nextTryHint: {
         firstValidInterval: this.timeIntervalManager.shiftByGranularity(currentInterval),
       },
-      name: 'some available stuff'
+      name: 'some available stuff',
     };
   }
 }
