@@ -44,17 +44,12 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     currentCell: ScheduleCell,
   ): [firstIndexToCheck: number, lastIndexToCheck: number] {
     const indexOfCurrentCell = sameDayCells.indexOf(currentCell);
-    // basically 5
-    const shiftBetweenValidSessionsInGranularity =
-      sessionSpan.inMinutes / sessionGranularityInMinutes;
-    const firstIndexToCheck = Math.max(
-      0,
-      indexOfCurrentCell - shiftBetweenValidSessionsInGranularity,
-    );
-    const lastIndexToCheck = Math.min(
-      sameDayCells.length - 1,
-      indexOfCurrentCell + shiftBetweenValidSessionsInGranularity,
-    );
+    // basically 5, so in case I've index 7, 2 and 12 must be out of range
+    // but 3 and 11 can still be in range --> maxInvalidDiff=4
+    const granularityDiffBetweenValidSessions = sessionSpan.inMinutes / sessionGranularityInMinutes;
+    const maxInvalidDiff = granularityDiffBetweenValidSessions - 1;
+    const firstIndexToCheck = Math.max(0, indexOfCurrentCell - maxInvalidDiff);
+    const lastIndexToCheck = Math.min(sameDayCells.length - 1, indexOfCurrentCell + maxInvalidDiff);
     return [firstIndexToCheck, lastIndexToCheck];
   }
   private getFirstTimeIntervalRightAfter(cell: ScheduleCell): TimeInterval {
