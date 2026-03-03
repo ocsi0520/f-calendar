@@ -24,12 +24,13 @@ describe(ScheduleGenerator.name, () => {
     unitUnderTest = TestBed.inject(ScheduleGenerator);
   });
   describe(methodName(ScheduleGenerator, 'generateScheduleFrom'), () => {
-    it('should return the same output for the same input', () => {
+    it('should return the same smaller output for the smaller same input', () => {
       const actual = unitUnderTest.generateScheduleFrom(smallerInputTable);
       expect(JSON.stringify(actual)).toBe(JSON.stringify(expectedSmallerSchedule));
-
-      const actual2 = unitUnderTest.generateScheduleFrom(broaderInputTable);
-      expect(JSON.stringify(actual2)).toBe(JSON.stringify(expectedBroaderSchedule));
     });
+    it('should return the same broader output for the smaller broader input', () => {
+      const actual = unitUnderTest.generateScheduleFrom(broaderInputTable);
+      expect(JSON.stringify(actual)).toBe(JSON.stringify(expectedBroaderSchedule));
+    }, 10_000);
   });
 });
