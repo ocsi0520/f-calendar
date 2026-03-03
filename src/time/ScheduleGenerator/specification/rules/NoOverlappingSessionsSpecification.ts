@@ -28,29 +28,14 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
       )
         return {
           passed: false,
-          nextTryHint: { firstValidInterval: this.getFirstValidInterval(currentCell, cellToCheck) },
+          nextTryHint: { firstValidInterval: this.getFirstTimeIntervalRightAfter(cellToCheck) },
           name: NoOverlappingSessionsSpecification.name,
         };
     }
     return { passed: true };
   }
-  private getFirstValidInterval(
-    currentCell: ScheduleCell,
-    cellToCheck: ScheduleCell,
-  ): TimeInterval {
-    const currentCellIsAfter = this.timeIntervalManager.isIntervalAtOrAfterBase(
-      currentCell.timeInterval,
-      cellToCheck.timeInterval,
-    );
-    // TODO: absolute mind-blowing question, WHY?!?!
-    // WHY NOT SIMPLY this.getFirstTimeIntervalRightAfter(cellToCheck); ????
-    // moreover even if this.timeIntervalManager.shiftByGranularity(cellToCheck.timeInterval)
-    // it still changes
-    if (!currentCellIsAfter)
-      return cellToCheck.timeInterval;
-      // return this.timeIntervalManager.shiftByGranularity(cellToCheck.timeInterval);
-
-    return this.getFirstTimeIntervalRightAfter(cellToCheck);
+  private getFirstTimeIntervalRightAfter(cellToCheck: ScheduleCell): TimeInterval {
+    return this.timeIntervalManager.shiftBySessionLength(cellToCheck.timeInterval);
   }
 
   private isSameOrNonOccupied(currentCell: ScheduleCell, cellToExamine: ScheduleCell): boolean {
@@ -69,8 +54,5 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     const firstIndexToCheck = Math.max(0, indexOfCurrentCell - maxInvalidDiff);
     const lastIndexToCheck = Math.min(sameDayCells.length - 1, indexOfCurrentCell + maxInvalidDiff);
     return [firstIndexToCheck, lastIndexToCheck];
-  }
-  private getFirstTimeIntervalRightAfter(cell: ScheduleCell): TimeInterval {
-    return this.timeIntervalManager.shiftBySessionLength(cell.timeInterval);
   }
 }
