@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ClientPairService } from '../client-pair.service';
-import { methodName } from '../../utils/test-name';
+import { methodName } from '../../../utils/test-name';
 
 describe(ClientPairService.name, () => {
   let unitUnderTest: ClientPairService;
