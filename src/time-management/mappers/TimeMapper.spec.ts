@@ -61,23 +61,23 @@ describe(TimeMapper.name, () => {
 
   describe('toNumber', () => {
     it.each(cases)('should convert %s correctly', ({ weekTime, representation }) => {
-      const actual = unitUnderTest.toNumber(weekTime);
+      const actual = unitUnderTest.weekTimeToNumber(weekTime);
       expect(actual).toEqual(representation);
     });
   });
 
   describe('fromNumber', () => {
     it.each(cases)('should convert %s correctly', ({ weekTime, representation }) => {
-      const actual = unitUnderTest.fromNumber(representation);
+      const actual = unitUnderTest.weekTimeFromNumber(representation);
       expect(actual).toEqual(weekTime);
     });
 
     it('should throw for negative number', () => {
-      expect(() => unitUnderTest.fromNumber(-1)).toThrow(RangeError);
+      expect(() => unitUnderTest.weekTimeFromNumber(-1)).toThrow(RangeError);
     });
 
     it('should throw for number above MAX_NUM_REPRESENTATION', () => {
-      expect(() => unitUnderTest.fromNumber(ABOVE_MAX)).toThrow(RangeError);
+      expect(() => unitUnderTest.weekTimeFromNumber(ABOVE_MAX)).toThrow(RangeError);
     });
   });
 });
