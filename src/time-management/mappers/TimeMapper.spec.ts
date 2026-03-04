@@ -84,25 +84,34 @@ describe(TimeMapper.name, () => {
     });
   });
   describe('day time', () => {
-    const cases: Array<{
+    type DayTimeCase = {
       stringRepresentation: string;
       dayTime?: DayTime;
       numRepresentation: number;
-    }> = [
+    };
+    type ValidDayTimeCase = Required<DayTimeCase>;
+    const cases: Array<DayTimeCase> = [
       { stringRepresentation: '23:59', dayTime: { hour: 23, minute: 59 }, numRepresentation: 1439 },
       { stringRepresentation: '23:30', dayTime: { hour: 23, minute: 30 }, numRepresentation: 1410 },
       { stringRepresentation: '00:00', dayTime: { hour: 0, minute: 0 }, numRepresentation: 0 },
       { stringRepresentation: 'too high', numRepresentation: 1441 },
       { stringRepresentation: 'too low', numRepresentation: -1 },
+      { stringRepresentation: '24:00', numRepresentation: NaN },
+      { stringRepresentation: '24:01', numRepresentation: NaN },
+      { stringRepresentation: '30:00', numRepresentation: NaN },
+      { stringRepresentation: '99:99', numRepresentation: NaN },
+      { stringRepresentation: '76:02', numRepresentation: NaN },
+      { stringRepresentation: '-6:02', numRepresentation: NaN },
+      { stringRepresentation: '00:60', numRepresentation: NaN },
     ];
+    const validCases: Array<ValidDayTimeCase> = cases.filter(
+      (aCase) => aCase.dayTime,
+    ) as Array<ValidDayTimeCase>;
     describe(methodName(TimeMapper, 'dayTimeToNumber'), () => {
-      it.each(cases.filter((aCase) => aCase.dayTime))(
-        'should convert %s correctly',
-        ({ dayTime, numRepresentation }) => {
-          const actual = unitUnderTest.dayTimeToNumber(dayTime!);
-          expect(actual).toEqual(numRepresentation);
-        },
-      );
+      it.each(validCases)('should convert %s correctly', ({ dayTime, numRepresentation }) => {
+        const actual = unitUnderTest.dayTimeToNumber(dayTime!);
+        expect(actual).toEqual(numRepresentation);
+      });
     });
     describe(methodName(TimeMapper, 'dayTimeFromNumber'), () => {
       it.each(cases)('should convert %s correctly', ({ dayTime, numRepresentation }) => {
@@ -111,6 +120,38 @@ describe(TimeMapper.name, () => {
           expect(actual).toEqual(dayTime);
         } else {
           expect(() => unitUnderTest.dayTimeFromNumber(numRepresentation)).toThrowError(RangeError);
+        }
+      });
+    });
+    describe(methodName(TimeMapper, 'dayNumberFromString'), () => {
+      it('should read dayNumber from string', () => {
+        const actual = ['1', '2', '3', '4', '5', '6', '7'].map(
+          unitUnderTest.dayNumberFromString.bind(unitUnderTest),
+        );
+        expect(actual).toEqual([1, 2, 3, 4, 5, 6, 7]);
+      });
+      it('should throw error in case of invalid dayNumber-string-representation', () => {
+        expect(() => unitUnderTest.dayNumberFromString('0')).toThrowError();
+        expect(() => unitUnderTest.dayNumberFromString('-1')).toThrowError();
+        expect(() => unitUnderTest.dayNumberFromString('')).toThrowError();
+        expect(() => unitUnderTest.dayNumberFromString(' ')).toThrowError();
+        expect(() => unitUnderTest.dayNumberFromString('monday')).toThrowError();
+        expect(() => unitUnderTest.dayNumberFromString('8')).toThrowError();
+      });
+    });
+    describe(methodName(TimeMapper, 'dayTimeToString'), () => {
+      it.each(validCases)('should convert %s correctly', ({ dayTime, stringRepresentation }) => {
+        const actual = unitUnderTest.dayTimeToString(dayTime!);
+        expect(actual).toEqual(stringRepresentation);
+      });
+    });
+    describe(methodName(TimeMapper, 'dayTimeFromString'), () => {
+      it.each(cases)('should convert %s correctly', ({ dayTime, stringRepresentation }) => {
+        if (dayTime) {
+          const actual = unitUnderTest.dayTimeFromString(stringRepresentation);
+          expect(actual).toEqual(dayTime);
+        } else {
+          expect(() => unitUnderTest.dayTimeFromString(stringRepresentation)).toThrowError();
         }
       });
     });
