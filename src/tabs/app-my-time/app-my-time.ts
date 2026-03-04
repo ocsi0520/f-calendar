@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AppCalendar } from '../../calendar/app-calendar';
+import { AppCalendar } from '../../time-management/calendar-component/app-calendar';
 import { WeekSchedule } from '../../time/Schedule';
 import { MyTimeService } from '../../client/my-time.service';
 import { MatSnackBar } from '@angular/material/snack-bar';

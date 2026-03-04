@@ -4,7 +4,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Client } from '../../client/Client';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { AppCalendar } from '../../calendar/app-calendar';
+import { AppCalendar } from '../../time-management/calendar-component/app-calendar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClientFieldsEditor } from './client-fields-editor/client-fields-editor';
 import { FormsModule } from '@angular/forms';
