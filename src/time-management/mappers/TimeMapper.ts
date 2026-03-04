@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WeekTime } from '../definition/WeekTime';
 import { DayNumber, Hour, Minute } from '../definition/time-components';
+import { DayTime } from '../definition/TimeInterval';
 
 const MAX_NUM_REPRESENTATION = 7 * 24 * 60 - 1;
 @Injectable({ providedIn: 'root' })
@@ -25,6 +26,19 @@ export class TimeMapper {
       dayNumber: dayNumber as DayNumber,
       hour: hour as Hour,
       minute: minute as Minute,
+    };
+  }
+
+  public dayTimeToNumber({ hour, minute }: DayTime): number {
+    return hour * 60 + minute;
+  }
+
+  public dayTimeFromNumber(representation: number): DayTime {
+    if (representation < 0 || representation >= 24 * 60)
+      throw new RangeError('invalid num represetntation for DayTime');
+    return {
+      hour: Math.floor(representation / 60) as Hour,
+      minute: (representation % 60) as Minute,
     };
   }
 }
