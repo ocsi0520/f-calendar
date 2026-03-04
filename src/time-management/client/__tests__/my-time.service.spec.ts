@@ -1,7 +1,7 @@
 import { TimeIntervalMapper } from '../../time/TimeInterval/TimeIntervalMapper';
 import { TimeIntervalPrimitiveMapper } from '../../time/TimeInterval/TimeIntervalPrimitiveMapper';
 import { TimeIntervalEventMapper } from '../../time/TimeInterval/TimeIntervalEventMapper';
-import { MyTimeService } from '../my-time.service';
+import { MyTimeService } from '../../time-management/my-time.service';
 import { TimeInterval } from '../../time/TimeInterval/TimeInterval';
 describe(MyTimeService.name, () => {
   let unitUnderTest: MyTimeService;
