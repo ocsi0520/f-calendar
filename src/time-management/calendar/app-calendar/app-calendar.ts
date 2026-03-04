@@ -16,13 +16,11 @@ import {
   EventClickArg,
   EventInput,
 } from '@fullcalendar/core/index.js';
-import { EventDescriptor } from '../time/TimeInterval/TimeInterval-constants';
-import { DisplayableSchedule } from '../time/Schedule';
 import { baseCalendarOptions } from './base-calendar-options';
-import { sessionSpan } from '../time/session-span';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TimeIntervalMapper } from '../time/TimeInterval/TimeIntervalMapper';
-import { isSameInterval } from '../time/TimeInterval/TimeInterval';
+import { CalendarEventMapper } from '../CalendarEventMapper';
+import { Session, sessionTime } from '../../session';
+import { CalendarEventDescriptor } from '../event-descriptor';
 
 @Component({
   selector: 'app-calendar',
@@ -31,12 +29,12 @@ import { isSameInterval } from '../time/TimeInterval/TimeInterval';
   styleUrl: './app-calendar.scss',
 })
 export class AppCalendar implements OnChanges {
-  mapper = inject(TimeIntervalMapper);
+  mapper = inject(CalendarEventMapper);
 
   public events: WritableSignal<EventInput[]> = signal([]);
 
-  public weekSchedule = input.required<DisplayableSchedule>();
-  public weekScheduleChange = output<DisplayableSchedule>();
+  public weekSchedule = input.required<Array<Session>>();
+  public weekScheduleChange = output<Array<Session>>();
 
   public title = input.required<string>();
   public isReadOnly = input<boolean>(false);
@@ -48,7 +46,7 @@ export class AppCalendar implements OnChanges {
     if (!changeOfSchedule) return;
     this.events.set(
       changeOfSchedule.currentValue.map((timeInterval) =>
-        this.mapper.mapToEvent(timeInterval, new Date(), timeInterval.displayName || this.title()),
+        this.mapper.mapToEvent(timeInterval, new Date()),
       ),
     );
   }
@@ -68,7 +66,7 @@ export class AppCalendar implements OnChanges {
     );
     this.weekScheduleChange.emit(newSchedule);
   }
-  private addEvent(dateSelectArg: EventDescriptor) {
+  private addEvent(dateSelectArg: CalendarEventDescriptor) {
     if (!this.atLeastSessionTime(dateSelectArg)) {
       this.snackBar.open("Time slots can't be less than 75 minutes ❌", undefined, {
         duration: 2_000,
@@ -78,6 +76,7 @@ export class AppCalendar implements OnChanges {
     const newTimeInterval = this.mapper.mapFromEvent({
       start: dateSelectArg.start!,
       end: dateSelectArg.end!,
+      title: this.title(),
     });
     const newSchedule = [...this.weekSchedule(), newTimeInterval];
     this.weekScheduleChange.emit(newSchedule);
@@ -95,6 +94,7 @@ export class AppCalendar implements OnChanges {
     const newTimeInterval = this.mapper.mapFromEvent({
       start: eventChangeArg.event.start,
       end: eventChangeArg.event.end,
+      title: intervalToRemove.displayName,
     });
     const newSchedule = this.weekSchedule().map((interval) =>
       isSameInterval(interval, intervalToRemove) ? newTimeInterval : interval,
@@ -102,8 +102,8 @@ export class AppCalendar implements OnChanges {
 
     this.weekScheduleChange.emit(newSchedule);
   }
-  private atLeastSessionTime(eventDesc: EventDescriptor): boolean {
+  private atLeastSessionTime(eventDesc: CalendarEventDescriptor): boolean {
     const timeSpanInMilliSeconds = eventDesc.end!.valueOf() - eventDesc.start!.valueOf();
-    return timeSpanInMilliSeconds >= sessionSpan.inMilliSeconds;
+    return timeSpanInMilliSeconds >= sessionTime.inMilliSeconds;
   }
 }
