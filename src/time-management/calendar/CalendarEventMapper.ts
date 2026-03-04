@@ -41,7 +41,7 @@ export class CalendarEventMapper {
     );
 
     return {
-      displayName: eventDescriptor.title,
+      displayName: eventDescriptor.title || 'Meeting',
       interval: {
         dayNumber: this.getDayNumberFrom(eventDescriptor.start),
         start: this.timeMapper.dayTimeFromString(startString),
