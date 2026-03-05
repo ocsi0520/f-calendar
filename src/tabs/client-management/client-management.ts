@@ -1,14 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ClientService } from '../../client/client.service';
+import { ClientService } from '../../time-management/client/client.service';
 import { MatSelectModule } from '@angular/material/select';
-import { Client } from '../../client/Client';
+import { Client } from '../../time-management/client/Client';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { AppCalendar } from '../../time-management/calendar/app-calendar/app-calendar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClientFieldsEditor } from './client-fields-editor/client-fields-editor';
 import { FormsModule } from '@angular/forms';
-import { ClientPairService } from '../../client/client-pair.service';
+import { ClientPairService } from '../../time-management/client/client-pair.service';
 
 @Component({
   selector: 'app-client-management',

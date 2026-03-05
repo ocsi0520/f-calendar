@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { ClientService } from '../../client/client.service';
+import { ClientService } from '../../time-management/client/client.service';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { Client } from '../../client/Client';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Client } from '../../time-management/client/Client';
 
 @Component({
   selector: 'app-register-new-client',

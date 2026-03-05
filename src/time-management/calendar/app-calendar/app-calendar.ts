@@ -21,6 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalendarEventMapper } from '../CalendarEventMapper';
 import { Session, sessionTime } from '../../session';
 import { CalendarEventDescriptor } from '../event-descriptor';
+import { SameDayIntervalManager } from '../../managers/SameDayIntervalManager';
 
 @Component({
   selector: 'app-calendar',
@@ -30,9 +31,11 @@ import { CalendarEventDescriptor } from '../event-descriptor';
 })
 export class AppCalendar implements OnChanges {
   mapper = inject(CalendarEventMapper);
+  intervalManager = inject(SameDayIntervalManager);
 
   public events: WritableSignal<EventInput[]> = signal([]);
 
+  // TODO: rename them to weekSessions
   public weekSchedule = input.required<Array<Session>>();
   public weekScheduleChange = output<Array<Session>>();
 
@@ -60,14 +63,15 @@ export class AppCalendar implements OnChanges {
   }));
 
   private removeEvent(eventClickArg: Pick<EventClickArg, 'event'>) {
-    const intervalToRemove = this.mapper.mapFromEvent(eventClickArg.event);
-    const newSchedule = this.weekSchedule().filter(
-      (interval) => !isSameInterval(interval, intervalToRemove),
+    const sessionToRemove = this.mapper.mapFromEvent(eventClickArg.event);
+    const newSchedule = this.weekSchedule().filter((session) =>
+      this.intervalManager.isSameInterval(session.interval, sessionToRemove.interval),
     );
     this.weekScheduleChange.emit(newSchedule);
   }
-  private addEvent(dateSelectArg: CalendarEventDescriptor) {
-    if (!this.atLeastSessionTime(dateSelectArg)) {
+  private addEvent(dateSelectArg: Omit<CalendarEventDescriptor, 'title'>) {
+    const calendarEventDescriptor = { ...dateSelectArg, title: this.title() };
+    if (!this.atLeastSessionTime(calendarEventDescriptor)) {
       this.snackBar.open("Time slots can't be less than 75 minutes ❌", undefined, {
         duration: 2_000,
       });
@@ -90,14 +94,16 @@ export class AppCalendar implements OnChanges {
       return;
     }
 
-    const intervalToRemove = this.mapper.mapFromEvent(eventChangeArg.oldEvent);
+    const sessionToRemove = this.mapper.mapFromEvent(eventChangeArg.oldEvent);
     const newTimeInterval = this.mapper.mapFromEvent({
       start: eventChangeArg.event.start,
       end: eventChangeArg.event.end,
-      title: intervalToRemove.displayName,
+      title: sessionToRemove.displayName,
     });
-    const newSchedule = this.weekSchedule().map((interval) =>
-      isSameInterval(interval, intervalToRemove) ? newTimeInterval : interval,
+    const newSchedule = this.weekSchedule().map((session) =>
+      this.intervalManager.isSameInterval(session.interval, sessionToRemove.interval)
+        ? newTimeInterval
+        : session,
     );
 
     this.weekScheduleChange.emit(newSchedule);

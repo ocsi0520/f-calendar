@@ -27,6 +27,7 @@
         (clientChange)="selectedClient.set($event)"
       ></app-client-fields-editor>
 
+      <!-- TODO: extract mapping from app-my-time.ts and use it here -->
       <app-calendar [title]="client.name" [(weekSchedule)]="client.schedule"></app-calendar>
     </form>
   }

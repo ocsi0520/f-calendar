@@ -3,9 +3,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { Client } from '../../client/Client';
-import { ClientPairService } from '../../client/client-pair.service';
-import { ClientService } from '../../client/client.service';
+import { Client } from '../../time-management/client/Client';
+import { ClientPairService } from '../../time-management/client/client-pair.service';
+import { ClientService } from '../../time-management/client/client.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

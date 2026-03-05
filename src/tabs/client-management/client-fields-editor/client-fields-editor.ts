@@ -1,8 +1,8 @@
 import { Component, input, output } from '@angular/core';
-import { Client } from '../../../client/Client';
+import { Client } from '../../../time-management/client/Client';
 import { ControlContainer, FormsModule, NgForm } from '@angular/forms';
-import { MatInputModule } from "@angular/material/input";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-client-fields-editor',
