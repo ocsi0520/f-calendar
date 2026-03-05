@@ -3,7 +3,8 @@ import { SameDayInterval } from '../definition/TimeInterval';
 import { TimeManager } from './TimeManager';
 import { WeekTime } from '../definition/WeekTime';
 import { TimeMapper } from '../mappers/TimeMapper';
-import { sessionTime, timeGranularityInMins } from '../session';
+import { Session, sessionTime, timeGranularityInMins } from '../session';
+import { SameDayIntervalMapper } from '../mappers/SameDayIntervalMapper';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,16 @@ export class SameDayIntervalManager {
   constructor(
     private timeManager: TimeManager,
     private timeMapper: TimeMapper,
+    private sameDayIntervalMapper: SameDayIntervalMapper,
   ) {}
+
+  // TODO: test
+  public isSameInterval(interval1: SameDayInterval, interval2: SameDayInterval): boolean {
+    return (
+      this.sameDayIntervalMapper.mapToNumber(interval1) ===
+      this.sameDayIntervalMapper.mapToNumber(interval2)
+    );
+  }
 
   // edge-case if the intervals are the same
   // lunch case:

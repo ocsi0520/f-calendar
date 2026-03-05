@@ -4,13 +4,18 @@ import { methodName } from '../../utils/test-name';
 import { makeSameDayInterval } from '../definition/TimeInterval';
 import { TimeManager } from './TimeManager';
 import { TimeMapper } from '../mappers/TimeMapper';
+import { SameDayIntervalMapper } from '../mappers/SameDayIntervalMapper';
 
 describe(SameDayIntervalManager.name, () => {
   let unitUnderTest: SameDayIntervalManager;
 
   beforeEach(() => {
     const timeMapper = new TimeMapper();
-    unitUnderTest = new SameDayIntervalManager(new TimeManager(timeMapper), timeMapper);
+    unitUnderTest = new SameDayIntervalManager(
+      new TimeManager(timeMapper),
+      timeMapper,
+      new SameDayIntervalMapper(timeMapper),
+    );
   });
 
   describe(methodName(SameDayIntervalManager, 'areIntervalsOverlapping'), () => {
