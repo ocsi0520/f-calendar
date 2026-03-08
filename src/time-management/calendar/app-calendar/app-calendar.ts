@@ -64,8 +64,8 @@ export class AppCalendar implements OnChanges {
 
   private removeEvent(eventClickArg: Pick<EventClickArg, 'event'>) {
     const sessionToRemove = this.mapper.mapFromEvent(eventClickArg.event);
-    const newSchedule = this.weekSchedule().filter((session) =>
-      this.intervalManager.isSameInterval(session.interval, sessionToRemove.interval),
+    const newSchedule = this.weekSchedule().filter(
+      (session) => !this.intervalManager.isSameInterval(session.interval, sessionToRemove.interval),
     );
     this.weekScheduleChange.emit(newSchedule);
   }
