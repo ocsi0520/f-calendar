@@ -3,8 +3,8 @@ import { AppCalendar } from '../../time-management/calendar/app-calendar/app-cal
 import { MyTimeService } from '../../time-management/my-time.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
-import { SameDayInterval } from '../../time-management/definition/TimeInterval';
 import { Session } from '../../time-management/session';
+import { SessionMapper } from '../../time-management/mappers/SessionMapper';
 
 @Component({
   selector: 'app-my-time',
@@ -15,12 +15,13 @@ import { Session } from '../../time-management/session';
 export class AppMyTime implements OnInit {
   private myTimeService = inject(MyTimeService);
   private snackBar = inject(MatSnackBar);
+  private sessionMapper = inject(SessionMapper);
   public mySessions = signal<Array<Session>>([]);
   private backupSessions: Array<Session> = [];
 
   public ngOnInit(): void {
     const loadedSchedule = this.myTimeService.loadSchedule();
-    const mySessions = this.mapScheduleToSessions(loadedSchedule);
+    const mySessions = this.sessionMapper.mapScheduleToSessions(loadedSchedule, 'My Time');
     this.backupSessions = structuredClone(mySessions);
     this.mySessions.set(mySessions);
   }
@@ -31,18 +32,11 @@ export class AppMyTime implements OnInit {
 
   public save(): void {
     const currentSessions = this.mySessions();
-    const saveableSchedule = this.mapSessionsToSchedule(currentSessions);
+    const saveableSchedule = this.sessionMapper.mapSessionsToSchedule(currentSessions);
     this.myTimeService.saveSchedule(saveableSchedule);
     this.backupSessions = structuredClone(currentSessions);
     this.snackBar.open('My schedule has been succesfully updated ✅', undefined, {
       duration: 2_000,
     });
-  }
-
-  private mapSessionsToSchedule(sessions: Array<Session>): Array<SameDayInterval> {
-    return sessions.map((session) => session.interval);
-  }
-  private mapScheduleToSessions(schedule: Array<SameDayInterval>): Array<Session> {
-    return schedule.map((interval) => ({ interval, displayName: 'my-time' }));
   }
 }

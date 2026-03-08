@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClientFieldsEditor } from './client-fields-editor/client-fields-editor';
 import { FormsModule } from '@angular/forms';
 import { ClientPairService } from '../../time-management/client/client-pair.service';
+import { SessionMapper } from '../../time-management/mappers/SessionMapper';
+import { Session } from '../../time-management/session';
 
 @Component({
   selector: 'app-client-management',
@@ -27,6 +29,7 @@ export class ClientManagement implements OnInit {
   private clientService = inject(ClientService);
   private pairService = inject(ClientPairService);
   private snackBar = inject(MatSnackBar);
+  private sessionMapper = inject(SessionMapper);
 
   public allClients = signal<Array<Client>>([]);
 
@@ -82,5 +85,16 @@ export class ClientManagement implements OnInit {
       undefined,
       { duration: 2_000 },
     );
+  }
+
+  public getSessionsFrom(selectedClient: Client): Array<Session> {
+    return this.sessionMapper.mapScheduleToSessions(selectedClient.schedule, selectedClient.name);
+  }
+
+  public setScheduleForClient(sessions: Array<Session>) {
+    this.selectedClient.set({
+      ...this.selectedClient()!,
+      schedule: this.sessionMapper.mapSessionsToSchedule(sessions),
+    });
   }
 }
