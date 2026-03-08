@@ -243,4 +243,105 @@ describe(SameDayIntervalManager.name, () => {
       expect(unitUnderTest.isIntervalAtOrAfterBase(examined, base)).toBe(true);
     });
   });
+
+  describe(methodName(SameDayIntervalManager, 'isSameInterval'), () => {
+    const baseInterval: SameDayInterval = makeSameDayInterval(3, [10, 15], [11, 30]);
+    it('should return true for equal interval', () => {
+      const equalInterval: SameDayInterval = makeSameDayInterval(3, [10, 15], [11, 30]);
+      expect(unitUnderTest.isSameInterval(equalInterval, baseInterval)).true;
+    });
+    it('should return true for the same interval', () => {
+      expect(unitUnderTest.isSameInterval(baseInterval, baseInterval)).true;
+    });
+    it('should return false for different day', () => {
+      const interval: SameDayInterval = makeSameDayInterval(4, [10, 15], [11, 30]);
+      expect(unitUnderTest.isSameInterval(interval, baseInterval)).false;
+    });
+    it('should return false for different hour', () => {
+      const interval1: SameDayInterval = makeSameDayInterval(3, [11, 15], [11, 30]);
+      expect(unitUnderTest.isSameInterval(interval1, baseInterval)).false;
+      const interval2: SameDayInterval = makeSameDayInterval(3, [10, 15], [10, 30]);
+      expect(unitUnderTest.isSameInterval(interval2, baseInterval)).false;
+    });
+    it('should return false for different minute', () => {
+      const interval1: SameDayInterval = makeSameDayInterval(3, [10, 30], [11, 30]);
+      expect(unitUnderTest.isSameInterval(interval1, baseInterval)).false;
+      const interval2: SameDayInterval = makeSameDayInterval(3, [10, 15], [11, 45]);
+      expect(unitUnderTest.isSameInterval(interval2, baseInterval)).false;
+    });
+    it('should return false for entirely different interval', () => {
+      const interval: SameDayInterval = makeSameDayInterval(2, [9, 45], [11, 0]);
+      expect(unitUnderTest.isSameInterval(interval, baseInterval)).false;
+    });
+  });
+
+  describe(methodName(SameDayIntervalManager, 'isIntervalWithinSchedule'), () => {
+    const aSchedule: Array<SameDayInterval> = [
+      makeSameDayInterval(1, [10, 0], [11, 15]),
+      makeSameDayInterval(1, [18, 0], [21, 0]),
+      makeSameDayInterval(2, [10, 0], [12, 0]),
+      makeSameDayInterval(2, [17, 30], [18, 45]),
+      makeSameDayInterval(3, [10, 0], [18, 0]),
+      makeSameDayInterval(5, [16, 0], [20, 0]),
+    ];
+    // same interval, adjacent-left, adjacent-right, overlap-left, overlap-right, first contains second, second contains first
+    it('should return true, as two intervals are equal', () => {
+      const interval: SameDayInterval = makeSameDayInterval(2, [17, 30], [18, 45]);
+      expect(unitUnderTest.isIntervalWithinSchedule(interval, aSchedule)).true;
+    });
+    it('should return true, as interval is contained by a schedule component', () => {
+      const fromLeft: SameDayInterval = makeSameDayInterval(1, [18, 0], [19, 15]);
+      const fromRight: SameDayInterval = makeSameDayInterval(1, [19, 45], [21, 0]);
+      const inMiddle: SameDayInterval = makeSameDayInterval(1, [18, 30], [19, 45]);
+      expect(unitUnderTest.isIntervalWithinSchedule(fromLeft, aSchedule)).true;
+      expect(unitUnderTest.isIntervalWithinSchedule(fromRight, aSchedule)).true;
+      expect(unitUnderTest.isIntervalWithinSchedule(inMiddle, aSchedule)).true;
+    });
+    it('should return false, as interval contains a schedule component', () => {
+      // base is 2-17.30-18.45
+      const tooBigFromLeft: SameDayInterval = makeSameDayInterval(2, [17, 15], [18, 45]);
+      const tooBigFromRight: SameDayInterval = makeSameDayInterval(2, [17, 30], [19, 0]);
+      const tooBigInterval: SameDayInterval = makeSameDayInterval(2, [17, 15], [19, 0]);
+      expect(unitUnderTest.isIntervalWithinSchedule(tooBigFromLeft, aSchedule)).false;
+      expect(unitUnderTest.isIntervalWithinSchedule(tooBigFromRight, aSchedule)).false;
+      expect(unitUnderTest.isIntervalWithinSchedule(tooBigInterval, aSchedule)).false;
+    });
+    it('should return false, as no interval in schedule has the same day', () => {
+      const noSameDayInSchedule: SameDayInterval = makeSameDayInterval(4, [10, 0], [10, 15]);
+      expect(unitUnderTest.isIntervalWithinSchedule(noSameDayInSchedule, aSchedule)).false;
+    });
+
+    it('should return false, as the interval is adjacent from left with a schedule component', () => {
+      // 3-10.00-18.00
+      const touchingAdjacentFromLeft: SameDayInterval = makeSameDayInterval(3, [8, 45], [10, 0]);
+      expect(unitUnderTest.isIntervalWithinSchedule(touchingAdjacentFromLeft, aSchedule)).false;
+      const nonTouchingAdjacentFromLeft: SameDayInterval = makeSameDayInterval(3, [8, 30], [9, 45]);
+      expect(unitUnderTest.isIntervalWithinSchedule(nonTouchingAdjacentFromLeft, aSchedule)).false;
+    });
+    it('should return false, as the interval is adjacent from right with a schedule component', () => {
+      // 3-10.00-18.00
+      const touchingAdjacentFromRight: SameDayInterval = makeSameDayInterval(3, [18, 0], [19, 15]);
+      expect(unitUnderTest.isIntervalWithinSchedule(touchingAdjacentFromRight, aSchedule)).false;
+      const nonTouchingAdjacentFromRight: SameDayInterval = makeSameDayInterval(
+        3,
+        [18, 15],
+        [19, 30],
+      );
+      expect(unitUnderTest.isIntervalWithinSchedule(nonTouchingAdjacentFromRight, aSchedule)).false;
+    });
+    it('should return false, as the interval is overlap from left with a schedule component', () => {
+      // 3-10.00-18.00
+      const overlappingFromLeft: SameDayInterval = makeSameDayInterval(3, [9, 30], [10, 45]);
+      expect(unitUnderTest.isIntervalWithinSchedule(overlappingFromLeft, aSchedule)).false;
+    });
+    it('should return false, as the interval is overlap from right with a schedule component', () => {
+      const overlappingFromRight: SameDayInterval = makeSameDayInterval(3, [17, 30], [18, 45]);
+      expect(unitUnderTest.isIntervalWithinSchedule(overlappingFromRight, aSchedule)).false;
+    });
+
+    it('should return false, as the interval is placed between schedule components on the same day', () => {
+      const placedInBetweenIntervals: SameDayInterval = makeSameDayInterval(2, [14, 0], [15, 15]);
+      expect(unitUnderTest.isIntervalWithinSchedule(placedInBetweenIntervals, aSchedule)).false;
+    });
+  });
 });

@@ -16,7 +16,6 @@ export class SameDayIntervalManager {
     private sameDayIntervalMapper: SameDayIntervalMapper,
   ) {}
 
-  // TODO: test
   public isSameInterval(interval1: SameDayInterval, interval2: SameDayInterval): boolean {
     return (
       this.sameDayIntervalMapper.mapToNumber(interval1) ===
@@ -86,7 +85,6 @@ export class SameDayIntervalManager {
     return this.shiftIntervalBothEnds(interval, 0, shiftEndByMinutes);
   }
 
-  // TODO: test
   public isIntervalWithinSchedule(
     interval: SameDayInterval,
     schedule: Array<SameDayInterval>,
