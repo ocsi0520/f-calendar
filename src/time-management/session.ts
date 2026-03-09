@@ -7,6 +7,6 @@ export const sessionTime = {
   inHours: 75 / 60,
   inGranularity: 75 / timeGranularityInMins,
   inMilliSeconds: 75 * 60 * 1_000,
-};
+} as const;
 
 export type Session = { displayName: string; interval: SameDayInterval };
