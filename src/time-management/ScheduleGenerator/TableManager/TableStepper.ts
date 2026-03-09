@@ -1,0 +1,101 @@
+import { Injectable } from '@angular/core';
+import { Result } from '../specification/specification';
+import { ClientInfo, Table, TableCell } from '../Table';
+import { TableUtils } from './TableUtils';
+import { SameDayIntervalManager } from '../../managers/SameDayIntervalManager';
+
+type CellCriteria = (cell: TableCell) => boolean;
+
+@Injectable({ providedIn: 'root' })
+export class TableStepper {
+  constructor(
+    private tableUtils: TableUtils,
+    private sameDayIntervalManager: SameDayIntervalManager,
+  ) {}
+  public step(table: Table, result: Result): void {
+    const currentClientInfo = this.tableUtils.getCurrentClientInfo(table);
+
+    const hasReachedAllSessions =
+      currentClientInfo.joinedAt.length === currentClientInfo.client.sessionCountsInWeek;
+    if (hasReachedAllSessions) {
+      table.clientPart.currentClientIndex++;
+      return;
+    }
+
+    const nextPossibleCellIndex = this.getNextPossibleCellIndexWithCriteria(
+      table,
+      currentClientInfo,
+      this.getCriteria(table, currentClientInfo, result),
+    );
+    if (nextPossibleCellIndex === -1) {
+      this.stepBackWithClient(table, currentClientInfo);
+    } else {
+      currentClientInfo.currentIndexOfPossibleCells = nextPossibleCellIndex;
+    }
+  }
+
+  private getCriteria(table: Table, currentClientInfo: ClientInfo, result: Result): CellCriteria {
+    if (result.passed) {
+      const currentDayNumber = this.tableUtils.getCurrentCell(table, currentClientInfo).timeInterval
+        .dayNumber;
+      return (cell: TableCell) => cell.timeInterval.dayNumber > currentDayNumber;
+    } else {
+      return (cell) =>
+        this.sameDayIntervalManager.doesIntervalStartAtOrAfter(
+          cell.timeInterval,
+          result.nextTryHint.firstValidStart,
+        );
+    }
+  }
+
+  private stepBackWithClient(table: Table, currentClientInfo: ClientInfo) {
+    // if has
+    // PC = possible cell
+    const lastJoinedPCIndex = currentClientInfo.joinedAt.pop();
+    if (typeof lastJoinedPCIndex !== 'undefined') {
+      const lastOccupiedCellByClient = this.tableUtils.getCellAt(
+        table,
+        currentClientInfo,
+        lastJoinedPCIndex,
+      );
+      lastOccupiedCellByClient.clientIdsInvolved =
+        lastOccupiedCellByClient.clientIdsInvolved.filter(
+          (cId) => cId !== currentClientInfo.client.id,
+        );
+      // -----TODO: here------
+      // here it might be overindexed
+      currentClientInfo.currentIndexOfPossibleCells++;
+    } else {
+      this.myAssert(table, currentClientInfo);
+      table.clientPart.currentClientIndex--;
+      if (table.clientPart.currentClientIndex > 0)
+        // otherwise handled in ScheduleGenerator
+        this.stepBackWithClient(table, this.tableUtils.getCurrentClientInfo(table));
+    }
+  }
+
+  private myAssert(table: Table, currentClientInfo: ClientInfo): void {
+    if (currentClientInfo.joinedAt.length) throw new Error('assert1');
+    if (currentClientInfo.currentIndexOfPossibleCells) throw new Error('assert2');
+    const hasAnyCellThis = table.cellPart.views.linear.some((cell) =>
+      cell.clientIdsInvolved.includes(currentClientInfo.client.id),
+    );
+    if (hasAnyCellThis) throw new Error('assert3');
+  }
+
+  private getNextPossibleCellIndexWithCriteria(
+    table: Table,
+    currentClientInfo: ClientInfo,
+    criteria: (cell: TableCell) => boolean,
+  ): number {
+    for (
+      let i = currentClientInfo.currentIndexOfPossibleCells + 1;
+      i < currentClientInfo.possibleCellIndexes.length;
+      i++
+    ) {
+      const cell = this.tableUtils.getCellAt(table, currentClientInfo, i);
+      if (criteria(cell)) return i;
+    }
+    return -1;
+  }
+}

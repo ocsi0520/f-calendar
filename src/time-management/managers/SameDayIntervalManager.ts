@@ -3,7 +3,7 @@ import { SameDayInterval } from '../definition/TimeInterval';
 import { TimeManager } from './TimeManager';
 import { WeekTime } from '../definition/WeekTime';
 import { TimeMapper } from '../mappers/TimeMapper';
-import { Session, sessionTime, timeGranularityInMins } from '../session';
+import { sessionTime, timeGranularityInMins } from '../session';
 import { SameDayIntervalMapper } from '../mappers/SameDayIntervalMapper';
 
 @Injectable({
@@ -105,6 +105,12 @@ export class SameDayIntervalManager {
     const startTimeOfExamined: WeekTime = { dayNumber: examined.dayNumber, ...examined.start };
     const startTimeOfBase: WeekTime = { dayNumber: base.dayNumber, ...base.start };
     return this.timeManager.isAtOrAfter(startTimeOfExamined, startTimeOfBase);
+  }
+
+  // TODO: test
+  public doesIntervalStartAtOrAfter(examined: SameDayInterval, base: WeekTime): boolean {
+    const startTimeOfExamined: WeekTime = { dayNumber: examined.dayNumber, ...examined.start };
+    return this.timeManager.isAtOrAfter(startTimeOfExamined, base);
   }
 
   // TODO: later on handle edge-case when we shift so much it goes to the next day
