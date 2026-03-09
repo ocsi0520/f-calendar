@@ -3,7 +3,7 @@ import { Client } from '../../client/Client';
 import { ClientService } from '../../client/client.service';
 import { Table } from '../Table';
 import { CellGenerator } from './cell-generator/CellGenerator';
-import { ClientInfoGenerator } from './client-info/ClientInfoGenerator';
+import { ClientInfoGenerator } from './client-info-generator/ClientInfoGenerator';
 import { TableViewGenerator } from './TableViewGenerator';
 
 // TODO: test
