@@ -44,13 +44,22 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     acceptAllNonEmpty(table);
   });
 
-  it('returns true when two cells are adjacent', () => {
+  it('returns true when two cells are adjacent mixed with non-occupied cells', () => {
     const table = makeTable([
       { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1] },
       { timeInterval: makeSameDayInterval(1, [7, 45], [9, 0]), clientIdsInvolved: [] },
       { timeInterval: makeSameDayInterval(1, [8, 0], [9, 15]), clientIdsInvolved: [] },
       { timeInterval: makeSameDayInterval(1, [8, 15], [9, 30]), clientIdsInvolved: [] },
       { timeInterval: makeSameDayInterval(1, [8, 30], [9, 45]), clientIdsInvolved: [] },
+      { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [2] },
+    ]);
+
+    acceptAllNonEmpty(table);
+  });
+
+  it('returns true when two cells are adjacent', () => {
+    const table = makeTable([
+      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1] },
       { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [2] },
     ]);
 
@@ -266,8 +275,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
           },
         ]);
 
-        const expectedResult = createExpectedResult(true);
-        expect(unitUnderTest.check(table, 2)).toEqual(expectedResult);
+        acceptAllNonEmpty(table);
       });
     });
 
@@ -302,8 +310,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
           { timeInterval: makeSameDayInterval(1, [10, 45], [12, 0]), clientIdsInvolved: [2] },
         ]);
 
-        const expectedResult = createExpectedResult(true);
-        expect(unitUnderTest.check(table, 2)).toEqual(expectedResult);
+        acceptAllNonEmpty(table);
       });
     });
 
@@ -326,8 +333,60 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
           { timeInterval: makeSameDayInterval(1, [10, 45], [12, 0]), clientIdsInvolved: [2] },
         ]);
 
-        const expectedResult = createExpectedResult(true);
-        expect(unitUnderTest.check(table, 2)).toEqual(expectedResult);
+        acceptAllNonEmpty(table);
+      });
+    });
+    describe('scenario 4: initially overlapping with second one, but there is enough space to get into middle', () => {
+      it('should return false for first one', () => {
+        const table = makeTable([
+          { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [7, 45], [9, 0]), clientIdsInvolved: [1] },
+          { timeInterval: makeSameDayInterval(1, [8, 0], [9, 15]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [8, 15], [9, 30]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [8, 30], [9, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [2] },
+          { timeInterval: makeSameDayInterval(1, [9, 0], [10, 15]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [9, 15], [10, 30]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [9, 30], [10, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [9, 45], [11, 0]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [10, 0], [11, 15]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [10, 15], [11, 30]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [10, 30], [11, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [10, 45], [12, 0]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [11, 0], [12, 15]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [11, 15], [12, 30]), clientIdsInvolved: [3] },
+          { timeInterval: makeSameDayInterval(1, [11, 30], [12, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [11, 45], [13, 0]), clientIdsInvolved: [] },
+        ]);
+
+        const expectedInterval = makeWeekTime(1, 10, 0);
+        const expectedResult = createExpectedResult(expectedInterval);
+        expect(unitUnderTest.check(table, 1)).toEqual(expectedResult);
+      });
+
+      it('should return true', () => {
+        const table = makeTable([
+          { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [7, 45], [9, 0]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [8, 0], [9, 15]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [8, 15], [9, 30]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [8, 30], [9, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [2] },
+          { timeInterval: makeSameDayInterval(1, [9, 0], [10, 15]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [9, 15], [10, 30]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [9, 30], [10, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [9, 45], [11, 0]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [10, 0], [11, 15]), clientIdsInvolved: [1] },
+          { timeInterval: makeSameDayInterval(1, [10, 15], [11, 30]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [10, 30], [11, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [10, 45], [12, 0]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [11, 0], [12, 15]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [11, 15], [12, 30]), clientIdsInvolved: [3] },
+          { timeInterval: makeSameDayInterval(1, [11, 30], [12, 45]), clientIdsInvolved: [] },
+          { timeInterval: makeSameDayInterval(1, [11, 45], [13, 0]), clientIdsInvolved: [] },
+        ]);
+
+        acceptAllNonEmpty(table);
       });
     });
   });

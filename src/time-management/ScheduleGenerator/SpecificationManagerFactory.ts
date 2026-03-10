@@ -23,6 +23,8 @@ export class SpecificationManagerFactory {
     return [
       new BreakfastSpecification(this.sameDayIntervalManager, this.timeManager, morningChecker),
       new LunchSpecification(morningChecker, this.sameDayIntervalManager, this.timeManager),
+      // for some reason if NoOverlappingSessionsSpecification goes to the top, then
+      // it doesn't find the solution
       new NoOverlappingSessionsSpecification(this.sameDayIntervalManager),
       new ProperPairsSpecification(this.pairService, this.timeManager),
     ];
