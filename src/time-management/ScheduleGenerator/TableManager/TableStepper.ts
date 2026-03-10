@@ -6,12 +6,15 @@ import { SameDayIntervalManager } from '../../managers/SameDayIntervalManager';
 
 type CellCriteria = (cell: TableCell) => boolean;
 
+// PC = possible cell
+
 @Injectable({ providedIn: 'root' })
 export class TableStepper {
   constructor(
     private tableUtils: TableUtils,
     private sameDayIntervalManager: SameDayIntervalManager,
   ) {}
+
   public step(table: Table, result: Result): void {
     const currentClientInfo = this.tableUtils.getCurrentClientInfo(table);
 
@@ -22,16 +25,17 @@ export class TableStepper {
       return;
     }
 
+    this.stepNonFinishedClient(table, currentClientInfo, result);
+  }
+
+  private stepNonFinishedClient(table: Table, currentClientInfo: ClientInfo, result: Result): void {
     const nextPossibleCellIndex = this.getNextPossibleCellIndexWithCriteria(
       table,
       currentClientInfo,
       this.getCriteria(table, currentClientInfo, result),
     );
-    if (nextPossibleCellIndex === -1) {
-      this.stepBackWithClient(table, currentClientInfo);
-    } else {
-      currentClientInfo.currentIndexOfPossibleCells = nextPossibleCellIndex;
-    }
+    if (nextPossibleCellIndex === -1) this.stepBackWithClient(table, currentClientInfo);
+    else currentClientInfo.currentIndexOfPossibleCells = nextPossibleCellIndex;
   }
 
   private getCriteria(table: Table, currentClientInfo: ClientInfo, result: Result): CellCriteria {
@@ -48,39 +52,50 @@ export class TableStepper {
     }
   }
 
-  private stepBackWithClient(table: Table, currentClientInfo: ClientInfo) {
-    // if has
-    // PC = possible cell
+  private stepBackWithClient(table: Table, currentClientInfo: ClientInfo): void {
     const lastJoinedPCIndex = currentClientInfo.joinedAt.pop();
     if (typeof lastJoinedPCIndex !== 'undefined') {
-      const lastOccupiedCellByClient = this.tableUtils.getCellAt(
-        table,
-        currentClientInfo,
-        lastJoinedPCIndex,
-      );
-      lastOccupiedCellByClient.clientIdsInvolved =
-        lastOccupiedCellByClient.clientIdsInvolved.filter(
-          (cId) => cId !== currentClientInfo.client.id,
-        );
-      // -----TODO: here------
-      // here it might be overindexed
-      currentClientInfo.currentIndexOfPossibleCells++;
+      this.stepBackWithClientHavingSession(table, currentClientInfo, lastJoinedPCIndex);
     } else {
-      this.myAssert(table, currentClientInfo);
-      table.clientPart.currentClientIndex--;
-      if (table.clientPart.currentClientIndex > 0)
-        // otherwise handled in ScheduleGenerator
-        this.stepBackWithClient(table, this.tableUtils.getCurrentClientInfo(table));
+      this.switchBackToPreviousClient(table, currentClientInfo);
     }
+  }
+
+  private stepBackWithClientHavingSession(
+    table: Table,
+    currentClientInfo: ClientInfo,
+    lastJoinedPCIndex: number,
+  ): void {
+    const lastOccupiedCellByClient = this.tableUtils.getCellAt(
+      table,
+      currentClientInfo,
+      lastJoinedPCIndex,
+    );
+    lastOccupiedCellByClient.clientIdsInvolved = lastOccupiedCellByClient.clientIdsInvolved.filter(
+      (cId) => cId !== currentClientInfo.client.id,
+    );
+    currentClientInfo.currentIndexOfPossibleCells = lastJoinedPCIndex + 1;
+    if (
+      currentClientInfo.currentIndexOfPossibleCells >= currentClientInfo.possibleCellIndexes.length
+    )
+      this.stepBackWithClient(table, currentClientInfo);
+  }
+
+  private switchBackToPreviousClient(table: Table, currentClientInfo: ClientInfo): void {
+    currentClientInfo.currentIndexOfPossibleCells = 0;
+    this.myAssert(table, currentClientInfo);
+    table.clientPart.currentClientIndex--;
+    if (table.clientPart.currentClientIndex > 0)
+      // otherwise handled in ScheduleGenerator
+      this.stepBackWithClient(table, this.tableUtils.getCurrentClientInfo(table));
   }
 
   private myAssert(table: Table, currentClientInfo: ClientInfo): void {
     if (currentClientInfo.joinedAt.length) throw new Error('assert1');
-    if (currentClientInfo.currentIndexOfPossibleCells) throw new Error('assert2');
-    const hasAnyCellThis = table.cellPart.views.linear.some((cell) =>
+    const hasAnyCellWithThisClient = table.cellPart.views.linear.some((cell) =>
       cell.clientIdsInvolved.includes(currentClientInfo.client.id),
     );
-    if (hasAnyCellThis) throw new Error('assert3');
+    if (hasAnyCellWithThisClient) throw new Error('assert2');
   }
 
   private getNextPossibleCellIndexWithCriteria(
