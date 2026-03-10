@@ -57,9 +57,7 @@ export class ScheduleDebugger {
     return client.possibleCellIndexes.map((cellIndex) => table.cellPart.views.linear[cellIndex]);
   }
 
-  public logImpossibleTable(table: Table): void {
-    const maxClientIndex = 2; // TODO: get this properly
-
+  public logImpossibleTable(table: Table, maxClientIndex: number): void {
     const clientInfosSoFar = table.clientPart.clients.slice(0, maxClientIndex + 1);
     console.log('clientInfosSoFar', clientInfosSoFar);
 

@@ -13,6 +13,12 @@ export class TableManager {
     private tableStepper: TableStepper,
   ) {}
 
+  private maxClientIndex = 0;
+
+  public getMaxClientIndex(): number {
+    return this.maxClientIndex;
+  }
+
   public isFinished(table: Table): boolean {
     return table.clientPart.currentClientIndex >= table.clientPart.clients.length;
   }
@@ -22,6 +28,7 @@ export class TableManager {
   }
 
   public step(table: Table, specManager: SpecificationManager): void {
+    this.maxClientIndex = Math.max(this.maxClientIndex, table.clientPart.currentClientIndex);
     const currentClientInfo = this.tableUtils.getCurrentClientInfo(table);
     const currentCellIndex = this.tableUtils.getCurrentCellIndex(table);
     const currentCell = this.tableUtils.getCurrentCell(table, currentCellIndex);

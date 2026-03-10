@@ -31,7 +31,7 @@ export class ScheduleGenerator {
     this.stepTableUntilCompleted(table);
 
     if (this.tableManager.isImpossible(table)) {
-      this.scheduleDebugger.logImpossibleTable(table);
+      this.scheduleDebugger.logImpossibleTable(table, this.tableManager.getMaxClientIndex());
       throw new Error('could not finish table');
     }
     return table;
