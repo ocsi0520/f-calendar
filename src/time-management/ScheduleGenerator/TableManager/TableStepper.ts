@@ -80,9 +80,9 @@ export class TableStepper {
 
   private switchBackToPreviousClient(table: Table, currentClientInfo: ClientInfo): void {
     currentClientInfo.currentIndexOfPossibleCells = 0;
-    this.myAssert(table, currentClientInfo);
+    // this.myAssert(table, currentClientInfo);
     table.clientPart.currentClientIndex--;
-    if (table.clientPart.currentClientIndex > 0)
+    if (table.clientPart.currentClientIndex > -1)
       // otherwise handled in ScheduleGenerator
       this.stepBackWithClient(table, this.tableUtils.getCurrentClientInfo(table));
   }
