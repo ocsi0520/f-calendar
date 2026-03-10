@@ -12,11 +12,7 @@ describe(CellIntervalsGenerator.name, () => {
     const timeMapper = new TimeMapper();
     const timeManager = new TimeManager(timeMapper);
     sameDayIntervalMapper = new SameDayIntervalMapper(timeMapper);
-    const sameDayIntervalManager = new SameDayIntervalManager(
-      timeManager,
-      timeMapper,
-      sameDayIntervalMapper,
-    );
+    const sameDayIntervalManager = new SameDayIntervalManager(timeManager, timeMapper);
     unitUnderTest = new CellIntervalsGenerator(sameDayIntervalManager);
   });
 

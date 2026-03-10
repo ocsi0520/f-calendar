@@ -29,12 +29,8 @@ describe(LunchSpecification.name, () => {
   beforeEach(() => {
     const timeMapper = new TimeMapper();
     const timeManager = new TimeManager(timeMapper);
-    const morningChecker = new MorningChecker(timeManager);
-    const sameDayIntervalManager = new SameDayIntervalManager(
-      timeManager,
-      timeMapper,
-      new SameDayIntervalMapper(timeMapper),
-    );
+    const sameDayIntervalManager = new SameDayIntervalManager(timeManager, timeMapper);
+    const morningChecker = new MorningChecker();
     unitUnderTest = new LunchSpecification(morningChecker, sameDayIntervalManager, timeManager);
   });
 

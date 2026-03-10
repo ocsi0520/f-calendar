@@ -2,7 +2,6 @@ import { Client } from '../../../../client/Client';
 import { makeSameDayInterval } from '../../../../definition/TimeInterval';
 import { SameDayIntervalManager } from '../../../../managers/SameDayIntervalManager';
 import { TimeManager } from '../../../../managers/TimeManager';
-import { SameDayIntervalMapper } from '../../../../mappers/SameDayIntervalMapper';
 import { TimeMapper } from '../../../../mappers/TimeMapper';
 import { TableCell } from '../../../Table';
 import { ClientInfoGenerator } from '../ClientInfoGenerator';
@@ -16,11 +15,7 @@ describe('ClientInfoGenerator', () => {
   beforeEach(() => {
     const timeMapper = new TimeMapper();
     const timeManager = new TimeManager(timeMapper);
-    const sameDayIntervalManager = new SameDayIntervalManager(
-      timeManager,
-      timeMapper,
-      new SameDayIntervalMapper(timeMapper),
-    );
+    const sameDayIntervalManager = new SameDayIntervalManager(timeManager, timeMapper);
     const validator = new ClientInfoValidator();
     const sorter = new ClientInfoSorter();
     unitUnderTest = new ClientInfoGenerator(sameDayIntervalManager, validator, sorter);

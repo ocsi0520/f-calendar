@@ -3,7 +3,6 @@ import { DayNumber } from '../../../../definition/time-components';
 import { makeSameDayInterval, SameDayInterval } from '../../../../definition/TimeInterval';
 import { SameDayIntervalManager } from '../../../../managers/SameDayIntervalManager';
 import { TimeManager } from '../../../../managers/TimeManager';
-import { SameDayIntervalMapper } from '../../../../mappers/SameDayIntervalMapper';
 import { TimeMapper } from '../../../../mappers/TimeMapper';
 import { CellIntervalsGenerator } from '../CellIntervalsGenerator';
 import { CellIntervalsNarrower } from '../CellIntervalsNarrower';
@@ -14,12 +13,7 @@ describe(CellIntervalsNarrower.name, () => {
   beforeEach(() => {
     const timeMapper = new TimeMapper();
     const timeManager = new TimeManager(timeMapper);
-    const sameDayIntervalMapper = new SameDayIntervalMapper(timeMapper);
-    const sameDayIntervalManager = new SameDayIntervalManager(
-      timeManager,
-      timeMapper,
-      sameDayIntervalMapper,
-    );
+    const sameDayIntervalManager = new SameDayIntervalManager(timeManager, timeMapper);
     allPossibleIntervals = new CellIntervalsGenerator(
       sameDayIntervalManager,
     ).generateAllPossibleScheduleCells();

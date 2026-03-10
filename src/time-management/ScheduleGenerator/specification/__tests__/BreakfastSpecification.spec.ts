@@ -2,7 +2,6 @@ import { makeSameDayInterval } from '../../../definition/TimeInterval';
 import { makeWeekTime } from '../../../definition/WeekTime';
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
 import { TimeManager } from '../../../managers/TimeManager';
-import { SameDayIntervalMapper } from '../../../mappers/SameDayIntervalMapper';
 import { TimeMapper } from '../../../mappers/TimeMapper';
 import { BreakfastSpecification } from '../rules/BreakfastSpecification';
 import { MorningChecker } from '../rules/MorningChecker';
@@ -14,15 +13,11 @@ describe('BreakfastSpecification.check', () => {
   beforeEach(() => {
     const timeMapper = new TimeMapper();
     const timeManager = new TimeManager(timeMapper);
-    const sameDayIntervalManager = new SameDayIntervalManager(
-      timeManager,
-      timeMapper,
-      new SameDayIntervalMapper(timeMapper),
-    );
+    const sameDayIntervalManager = new SameDayIntervalManager(timeManager, timeMapper);
     unitUnderTest = new BreakfastSpecification(
       sameDayIntervalManager,
       timeManager,
-      new MorningChecker(timeManager),
+      new MorningChecker(),
     );
   });
 

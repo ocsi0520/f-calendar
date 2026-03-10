@@ -7,7 +7,6 @@ import { Result } from '../specification';
 import { createExpectedResult, makeTable } from './SpecificationTestHelper';
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
 import { TimeMapper } from '../../../mappers/TimeMapper';
-import { SameDayIntervalMapper } from '../../../mappers/SameDayIntervalMapper';
 import { makeWeekTime } from '../../../definition/WeekTime';
 
 describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
@@ -16,9 +15,8 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
   beforeEach(() => {
     const timeMapper = new TimeMapper();
     const timeManager = new TimeManager(timeMapper);
-    const sameDayIntervalMapper = new SameDayIntervalMapper(timeMapper);
     unitUnderTest = new NoOverlappingSessionsSpecification(
-      new SameDayIntervalManager(timeManager, timeMapper, sameDayIntervalMapper),
+      new SameDayIntervalManager(timeManager, timeMapper),
       timeManager,
     );
   });

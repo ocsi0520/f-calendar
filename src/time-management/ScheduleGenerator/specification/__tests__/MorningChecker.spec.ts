@@ -1,16 +1,12 @@
 import { makeSameDayInterval } from '../../../definition/TimeInterval';
-import { TimeManager } from '../../../managers/TimeManager';
-import { TimeMapper } from '../../../mappers/TimeMapper';
 import { TableCell } from '../../Table';
 import { MorningChecker } from '../rules/MorningChecker';
 
 describe(MorningChecker.name, () => {
-  let timeManager: TimeManager;
   let unitUnderTest: MorningChecker;
 
   beforeEach(() => {
-    timeManager = new TimeManager(new TimeMapper());
-    unitUnderTest = new MorningChecker(timeManager);
+    unitUnderTest = new MorningChecker();
   });
 
   const makeCell = (
