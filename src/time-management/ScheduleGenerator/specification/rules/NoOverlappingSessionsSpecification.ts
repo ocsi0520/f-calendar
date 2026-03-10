@@ -31,10 +31,11 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     return null;
   }
   private getFirstStartTimeRightAfter({ timeInterval }: TableCell): WeekTime {
+    // TODO: something is wrong here, even if I add 15 mins here, it does not find the solution
     return {
       dayNumber: timeInterval.dayNumber,
-      hour: timeInterval.end.hour,
-      minute: timeInterval.end.minute,
+      hour: timeInterval.start.hour,
+      minute: timeInterval.start.minute,
     };
   }
 
