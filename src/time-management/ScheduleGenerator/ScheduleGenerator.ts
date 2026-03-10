@@ -38,10 +38,13 @@ export class ScheduleGenerator {
   }
 
   private stepTableUntilCompleted(table: Table): void {
+    const allPossibilities = this.scheduleDebugger.countAllPossibleVariations(table);
+    console.log('allPossibilities', allPossibilities);
     let trialCounter = 0;
     const specManager = this.specManagerFactory.create();
     while (!this.tableManager.isFinished(table) && !this.tableManager.isImpossible(table)) {
-      if (trialCounter % 10000000 === 0) console.log(`counter: ${trialCounter}`);
+      if (trialCounter % 10000000 === 0)
+        console.log(`counter: ${trialCounter}, ${(trialCounter / allPossibilities) * 100}% of all`);
       this.tableManager.step(table, specManager);
       trialCounter++;
     }
