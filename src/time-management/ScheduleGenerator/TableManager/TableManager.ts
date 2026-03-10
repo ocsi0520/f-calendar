@@ -4,10 +4,11 @@ import { SpecificationManager } from '../specification/SpecificationManager';
 import { TableUtils } from './TableUtils';
 import { TableStepper } from './TableStepper';
 
+// TODO: next variation
+
 @Injectable({ providedIn: 'root' })
 export class TableManager {
   constructor(
-    private specManager: SpecificationManager,
     private tableUtils: TableUtils,
     private tableStepper: TableStepper,
   ) {}
@@ -20,13 +21,13 @@ export class TableManager {
     return table.clientPart.currentClientIndex < 0;
   }
 
-  public step(table: Table): void {
+  public step(table: Table, specManager: SpecificationManager): void {
     const currentClientInfo = this.tableUtils.getCurrentClientInfo(table);
     const currentCellIndex = this.tableUtils.getCurrentCellIndex(table);
     const currentCell = this.tableUtils.getCurrentCell(table, currentCellIndex);
 
     this.registerCurrent(currentClientInfo, currentCell);
-    const result = this.specManager.checkSpecifications(table, currentCellIndex);
+    const result = specManager.checkSpecifications(table, currentCellIndex);
     if (!result.passed) this.unregisterCurrent(currentClientInfo, currentCell);
     this.tableStepper.step(table, result);
   }
