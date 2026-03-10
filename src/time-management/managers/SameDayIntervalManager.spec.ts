@@ -4,6 +4,7 @@ import { methodName } from '../../utils/test-name';
 import { makeSameDayInterval } from '../definition/TimeInterval';
 import { TimeManager } from './TimeManager';
 import { TimeMapper } from '../mappers/TimeMapper';
+import { makeWeekTime, WeekTime } from '../definition/WeekTime';
 
 describe(SameDayIntervalManager.name, () => {
   let unitUnderTest: SameDayIntervalManager;
@@ -337,6 +338,32 @@ describe(SameDayIntervalManager.name, () => {
     it('should return false, as the interval is placed between schedule components on the same day', () => {
       const placedInBetweenIntervals: SameDayInterval = makeSameDayInterval(2, [14, 0], [15, 15]);
       expect(unitUnderTest.isIntervalWithinSchedule(placedInBetweenIntervals, aSchedule)).false;
+    });
+  });
+
+  describe(methodName(SameDayIntervalManager, 'doesIntervalStartAtOrAfter'), () => {
+    const interval = makeSameDayInterval(2, [10, 0], [11, 15]);
+    type ACase = { inputBaseTime: WeekTime; output: boolean };
+    const cases: Array<ACase> = [
+      { inputBaseTime: makeWeekTime(1, 10, 0), output: true },
+
+      { inputBaseTime: makeWeekTime(2, 9, 45), output: true },
+      { inputBaseTime: makeWeekTime(2, 10, 0), output: true },
+      { inputBaseTime: makeWeekTime(2, 10, 1), output: false },
+      { inputBaseTime: makeWeekTime(2, 10, 15), output: false },
+      { inputBaseTime: makeWeekTime(2, 11, 15), output: false },
+      { inputBaseTime: makeWeekTime(2, 23, 59), output: false },
+
+      { inputBaseTime: makeWeekTime(3, 10, 0), output: false },
+
+      { inputBaseTime: makeWeekTime(2, 0, 0), output: true },
+      { inputBaseTime: makeWeekTime(3, 0, 0), output: false },
+      { inputBaseTime: makeWeekTime(1, 0, 0), output: true },
+      { inputBaseTime: makeWeekTime(7, 23, 59), output: false },
+    ];
+
+    it.each(cases)('should return $output for $inputBaseTime', ({ inputBaseTime, output }) => {
+      expect(unitUnderTest.doesIntervalStartAtOrAfter(interval, inputBaseTime)).toEqual(output);
     });
   });
 });

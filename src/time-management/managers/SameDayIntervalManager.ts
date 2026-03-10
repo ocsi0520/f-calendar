@@ -102,14 +102,13 @@ export class SameDayIntervalManager {
     return this.shiftInterval(interval, sessionTime.inMinutes);
   }
 
+  // TODO: we might not need this anymore
   public isIntervalAtOrAfterBase(examined: SameDayInterval, base: SameDayInterval): boolean {
-    // TODO: __here__ - anyway we might not need this
     const startTimeOfExamined: WeekTime = { dayNumber: examined.dayNumber, ...examined.start };
     const startTimeOfBase: WeekTime = { dayNumber: base.dayNumber, ...base.start };
     return this.timeManager.isAtOrAfter(startTimeOfExamined, startTimeOfBase);
   }
 
-  // TODO: test
   public doesIntervalStartAtOrAfter(examined: SameDayInterval, base: WeekTime): boolean {
     // TODO: inline logic, rather than call timeManager.isAtOrAfter
     const startTimeOfExamined: WeekTime = {
