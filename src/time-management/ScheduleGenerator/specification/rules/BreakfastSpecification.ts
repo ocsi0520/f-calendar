@@ -20,22 +20,15 @@ export class BreakfastSpecification implements ScheduleSpecification {
       (scheduleCell) => scheduleCell.clientIdsInvolved.length,
     );
     const needBreakfastRoom = this.morningChecker.isMorningSession(occupiedDayCells[0]);
-    if (!needBreakfastRoom) return { passed: true };
+    if (!needBreakfastRoom) return null;
 
-    if (this.hasRoomForBreakfast(occupiedDayCells)) return { passed: true };
+    if (this.hasRoomForBreakfast(occupiedDayCells)) return null;
 
-    return {
-      passed: false,
-      nextTryHint: {
-        // TODO: better
-        firstValidStart: this.timeManager.shiftByGranularity({
-          dayNumber,
-          hour: currentCell.timeInterval.start.hour,
-          minute: currentCell.timeInterval.start.minute,
-        }),
-      },
-      name: BreakfastSpecification.name,
-    };
+    return this.timeManager.shiftByGranularity({
+      dayNumber,
+      hour: currentCell.timeInterval.start.hour,
+      minute: currentCell.timeInterval.start.minute,
+    });
   }
 
   private hasRoomForBreakfast(dayCells: Array<TableCell>): boolean {

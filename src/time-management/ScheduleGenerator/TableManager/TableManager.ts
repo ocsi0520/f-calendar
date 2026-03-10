@@ -34,9 +34,9 @@ export class TableManager {
     const currentCell = this.tableUtils.getCurrentCell(table, currentCellIndex);
 
     this.registerCurrent(currentClientInfo, currentCell);
-    const result = specManager.checkSpecifications(table, currentCellIndex);
-    if (!result.passed) this.unregisterCurrent(currentClientInfo, currentCell);
-    this.tableStepper.step(table, result);
+    const nextValidStart = specManager.checkSpecifications(table, currentCellIndex);
+    if (nextValidStart) this.unregisterCurrent(currentClientInfo, currentCell);
+    this.tableStepper.step(table, nextValidStart);
   }
   private unregisterCurrent(currentClientInfo: ClientInfo, currentCell: TableCell) {
     currentClientInfo.joinedAt.pop();

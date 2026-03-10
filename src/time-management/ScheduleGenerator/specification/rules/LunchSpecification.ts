@@ -1,4 +1,3 @@
-import { TimeInterval } from 'rxjs';
 import { DayNumber } from '../../../definition/time-components';
 import { Table, TableCell } from '../../Table';
 import { ScheduleSpecification, Result } from '../specification';
@@ -22,20 +21,13 @@ export class LunchSpecification implements ScheduleSpecification {
     const occupiedSameDayCells = sameDayCells.filter(
       (scheduleCell) => scheduleCell.clientIdsInvolved.length,
     );
-    if (this.hasRoomForLunch(occupiedSameDayCells)) return { passed: true };
+    if (this.hasRoomForLunch(occupiedSameDayCells)) return null;
 
-    return {
-      passed: false,
-      nextTryHint: {
-        // TODO: better
-        firstValidStart: this.timeManager.shiftByGranularity({
-          dayNumber,
-          hour: currentCell.timeInterval.start.hour,
-          minute: currentCell.timeInterval.start.minute,
-        }),
-      },
-      name: LunchSpecification.name,
-    };
+    return this.timeManager.shiftByGranularity({
+      dayNumber,
+      hour: currentCell.timeInterval.start.hour,
+      minute: currentCell.timeInterval.start.minute,
+    });
   }
 
   private hasRoomForLunch(occupiedDayCells: Array<TableCell>): boolean {

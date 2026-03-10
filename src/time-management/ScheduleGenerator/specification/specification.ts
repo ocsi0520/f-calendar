@@ -1,9 +1,9 @@
 import { WeekTime } from '../../definition/WeekTime';
 import { Table } from '../Table';
 
-export type NextTryHint = { firstValidStart: WeekTime };
-export type FailResult = { passed: false; nextTryHint: NextTryHint; name: string };
-export type Result = { passed: true } | FailResult;
+// TODO: remove NextValidStartResult
+export type NextValidStartResult = WeekTime;
+export type Result = null | NextValidStartResult;
 
 export interface ScheduleSpecification {
   /**

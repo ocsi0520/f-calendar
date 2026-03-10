@@ -19,7 +19,7 @@ export class SpecificationManagerFactory {
   ) {}
 
   private getAllSpecifications(): Array<ScheduleSpecification> {
-    const morningChecker = new MorningChecker(this.timeManager);
+    const morningChecker = new MorningChecker();
     return [
       new ProperPairsSpecification(this.pairService, this.timeManager),
       new NoOverlappingSessionsSpecification(this.sameDayIntervalManager, this.timeManager),

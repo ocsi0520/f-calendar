@@ -39,16 +39,13 @@ export class TableStepper {
   }
 
   private getCriteria(table: Table, currentClientInfo: ClientInfo, result: Result): CellCriteria {
-    if (result.passed) {
+    if (!result) {
       const currentDayNumber = this.tableUtils.getCurrentCell(table, currentClientInfo).timeInterval
         .dayNumber;
       return (cell: TableCell) => cell.timeInterval.dayNumber > currentDayNumber;
     } else {
       return (cell) =>
-        this.sameDayIntervalManager.doesIntervalStartAtOrAfter(
-          cell.timeInterval,
-          result.nextTryHint.firstValidStart,
-        );
+        this.sameDayIntervalManager.doesIntervalStartAtOrAfter(cell.timeInterval, result);
     }
   }
 

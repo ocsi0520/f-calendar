@@ -30,13 +30,9 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
           cellToCheck.timeInterval,
         )
       )
-        return {
-          passed: false,
-          nextTryHint: { firstValidStart: this.getFirstStartTimeRightAfter(cellToCheck) },
-          name: NoOverlappingSessionsSpecification.name,
-        };
+        return this.getFirstStartTimeRightAfter(cellToCheck);
     }
-    return { passed: true };
+    return null;
   }
   private getFirstStartTimeRightAfter({ timeInterval }: TableCell): WeekTime {
     return this.timeManager.shiftBySessionLength({
