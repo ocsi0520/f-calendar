@@ -4,7 +4,6 @@ import { TimeManager } from './TimeManager';
 import { WeekTime } from '../definition/WeekTime';
 import { TimeMapper } from '../mappers/TimeMapper';
 import { sessionTime, timeGranularityInMins } from '../session';
-import { SameDayIntervalMapper } from '../mappers/SameDayIntervalMapper';
 
 @Injectable({
   providedIn: 'root',
@@ -13,13 +12,15 @@ export class SameDayIntervalManager {
   constructor(
     private timeManager: TimeManager,
     private timeMapper: TimeMapper,
-    private sameDayIntervalMapper: SameDayIntervalMapper,
   ) {}
 
   public isSameInterval(interval1: SameDayInterval, interval2: SameDayInterval): boolean {
     return (
-      this.sameDayIntervalMapper.mapToNumber(interval1) ===
-      this.sameDayIntervalMapper.mapToNumber(interval2)
+      interval1.dayNumber === interval2.dayNumber &&
+      interval1.start.hour === interval2.start.hour &&
+      interval1.start.minute === interval2.start.minute &&
+      interval1.end.hour === interval2.end.hour &&
+      interval1.end.minute === interval2.end.minute
     );
   }
 
@@ -102,6 +103,7 @@ export class SameDayIntervalManager {
   }
 
   public isIntervalAtOrAfterBase(examined: SameDayInterval, base: SameDayInterval): boolean {
+    // TODO: __here__ - anyway we might not need this
     const startTimeOfExamined: WeekTime = { dayNumber: examined.dayNumber, ...examined.start };
     const startTimeOfBase: WeekTime = { dayNumber: base.dayNumber, ...base.start };
     return this.timeManager.isAtOrAfter(startTimeOfExamined, startTimeOfBase);
@@ -109,7 +111,12 @@ export class SameDayIntervalManager {
 
   // TODO: test
   public doesIntervalStartAtOrAfter(examined: SameDayInterval, base: WeekTime): boolean {
-    const startTimeOfExamined: WeekTime = { dayNumber: examined.dayNumber, ...examined.start };
+    // TODO: inline logic, rather than call timeManager.isAtOrAfter
+    const startTimeOfExamined: WeekTime = {
+      dayNumber: examined.dayNumber,
+      hour: examined.start.hour,
+      minute: examined.start.minute,
+    };
     return this.timeManager.isAtOrAfter(startTimeOfExamined, base);
   }
 
