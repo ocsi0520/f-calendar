@@ -23,7 +23,7 @@ export class SpecificationManagerFactory {
     return [
       new BreakfastSpecification(this.sameDayIntervalManager, this.timeManager, morningChecker),
       new LunchSpecification(morningChecker, this.sameDayIntervalManager, this.timeManager),
-      new NoOverlappingSessionsSpecification(this.sameDayIntervalManager, this.timeManager),
+      new NoOverlappingSessionsSpecification(this.sameDayIntervalManager),
       new ProperPairsSpecification(this.pairService, this.timeManager),
     ];
   }

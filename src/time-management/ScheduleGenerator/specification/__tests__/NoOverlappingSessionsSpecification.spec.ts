@@ -17,7 +17,6 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     const timeManager = new TimeManager(timeMapper);
     unitUnderTest = new NoOverlappingSessionsSpecification(
       new SameDayIntervalManager(timeManager, timeMapper),
-      timeManager,
     );
   });
 

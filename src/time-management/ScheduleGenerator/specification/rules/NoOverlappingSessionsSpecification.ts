@@ -2,14 +2,10 @@ import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager
 import { Table, TableCell } from '../../Table';
 import { ScheduleSpecification, Result } from '../specification';
 import { sessionTime, timeGranularityInMins } from '../../../session';
-import { TimeManager } from '../../../managers/TimeManager';
 import { WeekTime } from '../../../definition/WeekTime';
 
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
-  constructor(
-    private readonly sameDayIntervalManager: SameDayIntervalManager,
-    private readonly timeManager: TimeManager,
-  ) {}
+  constructor(private readonly sameDayIntervalManager: SameDayIntervalManager) {}
 
   public check(table: Table, currentCellLinearIndex: number): Result {
     const currentCell = table.cellPart.views.linear[currentCellLinearIndex];
