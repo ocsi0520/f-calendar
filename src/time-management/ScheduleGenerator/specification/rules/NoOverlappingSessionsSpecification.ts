@@ -35,11 +35,11 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     return null;
   }
   private getFirstStartTimeRightAfter({ timeInterval }: TableCell): WeekTime {
-    return this.timeManager.shiftBySessionLength({
+    return {
       dayNumber: timeInterval.dayNumber,
-      hour: timeInterval.start.hour,
-      minute: timeInterval.start.minute,
-    });
+      hour: timeInterval.end.hour,
+      minute: timeInterval.end.minute,
+    };
   }
 
   private isSameOrNonOccupied(currentCell: TableCell, cellToExamine: TableCell): boolean {

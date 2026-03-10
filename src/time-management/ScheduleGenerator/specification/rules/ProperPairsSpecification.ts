@@ -20,11 +20,10 @@ export class ProperPairsSpecification implements ScheduleSpecification {
   }
 
   private getNonPassedResult({ timeInterval }: TableCell): NextValidStartResult {
-    const nextPossibleStart = this.timeManager.shiftBySessionLength({
+    return {
       dayNumber: timeInterval.dayNumber,
-      hour: timeInterval.start.hour,
-      minute: timeInterval.start.minute,
-    });
-    return nextPossibleStart;
+      hour: timeInterval.end.hour,
+      minute: timeInterval.end.minute,
+    };
   }
 }
