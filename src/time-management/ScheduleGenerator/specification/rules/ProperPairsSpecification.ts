@@ -22,7 +22,8 @@ export class ProperPairsSpecification implements ScheduleSpecification {
   private getNonPassedResult({ timeInterval }: TableCell): Result {
     const nextPossibleStart = this.timeManager.shiftBySessionLength({
       dayNumber: timeInterval.dayNumber,
-      ...timeInterval.start,
+      hour: timeInterval.start.hour,
+      minute: timeInterval.start.minute,
     });
     return {
       passed: false,

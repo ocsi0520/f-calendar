@@ -30,7 +30,8 @@ export class LunchSpecification implements ScheduleSpecification {
         // TODO: better
         firstValidStart: this.timeManager.shiftByGranularity({
           dayNumber,
-          ...currentCell.timeInterval.start,
+          hour: currentCell.timeInterval.start.hour,
+          minute: currentCell.timeInterval.start.minute,
         }),
       },
       name: LunchSpecification.name,
@@ -77,7 +78,10 @@ export class LunchSpecification implements ScheduleSpecification {
         overlappingTimeInterval,
         earliestLunchSession,
       ) &&
-      this.sameDayIntervalManager.areIntervalsOverlapping(overlappingTimeInterval, latestLunchSession);
+      this.sameDayIntervalManager.areIntervalsOverlapping(
+        overlappingTimeInterval,
+        latestLunchSession,
+      );
     return !neitherEarlierNorLaterLunchIsPossible;
   }
 

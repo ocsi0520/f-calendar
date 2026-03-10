@@ -41,7 +41,8 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
   private getFirstStartTimeRightAfter({ timeInterval }: TableCell): WeekTime {
     return this.timeManager.shiftBySessionLength({
       dayNumber: timeInterval.dayNumber,
-      ...timeInterval.start,
+      hour: timeInterval.start.hour,
+      minute: timeInterval.start.minute,
     });
   }
 

@@ -30,7 +30,8 @@ export class BreakfastSpecification implements ScheduleSpecification {
         // TODO: better
         firstValidStart: this.timeManager.shiftByGranularity({
           dayNumber,
-          ...currentCell.timeInterval.start,
+          hour: currentCell.timeInterval.start.hour,
+          minute: currentCell.timeInterval.start.minute,
         }),
       },
       name: BreakfastSpecification.name,

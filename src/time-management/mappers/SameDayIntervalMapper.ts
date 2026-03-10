@@ -14,8 +14,16 @@ export class SameDayIntervalMapper {
   constructor(private timeMapper: TimeMapper) {}
 
   public mapToNumber({ start, end, dayNumber }: SameDayInterval): number {
-    const startFromMondayMidnight = this.timeMapper.weekTimeToNumber({ dayNumber, ...start });
-    const endFromMondayMidnight = this.timeMapper.weekTimeToNumber({ dayNumber, ...end });
+    const startFromMondayMidnight = this.timeMapper.weekTimeToNumber({
+      dayNumber,
+      hour: start.hour,
+      minute: start.minute,
+    });
+    const endFromMondayMidnight = this.timeMapper.weekTimeToNumber({
+      dayNumber,
+      hour: end.hour,
+      minute: end.minute,
+    });
     return startFromMondayMidnight * NUMBER_BASE + endFromMondayMidnight;
   }
 
