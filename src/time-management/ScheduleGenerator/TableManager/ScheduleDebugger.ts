@@ -70,4 +70,8 @@ export class ScheduleDebugger {
     }));
     console.log(debugInfos);
   }
+
+  public getAlternativeAllCountOfVariations(table: Table): number {
+    return table.clientPart.clients.reduce((acc, curr) => acc * curr.possibleCellIndexes.length, 1);
+  }
 }

@@ -40,6 +40,11 @@ export class ScheduleGenerator {
   private stepTableUntilCompleted(table: Table): void {
     const allPossibilities = this.scheduleDebugger.countAllPossibleVariations(table);
     console.log('allPossibilities', allPossibilities);
+
+    console.log(
+      'alternative possibilities',
+      this.scheduleDebugger.getAlternativeAllCountOfVariations(table),
+    );
     let trialCounter = 0;
     const specManager = this.specManagerFactory.create();
     while (!this.tableManager.isFinished(table) && !this.tableManager.isImpossible(table)) {
