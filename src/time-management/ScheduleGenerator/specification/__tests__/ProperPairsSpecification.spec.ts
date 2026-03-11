@@ -2,8 +2,6 @@ import { methodName } from '../../../../utils/test-name';
 import { ClientPairService } from '../../../client/client-pair.service';
 import { makeSameDayInterval } from '../../../definition/TimeInterval';
 import { makeWeekTime } from '../../../definition/WeekTime';
-import { TimeManager } from '../../../managers/TimeManager';
-import { TimeMapper } from '../../../mappers/TimeMapper';
 import { Table } from '../../Table';
 import { ProperPairsSpecification } from '../rules/ProperPairsSpecification';
 import { createExpectedResult, makeTable } from './SpecificationTestHelper';
@@ -15,7 +13,7 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
   beforeEach(() => {
     localStorage.clear();
     pairService = new ClientPairService();
-    unitUnderTest = new ProperPairsSpecification(pairService, new TimeManager(new TimeMapper()));
+    unitUnderTest = new ProperPairsSpecification(pairService);
   });
 
   const acceptAll = (table: Table): void => {

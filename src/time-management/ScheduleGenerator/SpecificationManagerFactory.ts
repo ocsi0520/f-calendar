@@ -22,7 +22,7 @@ export class SpecificationManagerFactory {
     const morningChecker = new MorningChecker();
     return [
       new NoOverlappingSessionsSpecification(this.sameDayIntervalManager),
-      new ProperPairsSpecification(this.pairService, this.timeManager),
+      new ProperPairsSpecification(this.pairService),
       new BreakfastSpecification(this.sameDayIntervalManager, this.timeManager, morningChecker),
       new LunchSpecification(morningChecker, this.sameDayIntervalManager, this.timeManager),
     ];
