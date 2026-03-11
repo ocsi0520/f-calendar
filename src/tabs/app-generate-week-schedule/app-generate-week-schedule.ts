@@ -5,6 +5,7 @@ import { Session } from '../../time-management/session';
 import { ScheduleGenerator } from '../../time-management/ScheduleGenerator/ScheduleGenerator';
 import { TableGenerator } from '../../time-management/ScheduleGenerator/table-generator/TableGenerator';
 import { Table } from '../../time-management/ScheduleGenerator/Table';
+import { TableMapper } from '../../time-management/ScheduleGenerator/TableMapper';
 
 const tableGenerationLabel = 'table generation';
 
@@ -17,6 +18,7 @@ const tableGenerationLabel = 'table generation';
 export class AppGenerateWeekSchedule {
   private tableGenerator = inject(TableGenerator);
   private scheduleGenerator = inject(ScheduleGenerator);
+  private tableMapper = inject(TableMapper);
   public generatedData = signal<{ table: Table; schedule: Array<Session> } | null>(null);
 
   public generateSchedule(): void {
@@ -45,9 +47,10 @@ export class AppGenerateWeekSchedule {
     console.time(tableGenerationLabel);
     this.generatedData.set(null);
     try {
-      // TODO: do the generation on a separate thread/worker or whatever
-      // OR just make a simple setTimeout, so that the UI can show some loading
-      const schedule = this.scheduleGenerator.generateScheduleFrom(table);
+      // TODO: do the generation on a separate web worker
+      this.scheduleGenerator.createScheduleIn(table);
+      const schedule = this.tableMapper.mapToSchedule(table);
+
       this.generatedData.set({
         table: table,
         schedule,

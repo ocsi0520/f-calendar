@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TableManager } from './TableManager/TableManager';
-import { TableMapper } from './TableMapper';
 import { Table } from './Table';
-import { Session } from '../session';
 import { SpecificationManagerFactory } from './SpecificationManagerFactory';
 import { ScheduleDebugger } from './TableManager/ScheduleDebugger';
 
@@ -11,22 +9,13 @@ import { ScheduleDebugger } from './TableManager/ScheduleDebugger';
 export class ScheduleGenerator {
   constructor(
     private tableManager: TableManager,
-    private tableMapper: TableMapper,
     private specManagerFactory: SpecificationManagerFactory,
     private scheduleDebugger: ScheduleDebugger,
   ) {}
 
-  // TODO: CQS violation, separate it
-  public generateScheduleFrom(table: Table): Array<Session> {
-    const finishedTable = this.generateFinishedTable(table);
-    return this.tableMapper.mapToSchedule(finishedTable);
-  }
-
-  private generateFinishedTable(table: Table): Table {
-    if (this.tableManager.isFinished(table)) {
-      // TODO: next variation
-      return table;
-    }
+  public createScheduleIn(table: Table): void {
+    // TODO: finish next variation or delete the entire concept
+    if (this.tableManager.isFinished(table)) return;
 
     this.stepTableUntilCompleted(table);
 
@@ -34,7 +23,6 @@ export class ScheduleGenerator {
       this.scheduleDebugger.logImpossibleTable(table, this.tableManager.getMaxClientIndex());
       throw new Error('could not finish table');
     }
-    return table;
   }
 
   private stepTableUntilCompleted(table: Table): void {
