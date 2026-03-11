@@ -22,11 +22,25 @@ export type TableCell = {
   timeInterval: SameDayInterval;
   clientIdsInvolved: Array<Client['id']>;
 };
+
+export type ViewByDay = Record<DayNumber, Array<TableCell>>;
+
+export type OptimizedDayGroups = [
+  Array<never>, // not used 0 index
+  Array<TableCell>, // 1
+  Array<TableCell>, // 2
+  Array<TableCell>, // 3
+  Array<TableCell>, // 4
+  Array<TableCell>, // 5
+  Array<TableCell>, // 6
+  Array<TableCell>, // 7
+];
+
 export type TableCellPart = {
   // currentIndexInLinear: number; // not-needed due to optimization
   views: {
     linear: Array<TableCell>;
-    byDay: Record<DayNumber, Array<TableCell>>; // in reality this is an array (to make it faster)
+    byDay: ViewByDay; // in reality this is an array (to make it faster)
   };
 };
 

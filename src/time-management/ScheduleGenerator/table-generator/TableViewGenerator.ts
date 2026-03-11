@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TableCell, TableCellPart } from '../Table';
-
-type ByDayView = TableCellPart['views']['byDay'];
-type TableCells = Array<TableCell>;
+import { OptimizedDayGroups, TableCell, TableCellPart, ViewByDay } from '../Table';
 
 @Injectable({ providedIn: 'root' })
 export class TableViewGenerator {
@@ -13,17 +10,8 @@ export class TableViewGenerator {
     };
   }
 
-  private groupCellsByDays(allSuitableTableCells: Array<TableCell>): ByDayView {
-    const result: [
-      never[],
-      TableCells,
-      TableCells,
-      TableCells,
-      TableCells,
-      TableCells,
-      TableCells,
-      TableCells,
-    ] = [[], [], [], [], [], [], [], []];
+  private groupCellsByDays(allSuitableTableCells: Array<TableCell>): ViewByDay {
+    const result: OptimizedDayGroups = [[], [], [], [], [], [], [], []];
     for (let cell of allSuitableTableCells) result[cell.timeInterval.dayNumber].push(cell);
     return result;
   }
