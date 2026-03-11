@@ -4,6 +4,14 @@ import { ScheduleSpecification, Result } from '../specification';
 import { sessionTime, timeGranularityInMins } from '../../../session';
 import { WeekTime } from '../../../definition/WeekTime';
 
+// TODO: better WeekTime result
+// in case of: prevOverlappingCell - currentCell
+// since we already passed prevOverlappingCell, we can't have pair with it
+// so we should jump to the end of prevOverlappingCell
+// HOWEVER, if currentCell - followingOverlappingCell
+// we might have a pair (check ProperPairsSpecification) with it, so first
+// we have to jump to that specific followingOverlappingCell, then ProperPairsSpecification
+// can jump to its end in case of no proper pair
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
   constructor(private readonly sameDayIntervalManager: SameDayIntervalManager) {}
 
@@ -31,7 +39,6 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
     return null;
   }
   private getFirstStartTimeRightAfter({ timeInterval }: TableCell): WeekTime {
-    // TODO: something is wrong here, even if I add 15 mins here, it does not find the solution
     return {
       dayNumber: timeInterval.dayNumber,
       hour: timeInterval.start.hour,
