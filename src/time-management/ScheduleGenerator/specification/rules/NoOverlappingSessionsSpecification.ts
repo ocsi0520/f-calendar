@@ -1,6 +1,6 @@
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
 import { Table, TableCell } from '../../Table';
-import { ScheduleSpecification, Result } from '../specification';
+import { ScheduleSpecification, NextValidStartResult } from '../specification';
 import { sessionTime, timeGranularityInMins } from '../../../session';
 import { WeekTime } from '../../../definition/WeekTime';
 
@@ -15,7 +15,7 @@ import { WeekTime } from '../../../definition/WeekTime';
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
   constructor(private readonly sameDayIntervalManager: SameDayIntervalManager) {}
 
-  public check(table: Table, currentCellLinearIndex: number): Result {
+  public check(table: Table, currentCellLinearIndex: number): NextValidStartResult {
     const currentCell = table.cellPart.views.linear[currentCellLinearIndex];
     const dayNumber = currentCell.timeInterval.dayNumber;
     const sameDayCells = table.cellPart.views.byDay[dayNumber];

@@ -1,10 +1,10 @@
 import { ClientPairService } from '../../../client/client-pair.service';
 import { Table, TableCell } from '../../Table';
-import { NextValidStartResult, Result, ScheduleSpecification } from '../specification';
+import { NextValidStartResult, ScheduleSpecification } from '../specification';
 
 export class ProperPairsSpecification implements ScheduleSpecification {
   constructor(private readonly pairService: ClientPairService) {}
-  public check(table: Table, currentCellLinearIndex: number): Result {
+  public check(table: Table, currentCellLinearIndex: number): NextValidStartResult {
     const currentCell = table.cellPart.views.linear[currentCellLinearIndex];
     const { clientIdsInvolved } = currentCell;
     if (clientIdsInvolved.length < 2) return null;

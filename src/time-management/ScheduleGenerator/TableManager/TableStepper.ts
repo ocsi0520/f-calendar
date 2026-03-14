@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Result } from '../specification/specification';
+import { NextValidStartResult } from '../specification/specification';
 import { ClientInfo, Table, TableCell } from '../Table';
 import { TableUtils } from './TableUtils';
 import { SameDayIntervalManager } from '../../managers/SameDayIntervalManager';
@@ -15,7 +15,7 @@ export class TableStepper {
     private sameDayIntervalManager: SameDayIntervalManager,
   ) {}
 
-  public step(table: Table, result: Result): void {
+  public step(table: Table, result: NextValidStartResult): void {
     const currentClientInfo = this.tableUtils.getCurrentClientInfo(table);
 
     const hasReachedAllSessions =
@@ -28,7 +28,7 @@ export class TableStepper {
     this.stepNonFinishedClient(table, currentClientInfo, result);
   }
 
-  private stepNonFinishedClient(table: Table, currentClientInfo: ClientInfo, result: Result): void {
+  private stepNonFinishedClient(table: Table, currentClientInfo: ClientInfo, result: NextValidStartResult): void {
     const nextPossibleCellIndex = this.getNextPossibleCellIndexWithCriteria(
       table,
       currentClientInfo,
@@ -38,7 +38,7 @@ export class TableStepper {
     else currentClientInfo.currentIndexOfPossibleCells = nextPossibleCellIndex;
   }
 
-  private getCriteria(table: Table, currentClientInfo: ClientInfo, result: Result): CellCriteria {
+  private getCriteria(table: Table, currentClientInfo: ClientInfo, result: NextValidStartResult): CellCriteria {
     if (!result) {
       const currentDayNumber = this.tableUtils.getCurrentCell(table, currentClientInfo).timeInterval
         .dayNumber;

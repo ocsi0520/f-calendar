@@ -3,7 +3,7 @@ import { makeSameDayInterval } from '../../../definition/TimeInterval';
 import { TimeManager } from '../../../managers/TimeManager';
 import { Table } from '../../Table';
 import { NoOverlappingSessionsSpecification } from '../rules/NoOverlappingSessionsSpecification';
-import { Result } from '../specification';
+import { NextValidStartResult } from '../specification';
 import { createExpectedResult, makeTable } from './SpecificationTestHelper';
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
 import { TimeMapper } from '../../../mappers/TimeMapper';
@@ -28,7 +28,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     }
   };
 
-  const testDetailed = (table: Table, expectedResults: Array<Result | null>): void => {
+  const testDetailed = (table: Table, expectedResults: Array<NextValidStartResult>): void => {
     for (let i = 0; i < expectedResults.length; i++) {
       if (expectedResults[i] === null) continue;
       expect(unitUnderTest.check(table, i)).toEqual(expectedResults[i]);
@@ -177,7 +177,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
       { timeInterval: makeSameDayInterval(1, [11, 30], [12, 45]), clientIdsInvolved: [6] },
       { timeInterval: makeSameDayInterval(1, [11, 45], [13, 0]), clientIdsInvolved: [] },
     ]);
-    const expectedResults: Array<Result | null> = [
+    const expectedResults: Array<NextValidStartResult> = [
       createExpectedResult(makeWeekTime(1, 7, 45)),
       createExpectedResult(makeWeekTime(1, 7, 30)),
       null,

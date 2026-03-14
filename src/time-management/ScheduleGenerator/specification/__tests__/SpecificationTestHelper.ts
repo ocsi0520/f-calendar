@@ -1,7 +1,7 @@
 import { groupBy } from '../../../../utils/groupby';
 import { WeekTime } from '../../../definition/WeekTime';
 import { ClientInfo, Table, TableCell } from '../../Table';
-import { Result } from '../specification';
+import { NextValidStartResult } from '../specification';
 
 export const makeTable = (cells: Array<TableCell>, clientInfos: Array<ClientInfo> = []): Table => ({
   cellPart: {
@@ -16,6 +16,6 @@ export const makeTable = (cells: Array<TableCell>, clientInfos: Array<ClientInfo
   },
 });
 
-export const createExpectedResult = (value: true | WeekTime): Result => {
+export const createExpectedResult = (value: true | WeekTime): NextValidStartResult => {
   return value === true ? null : value;
 };

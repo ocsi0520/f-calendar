@@ -1,5 +1,5 @@
 import { Table } from '../Table';
-import { ScheduleSpecification, Result } from './specification';
+import { ScheduleSpecification, NextValidStartResult } from './specification';
 
 export class SpecificationManager {
   /**
@@ -10,7 +10,7 @@ export class SpecificationManager {
    */
   constructor(private readonly allSpecifications: Array<ScheduleSpecification>) {}
 
-  public checkSpecifications(table: Table, currentLinearIndex: number): Result {
+  public checkSpecifications(table: Table, currentLinearIndex: number): NextValidStartResult {
     for (let spec of this.allSpecifications) {
       const result = spec.check(table, currentLinearIndex);
       if (result) return result;

@@ -1,6 +1,6 @@
 import { DayNumber } from '../../../definition/time-components';
 import { Table, TableCell } from '../../Table';
-import { ScheduleSpecification, Result } from '../specification';
+import { ScheduleSpecification, NextValidStartResult } from '../specification';
 import { MorningChecker } from './MorningChecker';
 import { makeSameDayInterval, SameDayInterval } from '../../../definition/TimeInterval';
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
@@ -13,7 +13,7 @@ export class LunchSpecification implements ScheduleSpecification {
     private readonly sameDayIntervalManager: SameDayIntervalManager,
     private readonly timeManager: TimeManager,
   ) {}
-  public check(table: Table, currentCellLinearIndex: number): Result {
+  public check(table: Table, currentCellLinearIndex: number): NextValidStartResult {
     const currentCell = table.cellPart.views.linear[currentCellLinearIndex];
     const dayNumber = currentCell.timeInterval.dayNumber;
     const sameDayCells = table.cellPart.views.byDay[dayNumber];

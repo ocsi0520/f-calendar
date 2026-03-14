@@ -1,7 +1,7 @@
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
 import { TimeManager } from '../../../managers/TimeManager';
 import { Table, TableCell } from '../../Table';
-import { ScheduleSpecification, Result } from '../specification';
+import { ScheduleSpecification, NextValidStartResult } from '../specification';
 import { MorningChecker } from './MorningChecker';
 
 type FirstTwoOccupiedCells =
@@ -16,7 +16,7 @@ export class BreakfastSpecification implements ScheduleSpecification {
     private readonly timeManager: TimeManager,
     private readonly morningChecker: MorningChecker,
   ) {}
-  public check(table: Table, currentCellLinearIndex: number): Result {
+  public check(table: Table, currentCellLinearIndex: number): NextValidStartResult {
     const currentCell = table.cellPart.views.linear[currentCellLinearIndex];
     const dayNumber = currentCell.timeInterval.dayNumber;
     const sameDayCells = table.cellPart.views.byDay[dayNumber];
