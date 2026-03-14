@@ -21,6 +21,7 @@ export type TableClientPart = {
 export type TableCell = {
   timeInterval: SameDayInterval;
   clientIdsInvolved: Array<Client['id']>;
+  timeStartRepresentation: number;
 };
 
 export type ViewByDay = Record<DayNumber, Array<TableCell>>;

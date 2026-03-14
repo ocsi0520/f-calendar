@@ -11,6 +11,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 0 },
           },
           clientIdsInvolved: [25],
+          timeStartRepresentation: 645,
         },
         {
           timeInterval: {
@@ -19,6 +20,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 660,
         },
         {
           timeInterval: {
@@ -27,6 +29,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 675,
         },
         {
           timeInterval: {
@@ -35,6 +38,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 690,
         },
         {
           timeInterval: {
@@ -43,6 +47,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 705,
         },
         {
           timeInterval: {
@@ -51,6 +56,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 720,
         },
         {
           timeInterval: {
@@ -59,6 +65,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 30 },
           },
           clientIdsInvolved: [12],
+          timeStartRepresentation: 735,
         },
         {
           timeInterval: {
@@ -67,6 +74,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 750,
         },
         {
           timeInterval: {
@@ -75,6 +83,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 765,
         },
         {
           timeInterval: {
@@ -83,6 +92,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 780,
         },
         {
           timeInterval: {
@@ -91,6 +101,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 795,
         },
         {
           timeInterval: {
@@ -99,6 +110,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 810,
         },
         {
           timeInterval: {
@@ -107,6 +119,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 825,
         },
         {
           timeInterval: {
@@ -115,6 +128,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 840,
         },
         {
           timeInterval: {
@@ -123,6 +137,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 855,
         },
         {
           timeInterval: {
@@ -131,6 +146,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 870,
         },
         {
           timeInterval: {
@@ -139,6 +155,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 885,
         },
         {
           timeInterval: {
@@ -147,6 +164,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 15 },
           },
           clientIdsInvolved: [11],
+          timeStartRepresentation: 960,
         },
         {
           timeInterval: {
@@ -155,6 +173,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 975,
         },
         {
           timeInterval: {
@@ -163,6 +182,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 990,
         },
         {
           timeInterval: {
@@ -171,6 +191,7 @@ export const outputTable: Table = {
             end: { hour: 18, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 1005,
         },
         {
           timeInterval: {
@@ -179,6 +200,7 @@ export const outputTable: Table = {
             end: { hour: 18, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 1020,
         },
         {
           timeInterval: {
@@ -187,6 +209,7 @@ export const outputTable: Table = {
             end: { hour: 18, minute: 30 },
           },
           clientIdsInvolved: [17],
+          timeStartRepresentation: 1035,
         },
         {
           timeInterval: {
@@ -195,6 +218,7 @@ export const outputTable: Table = {
             end: { hour: 8, minute: 45 },
           },
           clientIdsInvolved: [15],
+          timeStartRepresentation: 1890,
         },
         {
           timeInterval: {
@@ -203,6 +227,7 @@ export const outputTable: Table = {
             end: { hour: 10, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 1980,
         },
         {
           timeInterval: {
@@ -211,6 +236,7 @@ export const outputTable: Table = {
             end: { hour: 10, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 1995,
         },
         {
           timeInterval: {
@@ -219,6 +245,7 @@ export const outputTable: Table = {
             end: { hour: 10, minute: 45 },
           },
           clientIdsInvolved: [25],
+          timeStartRepresentation: 2010,
         },
         {
           timeInterval: {
@@ -227,6 +254,7 @@ export const outputTable: Table = {
             end: { hour: 11, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2025,
         },
         {
           timeInterval: {
@@ -235,6 +263,7 @@ export const outputTable: Table = {
             end: { hour: 11, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2040,
         },
         {
           timeInterval: {
@@ -243,6 +272,7 @@ export const outputTable: Table = {
             end: { hour: 11, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2055,
         },
         {
           timeInterval: {
@@ -251,6 +281,7 @@ export const outputTable: Table = {
             end: { hour: 11, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2070,
         },
         {
           timeInterval: {
@@ -259,6 +290,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 0 },
           },
           clientIdsInvolved: [22],
+          timeStartRepresentation: 2085,
         },
         {
           timeInterval: {
@@ -267,6 +299,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2100,
         },
         {
           timeInterval: {
@@ -275,6 +308,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2115,
         },
         {
           timeInterval: {
@@ -283,6 +317,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2130,
         },
         {
           timeInterval: {
@@ -291,6 +326,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2145,
         },
         {
           timeInterval: {
@@ -299,6 +335,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2160,
         },
         {
           timeInterval: {
@@ -307,6 +344,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 30 },
           },
           clientIdsInvolved: [12],
+          timeStartRepresentation: 2175,
         },
         {
           timeInterval: {
@@ -315,6 +353,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2190,
         },
         {
           timeInterval: {
@@ -323,6 +362,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2205,
         },
         {
           timeInterval: {
@@ -331,6 +371,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2220,
         },
         {
           timeInterval: {
@@ -339,6 +380,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2235,
         },
         {
           timeInterval: {
@@ -347,6 +389,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2250,
         },
         {
           timeInterval: {
@@ -355,6 +398,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2265,
         },
         {
           timeInterval: {
@@ -363,6 +407,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2280,
         },
         {
           timeInterval: {
@@ -371,6 +416,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2295,
         },
         {
           timeInterval: {
@@ -379,6 +425,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 45 },
           },
           clientIdsInvolved: [18],
+          timeStartRepresentation: 2310,
         },
         {
           timeInterval: {
@@ -387,6 +434,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2325,
         },
         {
           timeInterval: {
@@ -395,6 +443,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2340,
         },
         {
           timeInterval: {
@@ -403,6 +452,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2355,
         },
         {
           timeInterval: {
@@ -411,6 +461,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2370,
         },
         {
           timeInterval: {
@@ -419,6 +470,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 0 },
           },
           clientIdsInvolved: [13],
+          timeStartRepresentation: 2385,
         },
         {
           timeInterval: {
@@ -427,6 +479,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2400,
         },
         {
           timeInterval: {
@@ -435,6 +488,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 2415,
         },
         {
           timeInterval: {
@@ -443,6 +497,7 @@ export const outputTable: Table = {
             end: { hour: 20, minute: 15 },
           },
           clientIdsInvolved: [17],
+          timeStartRepresentation: 2580,
         },
         {
           timeInterval: {
@@ -451,6 +506,7 @@ export const outputTable: Table = {
             end: { hour: 19, minute: 45 },
           },
           clientIdsInvolved: [13],
+          timeStartRepresentation: 3990,
         },
         {
           timeInterval: {
@@ -459,6 +515,7 @@ export const outputTable: Table = {
             end: { hour: 20, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 4005,
         },
         {
           timeInterval: {
@@ -467,6 +524,7 @@ export const outputTable: Table = {
             end: { hour: 20, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 4020,
         },
         {
           timeInterval: {
@@ -475,6 +533,7 @@ export const outputTable: Table = {
             end: { hour: 11, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 4920,
         },
         {
           timeInterval: {
@@ -483,6 +542,7 @@ export const outputTable: Table = {
             end: { hour: 11, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 4935,
         },
         {
           timeInterval: {
@@ -491,6 +551,7 @@ export const outputTable: Table = {
             end: { hour: 11, minute: 45 },
           },
           clientIdsInvolved: [12, 10],
+          timeStartRepresentation: 4950,
         },
         {
           timeInterval: {
@@ -499,6 +560,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 4965,
         },
         {
           timeInterval: {
@@ -507,6 +569,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 4980,
         },
         {
           timeInterval: {
@@ -515,6 +578,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 4995,
         },
         {
           timeInterval: {
@@ -523,6 +587,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 5010,
         },
         {
           timeInterval: {
@@ -531,6 +596,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 0 },
           },
           clientIdsInvolved: [11],
+          timeStartRepresentation: 5025,
         },
         {
           timeInterval: {
@@ -539,6 +605,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 5040,
         },
         {
           timeInterval: {
@@ -547,6 +614,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 5055,
         },
         {
           timeInterval: {
@@ -555,6 +623,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 5070,
         },
         {
           timeInterval: {
@@ -563,6 +632,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 5085,
         },
         {
           timeInterval: {
@@ -571,6 +641,7 @@ export const outputTable: Table = {
             end: { hour: 18, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 5340,
         },
         {
           timeInterval: {
@@ -579,6 +650,7 @@ export const outputTable: Table = {
             end: { hour: 18, minute: 30 },
           },
           clientIdsInvolved: [21],
+          timeStartRepresentation: 5355,
         },
         {
           timeInterval: {
@@ -587,6 +659,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6405,
         },
         {
           timeInterval: {
@@ -595,6 +668,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 15 },
           },
           clientIdsInvolved: [18],
+          timeStartRepresentation: 6420,
         },
         {
           timeInterval: {
@@ -603,6 +677,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6435,
         },
         {
           timeInterval: {
@@ -611,6 +686,7 @@ export const outputTable: Table = {
             end: { hour: 12, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6450,
         },
         {
           timeInterval: {
@@ -619,6 +695,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6465,
         },
         {
           timeInterval: {
@@ -627,6 +704,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6480,
         },
         {
           timeInterval: {
@@ -635,6 +713,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 30 },
           },
           clientIdsInvolved: [10],
+          timeStartRepresentation: 6495,
         },
         {
           timeInterval: {
@@ -643,6 +722,7 @@ export const outputTable: Table = {
             end: { hour: 13, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6510,
         },
         {
           timeInterval: {
@@ -651,6 +731,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6525,
         },
         {
           timeInterval: {
@@ -659,6 +740,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6540,
         },
         {
           timeInterval: {
@@ -667,6 +749,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6555,
         },
         {
           timeInterval: {
@@ -675,6 +758,7 @@ export const outputTable: Table = {
             end: { hour: 14, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6570,
         },
         {
           timeInterval: {
@@ -683,6 +767,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6585,
         },
         {
           timeInterval: {
@@ -691,6 +776,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6600,
         },
         {
           timeInterval: {
@@ -699,6 +785,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6615,
         },
         {
           timeInterval: {
@@ -707,6 +794,7 @@ export const outputTable: Table = {
             end: { hour: 15, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6630,
         },
         {
           timeInterval: {
@@ -715,6 +803,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6645,
         },
         {
           timeInterval: {
@@ -723,6 +812,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6660,
         },
         {
           timeInterval: {
@@ -731,6 +821,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6675,
         },
         {
           timeInterval: {
@@ -739,6 +830,7 @@ export const outputTable: Table = {
             end: { hour: 16, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6690,
         },
         {
           timeInterval: {
@@ -747,6 +839,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6705,
         },
         {
           timeInterval: {
@@ -755,6 +848,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6720,
         },
         {
           timeInterval: {
@@ -763,6 +857,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 30 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6735,
         },
         {
           timeInterval: {
@@ -771,6 +866,7 @@ export const outputTable: Table = {
             end: { hour: 17, minute: 45 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6750,
         },
         {
           timeInterval: {
@@ -779,6 +875,7 @@ export const outputTable: Table = {
             end: { hour: 18, minute: 0 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6765,
         },
         {
           timeInterval: {
@@ -787,6 +884,7 @@ export const outputTable: Table = {
             end: { hour: 18, minute: 15 },
           },
           clientIdsInvolved: [],
+          timeStartRepresentation: 6780,
         },
       ],
       byDay: [
@@ -795,794 +893,1480 @@ export const outputTable: Table = {
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 10, minute: 45 },
-              end: { hour: 12, minute: 0 },
+              start: {
+                hour: 10,
+                minute: 45,
+              },
+              end: {
+                hour: 12,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [25],
+            timeStartRepresentation: 645,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 11, minute: 0 },
-              end: { hour: 12, minute: 15 },
+              start: {
+                hour: 11,
+                minute: 0,
+              },
+              end: {
+                hour: 12,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 660,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 11, minute: 15 },
-              end: { hour: 12, minute: 30 },
+              start: {
+                hour: 11,
+                minute: 15,
+              },
+              end: {
+                hour: 12,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 675,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 11, minute: 30 },
-              end: { hour: 12, minute: 45 },
+              start: {
+                hour: 11,
+                minute: 30,
+              },
+              end: {
+                hour: 12,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 690,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 11, minute: 45 },
-              end: { hour: 13, minute: 0 },
+              start: {
+                hour: 11,
+                minute: 45,
+              },
+              end: {
+                hour: 13,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 705,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 12, minute: 0 },
-              end: { hour: 13, minute: 15 },
+              start: {
+                hour: 12,
+                minute: 0,
+              },
+              end: {
+                hour: 13,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 720,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 12, minute: 15 },
-              end: { hour: 13, minute: 30 },
+              start: {
+                hour: 12,
+                minute: 15,
+              },
+              end: {
+                hour: 13,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [12],
+            timeStartRepresentation: 735,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 12, minute: 30 },
-              end: { hour: 13, minute: 45 },
+              start: {
+                hour: 12,
+                minute: 30,
+              },
+              end: {
+                hour: 13,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 750,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 12, minute: 45 },
-              end: { hour: 14, minute: 0 },
+              start: {
+                hour: 12,
+                minute: 45,
+              },
+              end: {
+                hour: 14,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 765,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 13, minute: 0 },
-              end: { hour: 14, minute: 15 },
+              start: {
+                hour: 13,
+                minute: 0,
+              },
+              end: {
+                hour: 14,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 780,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 13, minute: 15 },
-              end: { hour: 14, minute: 30 },
+              start: {
+                hour: 13,
+                minute: 15,
+              },
+              end: {
+                hour: 14,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 795,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 13, minute: 30 },
-              end: { hour: 14, minute: 45 },
+              start: {
+                hour: 13,
+                minute: 30,
+              },
+              end: {
+                hour: 14,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 810,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 13, minute: 45 },
-              end: { hour: 15, minute: 0 },
+              start: {
+                hour: 13,
+                minute: 45,
+              },
+              end: {
+                hour: 15,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 825,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 14, minute: 0 },
-              end: { hour: 15, minute: 15 },
+              start: {
+                hour: 14,
+                minute: 0,
+              },
+              end: {
+                hour: 15,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 840,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 14, minute: 15 },
-              end: { hour: 15, minute: 30 },
+              start: {
+                hour: 14,
+                minute: 15,
+              },
+              end: {
+                hour: 15,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 855,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 14, minute: 30 },
-              end: { hour: 15, minute: 45 },
+              start: {
+                hour: 14,
+                minute: 30,
+              },
+              end: {
+                hour: 15,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 870,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 14, minute: 45 },
-              end: { hour: 16, minute: 0 },
+              start: {
+                hour: 14,
+                minute: 45,
+              },
+              end: {
+                hour: 16,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 885,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 16, minute: 0 },
-              end: { hour: 17, minute: 15 },
+              start: {
+                hour: 16,
+                minute: 0,
+              },
+              end: {
+                hour: 17,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [11],
+            timeStartRepresentation: 960,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 16, minute: 15 },
-              end: { hour: 17, minute: 30 },
+              start: {
+                hour: 16,
+                minute: 15,
+              },
+              end: {
+                hour: 17,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 975,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 16, minute: 30 },
-              end: { hour: 17, minute: 45 },
+              start: {
+                hour: 16,
+                minute: 30,
+              },
+              end: {
+                hour: 17,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 990,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 16, minute: 45 },
-              end: { hour: 18, minute: 0 },
+              start: {
+                hour: 16,
+                minute: 45,
+              },
+              end: {
+                hour: 18,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 1005,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 17, minute: 0 },
-              end: { hour: 18, minute: 15 },
+              start: {
+                hour: 17,
+                minute: 0,
+              },
+              end: {
+                hour: 18,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 1020,
           },
           {
             timeInterval: {
               dayNumber: 1,
-              start: { hour: 17, minute: 15 },
-              end: { hour: 18, minute: 30 },
+              start: {
+                hour: 17,
+                minute: 15,
+              },
+              end: {
+                hour: 18,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [17],
+            timeStartRepresentation: 1035,
           },
         ],
         [
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 7, minute: 30 },
-              end: { hour: 8, minute: 45 },
+              start: {
+                hour: 7,
+                minute: 30,
+              },
+              end: {
+                hour: 8,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [15],
+            timeStartRepresentation: 1890,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 9, minute: 0 },
-              end: { hour: 10, minute: 15 },
+              start: {
+                hour: 9,
+                minute: 0,
+              },
+              end: {
+                hour: 10,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 1980,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 9, minute: 15 },
-              end: { hour: 10, minute: 30 },
+              start: {
+                hour: 9,
+                minute: 15,
+              },
+              end: {
+                hour: 10,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 1995,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 9, minute: 30 },
-              end: { hour: 10, minute: 45 },
+              start: {
+                hour: 9,
+                minute: 30,
+              },
+              end: {
+                hour: 10,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [25],
+            timeStartRepresentation: 2010,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 9, minute: 45 },
-              end: { hour: 11, minute: 0 },
+              start: {
+                hour: 9,
+                minute: 45,
+              },
+              end: {
+                hour: 11,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2025,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 10, minute: 0 },
-              end: { hour: 11, minute: 15 },
+              start: {
+                hour: 10,
+                minute: 0,
+              },
+              end: {
+                hour: 11,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2040,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 10, minute: 15 },
-              end: { hour: 11, minute: 30 },
+              start: {
+                hour: 10,
+                minute: 15,
+              },
+              end: {
+                hour: 11,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2055,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 10, minute: 30 },
-              end: { hour: 11, minute: 45 },
+              start: {
+                hour: 10,
+                minute: 30,
+              },
+              end: {
+                hour: 11,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2070,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 10, minute: 45 },
-              end: { hour: 12, minute: 0 },
+              start: {
+                hour: 10,
+                minute: 45,
+              },
+              end: {
+                hour: 12,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [22],
+            timeStartRepresentation: 2085,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 11, minute: 0 },
-              end: { hour: 12, minute: 15 },
+              start: {
+                hour: 11,
+                minute: 0,
+              },
+              end: {
+                hour: 12,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2100,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 11, minute: 15 },
-              end: { hour: 12, minute: 30 },
+              start: {
+                hour: 11,
+                minute: 15,
+              },
+              end: {
+                hour: 12,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2115,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 11, minute: 30 },
-              end: { hour: 12, minute: 45 },
+              start: {
+                hour: 11,
+                minute: 30,
+              },
+              end: {
+                hour: 12,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2130,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 11, minute: 45 },
-              end: { hour: 13, minute: 0 },
+              start: {
+                hour: 11,
+                minute: 45,
+              },
+              end: {
+                hour: 13,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2145,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 12, minute: 0 },
-              end: { hour: 13, minute: 15 },
+              start: {
+                hour: 12,
+                minute: 0,
+              },
+              end: {
+                hour: 13,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2160,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 12, minute: 15 },
-              end: { hour: 13, minute: 30 },
+              start: {
+                hour: 12,
+                minute: 15,
+              },
+              end: {
+                hour: 13,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [12],
+            timeStartRepresentation: 2175,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 12, minute: 30 },
-              end: { hour: 13, minute: 45 },
+              start: {
+                hour: 12,
+                minute: 30,
+              },
+              end: {
+                hour: 13,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2190,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 12, minute: 45 },
-              end: { hour: 14, minute: 0 },
+              start: {
+                hour: 12,
+                minute: 45,
+              },
+              end: {
+                hour: 14,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2205,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 13, minute: 0 },
-              end: { hour: 14, minute: 15 },
+              start: {
+                hour: 13,
+                minute: 0,
+              },
+              end: {
+                hour: 14,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2220,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 13, minute: 15 },
-              end: { hour: 14, minute: 30 },
+              start: {
+                hour: 13,
+                minute: 15,
+              },
+              end: {
+                hour: 14,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2235,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 13, minute: 30 },
-              end: { hour: 14, minute: 45 },
+              start: {
+                hour: 13,
+                minute: 30,
+              },
+              end: {
+                hour: 14,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2250,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 13, minute: 45 },
-              end: { hour: 15, minute: 0 },
+              start: {
+                hour: 13,
+                minute: 45,
+              },
+              end: {
+                hour: 15,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2265,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 14, minute: 0 },
-              end: { hour: 15, minute: 15 },
+              start: {
+                hour: 14,
+                minute: 0,
+              },
+              end: {
+                hour: 15,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2280,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 14, minute: 15 },
-              end: { hour: 15, minute: 30 },
+              start: {
+                hour: 14,
+                minute: 15,
+              },
+              end: {
+                hour: 15,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2295,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 14, minute: 30 },
-              end: { hour: 15, minute: 45 },
+              start: {
+                hour: 14,
+                minute: 30,
+              },
+              end: {
+                hour: 15,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [18],
+            timeStartRepresentation: 2310,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 14, minute: 45 },
-              end: { hour: 16, minute: 0 },
+              start: {
+                hour: 14,
+                minute: 45,
+              },
+              end: {
+                hour: 16,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2325,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 15, minute: 0 },
-              end: { hour: 16, minute: 15 },
+              start: {
+                hour: 15,
+                minute: 0,
+              },
+              end: {
+                hour: 16,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2340,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 15, minute: 15 },
-              end: { hour: 16, minute: 30 },
+              start: {
+                hour: 15,
+                minute: 15,
+              },
+              end: {
+                hour: 16,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2355,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 15, minute: 30 },
-              end: { hour: 16, minute: 45 },
+              start: {
+                hour: 15,
+                minute: 30,
+              },
+              end: {
+                hour: 16,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2370,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 15, minute: 45 },
-              end: { hour: 17, minute: 0 },
+              start: {
+                hour: 15,
+                minute: 45,
+              },
+              end: {
+                hour: 17,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [13],
+            timeStartRepresentation: 2385,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 16, minute: 0 },
-              end: { hour: 17, minute: 15 },
+              start: {
+                hour: 16,
+                minute: 0,
+              },
+              end: {
+                hour: 17,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2400,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 16, minute: 15 },
-              end: { hour: 17, minute: 30 },
+              start: {
+                hour: 16,
+                minute: 15,
+              },
+              end: {
+                hour: 17,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 2415,
           },
           {
             timeInterval: {
               dayNumber: 2,
-              start: { hour: 19, minute: 0 },
-              end: { hour: 20, minute: 15 },
+              start: {
+                hour: 19,
+                minute: 0,
+              },
+              end: {
+                hour: 20,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [17],
+            timeStartRepresentation: 2580,
           },
         ],
         [
           {
             timeInterval: {
               dayNumber: 3,
-              start: { hour: 18, minute: 30 },
-              end: { hour: 19, minute: 45 },
+              start: {
+                hour: 18,
+                minute: 30,
+              },
+              end: {
+                hour: 19,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [13],
+            timeStartRepresentation: 3990,
           },
           {
             timeInterval: {
               dayNumber: 3,
-              start: { hour: 18, minute: 45 },
-              end: { hour: 20, minute: 0 },
+              start: {
+                hour: 18,
+                minute: 45,
+              },
+              end: {
+                hour: 20,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 4005,
           },
           {
             timeInterval: {
               dayNumber: 3,
-              start: { hour: 19, minute: 0 },
-              end: { hour: 20, minute: 15 },
+              start: {
+                hour: 19,
+                minute: 0,
+              },
+              end: {
+                hour: 20,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 4020,
           },
         ],
         [
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 10, minute: 0 },
-              end: { hour: 11, minute: 15 },
+              start: {
+                hour: 10,
+                minute: 0,
+              },
+              end: {
+                hour: 11,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 4920,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 10, minute: 15 },
-              end: { hour: 11, minute: 30 },
+              start: {
+                hour: 10,
+                minute: 15,
+              },
+              end: {
+                hour: 11,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 4935,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 10, minute: 30 },
-              end: { hour: 11, minute: 45 },
+              start: {
+                hour: 10,
+                minute: 30,
+              },
+              end: {
+                hour: 11,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [12, 10],
+            timeStartRepresentation: 4950,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 10, minute: 45 },
-              end: { hour: 12, minute: 0 },
+              start: {
+                hour: 10,
+                minute: 45,
+              },
+              end: {
+                hour: 12,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 4965,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 11, minute: 0 },
-              end: { hour: 12, minute: 15 },
+              start: {
+                hour: 11,
+                minute: 0,
+              },
+              end: {
+                hour: 12,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 4980,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 11, minute: 15 },
-              end: { hour: 12, minute: 30 },
+              start: {
+                hour: 11,
+                minute: 15,
+              },
+              end: {
+                hour: 12,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 4995,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 11, minute: 30 },
-              end: { hour: 12, minute: 45 },
+              start: {
+                hour: 11,
+                minute: 30,
+              },
+              end: {
+                hour: 12,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 5010,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 11, minute: 45 },
-              end: { hour: 13, minute: 0 },
+              start: {
+                hour: 11,
+                minute: 45,
+              },
+              end: {
+                hour: 13,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [11],
+            timeStartRepresentation: 5025,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 12, minute: 0 },
-              end: { hour: 13, minute: 15 },
+              start: {
+                hour: 12,
+                minute: 0,
+              },
+              end: {
+                hour: 13,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 5040,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 12, minute: 15 },
-              end: { hour: 13, minute: 30 },
+              start: {
+                hour: 12,
+                minute: 15,
+              },
+              end: {
+                hour: 13,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 5055,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 12, minute: 30 },
-              end: { hour: 13, minute: 45 },
+              start: {
+                hour: 12,
+                minute: 30,
+              },
+              end: {
+                hour: 13,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 5070,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 12, minute: 45 },
-              end: { hour: 14, minute: 0 },
+              start: {
+                hour: 12,
+                minute: 45,
+              },
+              end: {
+                hour: 14,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 5085,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 17, minute: 0 },
-              end: { hour: 18, minute: 15 },
+              start: {
+                hour: 17,
+                minute: 0,
+              },
+              end: {
+                hour: 18,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 5340,
           },
           {
             timeInterval: {
               dayNumber: 4,
-              start: { hour: 17, minute: 15 },
-              end: { hour: 18, minute: 30 },
+              start: {
+                hour: 17,
+                minute: 15,
+              },
+              end: {
+                hour: 18,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [21],
+            timeStartRepresentation: 5355,
           },
         ],
         [
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 10, minute: 45 },
-              end: { hour: 12, minute: 0 },
+              start: {
+                hour: 10,
+                minute: 45,
+              },
+              end: {
+                hour: 12,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6405,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 11, minute: 0 },
-              end: { hour: 12, minute: 15 },
+              start: {
+                hour: 11,
+                minute: 0,
+              },
+              end: {
+                hour: 12,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [18],
+            timeStartRepresentation: 6420,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 11, minute: 15 },
-              end: { hour: 12, minute: 30 },
+              start: {
+                hour: 11,
+                minute: 15,
+              },
+              end: {
+                hour: 12,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6435,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 11, minute: 30 },
-              end: { hour: 12, minute: 45 },
+              start: {
+                hour: 11,
+                minute: 30,
+              },
+              end: {
+                hour: 12,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6450,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 11, minute: 45 },
-              end: { hour: 13, minute: 0 },
+              start: {
+                hour: 11,
+                minute: 45,
+              },
+              end: {
+                hour: 13,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6465,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 12, minute: 0 },
-              end: { hour: 13, minute: 15 },
+              start: {
+                hour: 12,
+                minute: 0,
+              },
+              end: {
+                hour: 13,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6480,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 12, minute: 15 },
-              end: { hour: 13, minute: 30 },
+              start: {
+                hour: 12,
+                minute: 15,
+              },
+              end: {
+                hour: 13,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [10],
+            timeStartRepresentation: 6495,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 12, minute: 30 },
-              end: { hour: 13, minute: 45 },
+              start: {
+                hour: 12,
+                minute: 30,
+              },
+              end: {
+                hour: 13,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6510,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 12, minute: 45 },
-              end: { hour: 14, minute: 0 },
+              start: {
+                hour: 12,
+                minute: 45,
+              },
+              end: {
+                hour: 14,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6525,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 13, minute: 0 },
-              end: { hour: 14, minute: 15 },
+              start: {
+                hour: 13,
+                minute: 0,
+              },
+              end: {
+                hour: 14,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6540,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 13, minute: 15 },
-              end: { hour: 14, minute: 30 },
+              start: {
+                hour: 13,
+                minute: 15,
+              },
+              end: {
+                hour: 14,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6555,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 13, minute: 30 },
-              end: { hour: 14, minute: 45 },
+              start: {
+                hour: 13,
+                minute: 30,
+              },
+              end: {
+                hour: 14,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6570,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 13, minute: 45 },
-              end: { hour: 15, minute: 0 },
+              start: {
+                hour: 13,
+                minute: 45,
+              },
+              end: {
+                hour: 15,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6585,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 14, minute: 0 },
-              end: { hour: 15, minute: 15 },
+              start: {
+                hour: 14,
+                minute: 0,
+              },
+              end: {
+                hour: 15,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6600,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 14, minute: 15 },
-              end: { hour: 15, minute: 30 },
+              start: {
+                hour: 14,
+                minute: 15,
+              },
+              end: {
+                hour: 15,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6615,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 14, minute: 30 },
-              end: { hour: 15, minute: 45 },
+              start: {
+                hour: 14,
+                minute: 30,
+              },
+              end: {
+                hour: 15,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6630,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 14, minute: 45 },
-              end: { hour: 16, minute: 0 },
+              start: {
+                hour: 14,
+                minute: 45,
+              },
+              end: {
+                hour: 16,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6645,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 15, minute: 0 },
-              end: { hour: 16, minute: 15 },
+              start: {
+                hour: 15,
+                minute: 0,
+              },
+              end: {
+                hour: 16,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6660,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 15, minute: 15 },
-              end: { hour: 16, minute: 30 },
+              start: {
+                hour: 15,
+                minute: 15,
+              },
+              end: {
+                hour: 16,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6675,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 15, minute: 30 },
-              end: { hour: 16, minute: 45 },
+              start: {
+                hour: 15,
+                minute: 30,
+              },
+              end: {
+                hour: 16,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6690,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 15, minute: 45 },
-              end: { hour: 17, minute: 0 },
+              start: {
+                hour: 15,
+                minute: 45,
+              },
+              end: {
+                hour: 17,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6705,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 16, minute: 0 },
-              end: { hour: 17, minute: 15 },
+              start: {
+                hour: 16,
+                minute: 0,
+              },
+              end: {
+                hour: 17,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6720,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 16, minute: 15 },
-              end: { hour: 17, minute: 30 },
+              start: {
+                hour: 16,
+                minute: 15,
+              },
+              end: {
+                hour: 17,
+                minute: 30,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6735,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 16, minute: 30 },
-              end: { hour: 17, minute: 45 },
+              start: {
+                hour: 16,
+                minute: 30,
+              },
+              end: {
+                hour: 17,
+                minute: 45,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6750,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 16, minute: 45 },
-              end: { hour: 18, minute: 0 },
+              start: {
+                hour: 16,
+                minute: 45,
+              },
+              end: {
+                hour: 18,
+                minute: 0,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6765,
           },
           {
             timeInterval: {
               dayNumber: 5,
-              start: { hour: 17, minute: 0 },
-              end: { hour: 18, minute: 15 },
+              start: {
+                hour: 17,
+                minute: 0,
+              },
+              end: {
+                hour: 18,
+                minute: 15,
+              },
             },
             clientIdsInvolved: [],
+            timeStartRepresentation: 6780,
           },
         ],
         [],

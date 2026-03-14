@@ -1,7 +1,7 @@
 import { methodName } from '../../../../utils/test-name';
 import { ClientPairService } from '../../../client/client-pair.service';
-import { makeSameDayInterval } from '../../../definition/TimeInterval';
 import { makeWeekTime } from '../../../definition/WeekTime';
+import { makeTableCell } from '../../__tests__/makeEmptyTableCell';
 import { Table } from '../../Table';
 import { ProperPairsSpecification } from '../rules/ProperPairsSpecification';
 import { createExpectedResult, makeTable } from './SpecificationTestHelper';
@@ -23,17 +23,17 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
 
   it('returns true when no clients are assigned to any cells', () => {
     const table = makeTable([
-      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [] },
-      { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [] },
+      makeTableCell(1, [7, 30], [8, 45]),
+      makeTableCell(1, [8, 45], [10, 0]),
     ]);
     acceptAll(table);
   });
 
   it('returns true when all cells have only single clients', () => {
     const table = makeTable([
-      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1] },
-      { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [2] },
-      { timeInterval: makeSameDayInterval(2, [10, 0], [11, 45]), clientIdsInvolved: [3] },
+      makeTableCell(1, [7, 30], [8, 45], [1]),
+      makeTableCell(1, [8, 45], [10, 0], [2]),
+      makeTableCell(2, [10, 0], [11, 45], [3]),
     ]);
     acceptAll(table);
   });
@@ -43,29 +43,22 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
     pairService.addPair(4, 3);
 
     const table = makeTable([
-      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1, 2] },
-      { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [3, 4] },
+      makeTableCell(1, [7, 30], [8, 45], [1, 2]),
+      makeTableCell(1, [8, 45], [10, 0], [3, 4]),
     ]);
 
     acceptAll(table);
   });
 
   it('returns false when an cell has a pair that does not exist in the pairService', () => {
-    const table = makeTable([
-      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1, 2] },
-    ]);
+    const table = makeTable([makeTableCell(1, [7, 30], [8, 45], [1, 2])]);
 
     const expected = createExpectedResult(makeWeekTime(1, 8, 45));
     expect(unitUnderTest.check(table, 0)).toEqual(expected);
   });
 
   it('returns false when an cell has more than 2 clients', () => {
-    const table = makeTable([
-      {
-        timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]),
-        clientIdsInvolved: [1, 2, 3],
-      },
-    ]);
+    const table = makeTable([makeTableCell(1, [7, 30], [8, 45], [1, 2, 3])]);
 
     const expected = createExpectedResult(makeWeekTime(1, 8, 45));
     expect(unitUnderTest.check(table, 0)).toEqual(expected);
@@ -75,9 +68,9 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
     pairService.addPair(2, 3);
 
     const table = makeTable([
-      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1] },
-      { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [] },
-      { timeInterval: makeSameDayInterval(1, [10, 45], [12, 0]), clientIdsInvolved: [2, 3] },
+      makeTableCell(1, [7, 30], [8, 45], [1]),
+      makeTableCell(1, [8, 45], [10, 0], []),
+      makeTableCell(1, [10, 45], [12, 0], [2, 3]),
     ]);
 
     acceptAll(table);
@@ -87,8 +80,8 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
     pairService.addPair(1, 2);
 
     const table = makeTable([
-      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1, 2] },
-      { timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]), clientIdsInvolved: [3, 4] },
+      makeTableCell(1, [7, 30], [8, 45], [1, 2]),
+      makeTableCell(1, [8, 45], [10, 0], [3, 4]),
     ]);
 
     const expected = createExpectedResult(makeWeekTime(1, 10, 0));
@@ -102,11 +95,8 @@ describe(methodName(ProperPairsSpecification, 'check'), () => {
     pairService.addPair(3, 5);
 
     const table = makeTable([
-      { timeInterval: makeSameDayInterval(1, [7, 30], [8, 45]), clientIdsInvolved: [1, 2] },
-      {
-        timeInterval: makeSameDayInterval(1, [8, 45], [10, 0]),
-        clientIdsInvolved: [3, 4, 5],
-      },
+      makeTableCell(1, [7, 30], [8, 45], [1, 2]),
+      makeTableCell(1, [8, 45], [10, 0], [3, 4, 5]),
     ]);
 
     const expected = createExpectedResult(makeWeekTime(1, 10, 0));

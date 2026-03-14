@@ -7,6 +7,7 @@ import { TableCell } from '../../../Table';
 import { ClientInfoGenerator } from '../ClientInfoGenerator';
 import { ClientInfoSorter } from '../ClientInfoSorter';
 import { ClientInfoValidator } from '../ClientInfoValidator';
+import { makeTableCell } from '../../../__tests__/makeEmptyTableCell';
 
 // TODO: proper tests
 describe('ClientInfoGenerator', () => {
@@ -23,9 +24,9 @@ describe('ClientInfoGenerator', () => {
 
   it('generates possibleCellIndexes and uniqueDays correctly', () => {
     const cells: TableCell[] = [
-      { timeInterval: makeSameDayInterval(1, [8, 0], [9, 15]), clientIdsInvolved: [] },
-      { timeInterval: makeSameDayInterval(1, [10, 0], [11, 15]), clientIdsInvolved: [] },
-      { timeInterval: makeSameDayInterval(2, [9, 0], [10, 15]), clientIdsInvolved: [] },
+      makeTableCell(1, [8, 0], [9, 15]),
+      makeTableCell(1, [10, 0], [11, 15]),
+      makeTableCell(2, [9, 0], [10, 15]),
     ];
 
     const client: Client = {
@@ -49,9 +50,9 @@ describe('ClientInfoGenerator', () => {
 
   it('sorts client infos by relative chance of success', () => {
     const cells: TableCell[] = [
-      { timeInterval: makeSameDayInterval(1, [8, 0], [9, 15]), clientIdsInvolved: [] },
-      { timeInterval: makeSameDayInterval(1, [9, 30], [10, 45]), clientIdsInvolved: [] },
-      { timeInterval: makeSameDayInterval(2, [10, 0], [11, 15]), clientIdsInvolved: [] },
+      makeTableCell(1, [8, 0], [9, 15]),
+      makeTableCell(1, [9, 30], [10, 45]),
+      makeTableCell(2, [10, 0], [11, 15]),
     ];
 
     const clientA: Client = {
@@ -84,9 +85,7 @@ describe('ClientInfoGenerator', () => {
   });
 
   it('throws when a client has fewer uniqueDays than sessions required', () => {
-    const cells: TableCell[] = [
-      { timeInterval: makeSameDayInterval(1, [8, 0], [9, 15]), clientIdsInvolved: [] },
-    ];
+    const cells: TableCell[] = [makeTableCell(1, [8, 0], [9, 15])];
 
     const client: Client = {
       id: 3,

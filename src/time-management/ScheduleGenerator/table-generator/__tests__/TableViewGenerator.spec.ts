@@ -1,4 +1,5 @@
 import { makeSameDayInterval, SameDayInterval } from '../../../definition/TimeInterval';
+import { makeTableCell } from '../../__tests__/makeEmptyTableCell';
 import { TableCell } from '../../Table';
 import { TableViewGenerator } from '../TableViewGenerator';
 
@@ -31,10 +32,13 @@ describe(TableViewGenerator.name, () => {
     makeSameDayInterval(7, [12, 0], [13, 15]),
   ];
 
-  const allSuitableCells: Array<TableCell> = allSuitableIntervals.map((timeInterval) => ({
-    timeInterval,
-    clientIdsInvolved: [],
-  }));
+  const allSuitableCells: Array<TableCell> = allSuitableIntervals.map((timeInterval) =>
+    makeTableCell(
+      timeInterval.dayNumber,
+      [timeInterval.start.hour, timeInterval.start.minute],
+      [timeInterval.end.hour, timeInterval.end.minute],
+    ),
+  );
   it('should group cells by day properly', () => {
     const actual = unitUnderTest.generateViewsFrom(allSuitableCells);
     expect(actual.linear).toEqual(allSuitableCells);
