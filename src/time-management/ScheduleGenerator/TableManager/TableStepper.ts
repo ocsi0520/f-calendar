@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { hasCheckPassed, SpecCheckResult } from '../specification/specification';
 import { ClientInfo, Table, TableCell } from '../Table';
 import { TableUtils } from './TableUtils';
-import { TimeMapper } from '../../mappers/TimeMapper';
 
 type CellCriteria = (cell: TableCell) => boolean;
 
@@ -10,10 +9,7 @@ type CellCriteria = (cell: TableCell) => boolean;
 
 @Injectable({ providedIn: 'root' })
 export class TableStepper {
-  constructor(
-    private tableUtils: TableUtils,
-    private timeMapper: TimeMapper,
-  ) {}
+  constructor(private tableUtils: TableUtils) {}
 
   public step(table: Table, result: SpecCheckResult): void {
     const currentClientInfo = this.tableUtils.getCurrentClientInfo(table);
@@ -52,12 +48,7 @@ export class TableStepper {
         .dayNumber;
       return (cell: TableCell) => cell.timeInterval.dayNumber > currentDayNumber;
     } else {
-      return (cell) =>
-        this.timeMapper.weekTimeToNumber({
-          dayNumber: cell.timeInterval.dayNumber,
-          hour: cell.timeInterval.start.hour,
-          minute: cell.timeInterval.start.minute,
-        }) >= result;
+      return (cell) => cell.timeStartRepresentation >= result;
     }
   }
 
