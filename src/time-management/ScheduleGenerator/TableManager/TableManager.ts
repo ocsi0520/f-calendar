@@ -3,6 +3,7 @@ import { ClientInfo, Table, TableCell } from '../Table';
 import { SpecificationManager } from '../specification/SpecificationManager';
 import { TableUtils } from './TableUtils';
 import { TableStepper } from './TableStepper';
+import { hasCheckPassed } from '../specification/specification';
 
 // TODO: next variation
 
@@ -35,7 +36,7 @@ export class TableManager {
 
     this.registerCurrent(currentClientInfo, currentCell);
     const nextValidStart = specManager.checkSpecifications(table, currentCellIndex);
-    if (nextValidStart) this.unregisterCurrent(currentClientInfo, currentCell);
+    if (!hasCheckPassed(nextValidStart)) this.unregisterCurrent(currentClientInfo, currentCell);
     this.tableStepper.step(table, nextValidStart);
   }
   private unregisterCurrent(currentClientInfo: ClientInfo, currentCell: TableCell) {

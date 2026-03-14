@@ -9,10 +9,12 @@ import { ProperPairsSpecification } from './specification/rules/ProperPairsSpeci
 import { ScheduleSpecification } from './specification/specification';
 import { SpecificationManager } from './specification/SpecificationManager';
 import { SameDayIntervalManager } from '../managers/SameDayIntervalManager';
+import { TimeMapper } from '../mappers/TimeMapper';
 
 @Injectable({ providedIn: 'root' })
 export class SpecificationManagerFactory {
   constructor(
+    private timeMapper: TimeMapper,
     private timeManager: TimeManager,
     private sameDayIntervalManager: SameDayIntervalManager,
     private pairService: ClientPairService,
@@ -29,6 +31,6 @@ export class SpecificationManagerFactory {
   }
 
   public create(): SpecificationManager {
-    return new SpecificationManager(this.getAllSpecifications());
+    return new SpecificationManager(this.getAllSpecifications(), this.timeMapper);
   }
 }

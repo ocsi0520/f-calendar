@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { NextValidStartResult } from '../specification/specification';
+import { hasCheckPassed, SpecCheckResult } from '../specification/specification';
 import { ClientInfo, Table, TableCell } from '../Table';
 import { TableUtils } from './TableUtils';
-import { SameDayIntervalManager } from '../../managers/SameDayIntervalManager';
+import { TimeMapper } from '../../mappers/TimeMapper';
 
 type CellCriteria = (cell: TableCell) => boolean;
 
@@ -12,10 +12,10 @@ type CellCriteria = (cell: TableCell) => boolean;
 export class TableStepper {
   constructor(
     private tableUtils: TableUtils,
-    private sameDayIntervalManager: SameDayIntervalManager,
+    private timeMapper: TimeMapper,
   ) {}
 
-  public step(table: Table, result: NextValidStartResult): void {
+  public step(table: Table, result: SpecCheckResult): void {
     const currentClientInfo = this.tableUtils.getCurrentClientInfo(table);
 
     const hasReachedAllSessions =
@@ -28,7 +28,11 @@ export class TableStepper {
     this.stepNonFinishedClient(table, currentClientInfo, result);
   }
 
-  private stepNonFinishedClient(table: Table, currentClientInfo: ClientInfo, result: NextValidStartResult): void {
+  private stepNonFinishedClient(
+    table: Table,
+    currentClientInfo: ClientInfo,
+    result: SpecCheckResult,
+  ): void {
     const nextPossibleCellIndex = this.getNextPossibleCellIndexWithCriteria(
       table,
       currentClientInfo,
@@ -38,14 +42,22 @@ export class TableStepper {
     else currentClientInfo.currentIndexOfPossibleCells = nextPossibleCellIndex;
   }
 
-  private getCriteria(table: Table, currentClientInfo: ClientInfo, result: NextValidStartResult): CellCriteria {
-    if (!result) {
+  private getCriteria(
+    table: Table,
+    currentClientInfo: ClientInfo,
+    result: SpecCheckResult,
+  ): CellCriteria {
+    if (hasCheckPassed(result)) {
       const currentDayNumber = this.tableUtils.getCurrentCell(table, currentClientInfo).timeInterval
         .dayNumber;
       return (cell: TableCell) => cell.timeInterval.dayNumber > currentDayNumber;
     } else {
       return (cell) =>
-        this.sameDayIntervalManager.doesIntervalStartAtOrAfter(cell.timeInterval, result);
+        this.timeMapper.weekTimeToNumber({
+          dayNumber: cell.timeInterval.dayNumber,
+          hour: cell.timeInterval.start.hour,
+          minute: cell.timeInterval.start.minute,
+        }) >= result;
     }
   }
 
