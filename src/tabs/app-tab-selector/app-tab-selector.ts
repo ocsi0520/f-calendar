@@ -5,6 +5,7 @@ import { RegisterNewClient } from '../register-new-client/register-new-client';
 import { GroupClients } from '../group-clients/group-clients';
 import { ClientManagement } from '../client-management/client-management';
 import { AppGenerateWeekSchedule } from '../app-generate-week-schedule/app-generate-week-schedule';
+import { PickRules } from '../pick-rules/pick-rules';
 
 // TODO:
 // as mat-tab-selector retains everything in the DOM (so if I switch to another tab, the prev tab's content is not removed from the DOM)
@@ -20,6 +21,7 @@ import { AppGenerateWeekSchedule } from '../app-generate-week-schedule/app-gener
     GroupClients,
     ClientManagement,
     AppGenerateWeekSchedule,
+    PickRules,
   ],
   templateUrl: './app-tab-selector.html',
   styleUrl: './app-tab-selector.scss',

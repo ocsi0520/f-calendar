@@ -1,0 +1,14 @@
+<div>
+  <mat-slide-toggle [checked]="this.descriptor().breakfast" (change)="this.toggleBreakfast($event)">
+    Breakfast rule
+  </mat-slide-toggle>
+  <mat-slide-toggle [checked]="this.descriptor().lunch" (change)="this.toggleLunch($event)">
+    Lunch rule
+  </mat-slide-toggle>
+  <mat-slide-toggle
+    [checked]="this.descriptor().noFollowingDayFor2Sessions"
+    (change)="this.toggleNoFollowingDay($event)"
+  >
+    No Following Day for 2-sessioned clients rule
+  </mat-slide-toggle>
+</div>
