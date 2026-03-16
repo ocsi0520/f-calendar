@@ -43,15 +43,41 @@ describe(TableViewGenerator.name, () => {
     const actual = unitUnderTest.generateViewsFrom(allSuitableCells);
     expect(actual.linear).toEqual(allSuitableCells);
 
-    expect(actual.byDay).toEqual([
-      [],
-      allSuitableCells.slice(0, 8),
-      allSuitableCells.slice(8, 10),
-      [allSuitableCells[10]],
-      [],
-      allSuitableCells.slice(11, 15),
-      [],
-      [allSuitableCells[15]],
-    ]);
+    expect(actual.byDay).toEqual([7, 9, 10, 10, 14, 14]);
+  });
+  it('should handle empty case', () => {
+    const actual = unitUnderTest.generateViewsFrom([]);
+    expect(actual.linear).empty;
+    expect(actual.byDay).toEqual([-1, -1, -1, -1, -1, -1]);
+  });
+  it('should handle case when only Wednesday is present', () => {
+    const allCells = [makeTableCell(3, [10, 15], [11, 30])];
+    const actual = unitUnderTest.generateViewsFrom(allCells);
+    expect(actual.linear).toEqual(allCells);
+    expect(actual.byDay).toEqual([-1, -1, 0, 0, 0, 0]);
+  });
+
+  it('should handle case when only Monday is present', () => {
+    const allCells = [
+      makeTableCell(1, [8, 0], [9, 15], [1]),
+      makeTableCell(1, [9, 15], [10, 30], [2]),
+      makeTableCell(1, [11, 0], [12, 15], [3]),
+    ];
+
+    const actual = unitUnderTest.generateViewsFrom(allCells);
+    expect(actual.linear).toEqual(allCells);
+    expect(actual.byDay).toEqual([2, 2, 2, 2, 2, 2]);
+  });
+
+  it('should handle case when only Sunday is present', () => {
+    const allCells = [
+      makeTableCell(7, [8, 0], [9, 15], [1]),
+      makeTableCell(7, [9, 15], [10, 30], [2]),
+      makeTableCell(7, [11, 0], [12, 15], [3]),
+    ];
+
+    const actual = unitUnderTest.generateViewsFrom(allCells);
+    expect(actual.linear).toEqual(allCells);
+    expect(actual.byDay).toEqual([-1, -1, -1, -1, -1, -1]);
   });
 });
