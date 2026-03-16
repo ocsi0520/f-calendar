@@ -1,10 +1,9 @@
-import { makeSameDayInterval } from '../../../definition/TimeInterval';
 import { makeWeekTime } from '../../../definition/WeekTime';
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
 import { TimeManager } from '../../../managers/TimeManager';
-import { SameDayIntervalMapper } from '../../../mappers/SameDayIntervalMapper';
 import { TimeMapper } from '../../../mappers/TimeMapper';
 import { makeTableCell } from '../../__tests__/makeEmptyTableCell';
+import { TableUtils } from '../../TableManager/TableUtils';
 import { LunchSpecification } from '../rules/LunchSpecification';
 import { MorningChecker } from '../rules/MorningChecker';
 import { makeTable, createExpectedResult } from './SpecificationTestHelper';
@@ -32,7 +31,12 @@ describe(LunchSpecification.name, () => {
     const timeManager = new TimeManager(timeMapper);
     const sameDayIntervalManager = new SameDayIntervalManager(timeManager, timeMapper);
     const morningChecker = new MorningChecker();
-    unitUnderTest = new LunchSpecification(morningChecker, sameDayIntervalManager, timeManager);
+    unitUnderTest = new LunchSpecification(
+      morningChecker,
+      sameDayIntervalManager,
+      timeManager,
+      new TableUtils(),
+    );
   });
 
   it('returns true when less than 4 occupied sessions', () => {

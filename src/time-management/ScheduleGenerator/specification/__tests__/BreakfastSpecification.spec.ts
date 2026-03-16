@@ -3,6 +3,7 @@ import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager
 import { TimeManager } from '../../../managers/TimeManager';
 import { TimeMapper } from '../../../mappers/TimeMapper';
 import { makeTableCell } from '../../__tests__/makeEmptyTableCell';
+import { TableUtils } from '../../TableManager/TableUtils';
 import { BreakfastSpecification } from '../rules/BreakfastSpecification';
 import { MorningChecker } from '../rules/MorningChecker';
 import { createExpectedResult, makeTable } from './SpecificationTestHelper';
@@ -18,6 +19,7 @@ describe('BreakfastSpecification.check', () => {
       sameDayIntervalManager,
       timeManager,
       new MorningChecker(),
+      new TableUtils(),
     );
   });
 

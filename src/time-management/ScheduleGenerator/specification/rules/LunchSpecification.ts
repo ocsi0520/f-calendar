@@ -5,6 +5,7 @@ import { MorningChecker } from './MorningChecker';
 import { makeSameDayInterval, SameDayInterval } from '../../../definition/TimeInterval';
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
 import { TimeManager } from '../../../managers/TimeManager';
+import { TableUtils } from '../../TableManager/TableUtils';
 
 export class LunchSpecification implements ScheduleSpecification {
   private static LUNCH_IN_MINUTES = 60;
@@ -12,15 +13,13 @@ export class LunchSpecification implements ScheduleSpecification {
     private readonly morningChecker: MorningChecker,
     private readonly sameDayIntervalManager: SameDayIntervalManager,
     private readonly timeManager: TimeManager,
+    private readonly tableUtils: TableUtils,
   ) {}
   public check(table: Table, currentCellLinearIndex: number): NextValidStartResult {
-    const currentCell = table.cellPart.views.linear[currentCellLinearIndex];
+    const currentCell = this.tableUtils.getCurrentCell(table, currentCellLinearIndex);
     const dayNumber = currentCell.timeInterval.dayNumber;
-    const sameDayCells = table.cellPart.views.byDay[dayNumber];
+    const occupiedSameDayCells = this.tableUtils.getOccupiedCellsForDay(table, dayNumber);
 
-    const occupiedSameDayCells = sameDayCells.filter(
-      (scheduleCell) => scheduleCell.clientIdsInvolved.length,
-    );
     if (this.hasRoomForLunch(occupiedSameDayCells)) return null;
 
     return this.timeManager.shiftByGranularity({
