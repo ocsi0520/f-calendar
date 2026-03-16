@@ -34,14 +34,24 @@ export class TableUtils {
   }
 
   public getOccupiedCellsForDay(table: Table, dayNumber: DayNumber): Array<TableCell> {
-    const byDayView = table.cellPart.views.byDay;
     const allCells = table.cellPart.views.linear;
-    const startIndex = dayNumber === 1 ? 0 : byDayView[dayNumber - 2] + 1;
-    const endIndex = dayNumber === 7 ? allCells.length - 1 : byDayView[dayNumber - 1];
+    const [startIndex, endIndex] = this.getIndexesForDay(table, dayNumber);
+
     const result: Array<TableCell> = [];
     for (let i = startIndex; i <= endIndex; i++)
       if (allCells[i].clientIdsInvolved.length > 0) result.push(allCells[i]);
 
     return result;
+  }
+
+  public getIndexesForDay(
+    table: Table,
+    dayNumber: DayNumber,
+  ): [startIndex: number, endIndex: number] {
+    const byDayView = table.cellPart.views.byDay;
+    const startIndex = dayNumber === 1 ? 0 : byDayView[dayNumber - 2] + 1;
+    const endIndex =
+      dayNumber === 7 ? table.cellPart.views.linear.length - 1 : byDayView[dayNumber - 1];
+    return [startIndex, endIndex];
   }
 }
