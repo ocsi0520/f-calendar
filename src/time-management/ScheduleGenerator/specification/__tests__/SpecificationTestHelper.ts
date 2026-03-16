@@ -1,14 +1,11 @@
-import { groupBy } from '../../../../utils/groupby';
 import { WeekTime } from '../../../definition/WeekTime';
 import { ClientInfo, Table, TableCell } from '../../Table';
+import { TableViewGenerator } from '../../table-generator/TableViewGenerator';
 import { NextValidStartResult } from '../specification';
 
 export const makeTable = (cells: Array<TableCell>, clientInfos: Array<ClientInfo> = []): Table => ({
   cellPart: {
-    views: {
-      linear: cells,
-      byDay: groupBy(cells, (cell) => cell.timeInterval.dayNumber),
-    },
+    views: new TableViewGenerator().generateViewsFrom(cells),
   },
   clientPart: {
     clients: clientInfos,
