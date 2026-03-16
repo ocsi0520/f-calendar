@@ -11,3 +11,5 @@ which could improve the codebase.
 
 6.) make "storage services" (MyTimeService, ClientPairService, ClientService) async, so that later on can switch to an actual BE
 
+7.) Do pre-validation for rules i.e. 
+    NoFollowingDayFor2SessionSpec: search for clients which has only suitable/possible cells which are not 2 days from each other
