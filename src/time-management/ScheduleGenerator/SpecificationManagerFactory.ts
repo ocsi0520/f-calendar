@@ -25,8 +25,8 @@ export class SpecificationManagerFactory {
   private getAllSpecifications(): Array<ScheduleSpecification> {
     const morningChecker = new MorningChecker();
     return [
-      new NoOverlappingSessionsSpecification(this.sameDayIntervalManager, this.tableUtils),
       new ProperPairsSpecification(this.pairService),
+      new NoOverlappingSessionsSpecification(this.sameDayIntervalManager, this.tableUtils),
       new BreakfastSpecification(
         this.sameDayIntervalManager,
         this.timeManager,
