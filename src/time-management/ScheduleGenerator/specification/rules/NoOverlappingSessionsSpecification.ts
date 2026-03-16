@@ -1,6 +1,7 @@
 import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager';
-import { Table, TableCell } from '../../Table';
+import { Table } from '../../Table';
 import { ScheduleSpecification, NextValidStartResult } from '../specification';
+import { TableUtils } from '../../TableManager/TableUtils';
 import { sessionTime, timeGranularityInMins } from '../../../session';
 
 // in case of: prevOverlappingCell - currentCell
@@ -11,39 +12,73 @@ import { sessionTime, timeGranularityInMins } from '../../../session';
 // we have to jump to that specific followingOverlappingCell, then ProperPairsSpecification
 // can jump to its end in case of no proper pair
 export class NoOverlappingSessionsSpecification implements ScheduleSpecification {
-  constructor(private readonly sameDayIntervalManager: SameDayIntervalManager) {}
+  constructor(
+    private readonly sameDayIntervalManager: SameDayIntervalManager,
+    private readonly tableUtils: TableUtils,
+  ) {}
 
   public check(table: Table, currentCellLinearIndex: number): NextValidStartResult {
-    const currentCell = table.cellPart.views.linear[currentCellLinearIndex];
-    const dayNumber = currentCell.timeInterval.dayNumber;
-    const sameDayCells = table.cellPart.views.byDay[dayNumber];
-
     const [firstIndexToCheck, lastIndexToCheck] = this.getMeaningfulIndexes(
-      sameDayCells,
-      currentCell,
+      table,
+      currentCellLinearIndex,
     );
-    let isExaminedAfterCurrent = false;
-    for (let i = firstIndexToCheck; i <= lastIndexToCheck; i++) {
-      const cellToCheck = sameDayCells[i];
-      if (cellToCheck.clientIdsInvolved.length === 0) continue;
-      if (cellToCheck === currentCell) {
-        isExaminedAfterCurrent = true;
-        continue;
-      }
-
+    return (
+      this.getNextValidStartDueToOverlapWithPreceedingCell(
+        table,
+        currentCellLinearIndex,
+        firstIndexToCheck,
+      ) ||
+      this.getNextValidStartDueToOverlapWithFollowingCell(
+        table,
+        currentCellLinearIndex,
+        lastIndexToCheck,
+      )
+    );
+  }
+  private getNextValidStartDueToOverlapWithPreceedingCell(
+    table: Table,
+    currentCellLinearIndex: number,
+    firstIndexToCheck: number,
+  ): NextValidStartResult {
+    const currentCell = this.tableUtils.getCurrentCell(table, currentCellLinearIndex);
+    for (let i = firstIndexToCheck; i < currentCellLinearIndex; i++) {
+      const cellToCheck = this.tableUtils.getCurrentCell(table, i);
       if (
+        cellToCheck.clientIdsInvolved.length &&
         this.sameDayIntervalManager.areIntervalsOverlapping(
           currentCell.timeInterval,
           cellToCheck.timeInterval,
         )
       ) {
-        const whichEnd = isExaminedAfterCurrent
-          ? cellToCheck.timeInterval.start
-          : cellToCheck.timeInterval.end;
         return {
           dayNumber: cellToCheck.timeInterval.dayNumber,
-          hour: whichEnd.hour,
-          minute: whichEnd.minute,
+          hour: cellToCheck.timeInterval.end.hour,
+          minute: cellToCheck.timeInterval.end.minute,
+        };
+      }
+    }
+    return null;
+  }
+
+  private getNextValidStartDueToOverlapWithFollowingCell(
+    table: Table,
+    currentCellLinearIndex: number,
+    lastIndexToCheck: number,
+  ): NextValidStartResult {
+    const currentCell = this.tableUtils.getCurrentCell(table, currentCellLinearIndex);
+    for (let i = currentCellLinearIndex + 1; i <= lastIndexToCheck; i++) {
+      const cellToCheck = this.tableUtils.getCurrentCell(table, i);
+      if (
+        cellToCheck.clientIdsInvolved.length &&
+        this.sameDayIntervalManager.areIntervalsOverlapping(
+          currentCell.timeInterval,
+          cellToCheck.timeInterval,
+        )
+      ) {
+        return {
+          dayNumber: cellToCheck.timeInterval.dayNumber,
+          hour: cellToCheck.timeInterval.start.hour,
+          minute: cellToCheck.timeInterval.start.minute,
         };
       }
     }
@@ -51,16 +86,18 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
   }
 
   private getMeaningfulIndexes(
-    sameDayCells: Array<TableCell>,
-    currentCell: TableCell,
+    table: Table,
+    currentCellLinearIndex: number,
   ): [firstIndexToCheck: number, lastIndexToCheck: number] {
-    const indexOfCurrentCell = sameDayCells.indexOf(currentCell);
     // basically 5, so in case I've index 7, 2 and 12 must be out of range
     // but 3 and 11 can still be in range --> maxInvalidDiff=4
     const granularityDiffBetweenValidSessions = sessionTime.inMinutes / timeGranularityInMins;
     const maxInvalidDiff = granularityDiffBetweenValidSessions - 1;
-    const firstIndexToCheck = Math.max(0, indexOfCurrentCell - maxInvalidDiff);
-    const lastIndexToCheck = Math.min(sameDayCells.length - 1, indexOfCurrentCell + maxInvalidDiff);
+    const firstIndexToCheck = Math.max(0, currentCellLinearIndex - maxInvalidDiff);
+    const lastIndexToCheck = Math.min(
+      table.cellPart.views.linear.length - 1,
+      currentCellLinearIndex + maxInvalidDiff,
+    );
     return [firstIndexToCheck, lastIndexToCheck];
   }
 }

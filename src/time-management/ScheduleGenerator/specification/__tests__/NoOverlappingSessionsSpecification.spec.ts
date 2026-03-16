@@ -1,5 +1,4 @@
 import { methodName } from '../../../../utils/test-name';
-import { makeSameDayInterval } from '../../../definition/TimeInterval';
 import { TimeManager } from '../../../managers/TimeManager';
 import { Table } from '../../Table';
 import { NoOverlappingSessionsSpecification } from '../rules/NoOverlappingSessionsSpecification';
@@ -9,6 +8,7 @@ import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager
 import { TimeMapper } from '../../../mappers/TimeMapper';
 import { makeWeekTime } from '../../../definition/WeekTime';
 import { makeTableCell } from '../../__tests__/makeEmptyTableCell';
+import { TableUtils } from '../../TableManager/TableUtils';
 
 describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
   let unitUnderTest: NoOverlappingSessionsSpecification;
@@ -18,6 +18,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     const timeManager = new TimeManager(timeMapper);
     unitUnderTest = new NoOverlappingSessionsSpecification(
       new SameDayIntervalManager(timeManager, timeMapper),
+      new TableUtils(),
     );
   });
 
