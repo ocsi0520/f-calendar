@@ -112,7 +112,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     ]);
 
     expect(unitUnderTest.check(table, 0)).toEqual(createExpectedResult(makeWeekTime(1, 8, 30)));
-    expect(unitUnderTest.check(table, 1)).toEqual(createExpectedResult(makeWeekTime(1, 7, 30)));
+    expect(unitUnderTest.check(table, 1)).toEqual(createExpectedResult(makeWeekTime(1, 8, 45)));
   });
 
   it('returns true with mixed occupied and unoccupied cells when no overlaps exist', () => {
@@ -134,7 +134,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
 
     expect(unitUnderTest.check(table, 0)).toEqual(createExpectedResult(makeWeekTime(1, 8, 30)));
 
-    expect(unitUnderTest.check(table, 2)).toEqual(createExpectedResult(makeWeekTime(1, 7, 45)));
+    expect(unitUnderTest.check(table, 2)).toEqual(createExpectedResult(makeWeekTime(1, 9, 0)));
   });
 
   it('returns true when only one cell is occupied', () => {
@@ -180,11 +180,11 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     ]);
     const expectedResults: Array<NextValidStartResult> = [
       createExpectedResult(makeWeekTime(1, 7, 45)),
-      createExpectedResult(makeWeekTime(1, 7, 30)),
+      createExpectedResult(makeWeekTime(1, 8, 45)),
       null,
       null,
       // first it finds the 0-indexed cell, so it'll calculate from that one
-      createExpectedResult(makeWeekTime(1, 7, 30)),
+      createExpectedResult(makeWeekTime(1, 8, 45)),
       null,
       null,
       null,
@@ -196,7 +196,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
       null,
       createExpectedResult(makeWeekTime(1, 11, 30)),
       null,
-      createExpectedResult(makeWeekTime(1, 11, 0)),
+      createExpectedResult(makeWeekTime(1, 12, 15)),
       null,
     ];
     testDetailed(table, expectedResults);
@@ -249,7 +249,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
           makeTableCell(1, [9, 15], [10, 30], [3]),
         ]);
 
-        const expectedResult = createExpectedResult(makeWeekTime(1, 7, 30));
+        const expectedResult = createExpectedResult(makeWeekTime(1, 8, 45));
         expect(unitUnderTest.check(table, 1)).toEqual(expectedResult);
       });
 
@@ -284,7 +284,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
           makeTableCell(1, [9, 30], [10, 45], [3]),
         ]);
 
-        const expectedResult = createExpectedResult(makeWeekTime(1, 7, 30));
+        const expectedResult = createExpectedResult(makeWeekTime(1, 8, 45));
         expect(unitUnderTest.check(table, 1)).toEqual(expectedResult);
       });
 
@@ -442,14 +442,14 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
     ]);
     testDetailed(table, [
       createExpectedResult(makeWeekTime(1, 8, 15)),
-      createExpectedResult(makeWeekTime(1, 8, 0)),
-      createExpectedResult(makeWeekTime(1, 8, 0)),
-      createExpectedResult(makeWeekTime(1, 8, 0)),
-      createExpectedResult(makeWeekTime(1, 8, 0)),
-      createExpectedResult(makeWeekTime(1, 8, 15)),
-      createExpectedResult(makeWeekTime(1, 8, 30)),
-      createExpectedResult(makeWeekTime(1, 8, 45)),
-      createExpectedResult(makeWeekTime(1, 9, 0)),
+      createExpectedResult(makeWeekTime(1, 9, 15)),
+      createExpectedResult(makeWeekTime(1, 9, 15)),
+      createExpectedResult(makeWeekTime(1, 9, 15)),
+      createExpectedResult(makeWeekTime(1, 9, 15)),
+      createExpectedResult(makeWeekTime(1, 9, 30)),
+      createExpectedResult(makeWeekTime(1, 9, 45)),
+      createExpectedResult(makeWeekTime(1, 10, 0)),
+      createExpectedResult(makeWeekTime(1, 10, 15)),
       null,
       null,
       null,
@@ -458,7 +458,7 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
       null,
       null,
       null,
-      createExpectedResult(makeWeekTime(1, 11, 15)),
+      createExpectedResult(makeWeekTime(1, 12, 30)),
       null,
       null,
       null,
@@ -466,20 +466,20 @@ describe(methodName(NoOverlappingSessionsSpecification, 'check'), () => {
       createExpectedResult(makeWeekTime(1, 14, 15)),
       null,
       null,
-      createExpectedResult(makeWeekTime(1, 13, 30)),
+      createExpectedResult(makeWeekTime(1, 14, 45)),
       null,
       null,
       null,
       null,
       createExpectedResult(makeWeekTime(1, 16, 0)),
       null,
-      createExpectedResult(makeWeekTime(1, 15, 30)),
+      createExpectedResult(makeWeekTime(1, 16, 45)),
       null,
       null,
       null,
       null,
       createExpectedResult(makeWeekTime(1, 17, 30)),
-      createExpectedResult(makeWeekTime(1, 17, 15)),
+      createExpectedResult(makeWeekTime(1, 18, 30)),
       null,
       null,
       null,

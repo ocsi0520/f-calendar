@@ -2,9 +2,7 @@ import { SameDayIntervalManager } from '../../../managers/SameDayIntervalManager
 import { Table, TableCell } from '../../Table';
 import { ScheduleSpecification, NextValidStartResult } from '../specification';
 import { sessionTime, timeGranularityInMins } from '../../../session';
-import { WeekTime } from '../../../definition/WeekTime';
 
-// TODO: better WeekTime result
 // in case of: prevOverlappingCell - currentCell
 // since we already passed prevOverlappingCell, we can't have pair with it
 // so we should jump to the end of prevOverlappingCell
@@ -24,30 +22,32 @@ export class NoOverlappingSessionsSpecification implements ScheduleSpecification
       sameDayCells,
       currentCell,
     );
+    let isExaminedAfterCurrent = false;
     for (let i = firstIndexToCheck; i <= lastIndexToCheck; i++) {
       const cellToCheck = sameDayCells[i];
-      if (this.isSameOrNonOccupied(currentCell, cellToCheck)) continue;
+      if (cellToCheck.clientIdsInvolved.length === 0) continue;
+      if (cellToCheck === currentCell) {
+        isExaminedAfterCurrent = true;
+        continue;
+      }
 
       if (
         this.sameDayIntervalManager.areIntervalsOverlapping(
           currentCell.timeInterval,
           cellToCheck.timeInterval,
         )
-      )
-        return this.getFirstStartTimeRightAfter(cellToCheck);
+      ) {
+        const whichEnd = isExaminedAfterCurrent
+          ? cellToCheck.timeInterval.start
+          : cellToCheck.timeInterval.end;
+        return {
+          dayNumber: cellToCheck.timeInterval.dayNumber,
+          hour: whichEnd.hour,
+          minute: whichEnd.minute,
+        };
+      }
     }
     return null;
-  }
-  private getFirstStartTimeRightAfter({ timeInterval }: TableCell): WeekTime {
-    return {
-      dayNumber: timeInterval.dayNumber,
-      hour: timeInterval.start.hour,
-      minute: timeInterval.start.minute,
-    };
-  }
-
-  private isSameOrNonOccupied(currentCell: TableCell, cellToExamine: TableCell): boolean {
-    return currentCell === cellToExamine || cellToExamine.clientIdsInvolved.length === 0;
   }
 
   private getMeaningfulIndexes(
