@@ -10,6 +10,7 @@ import { ScheduleSpecification } from './specification/specification';
 import { SpecificationManager } from './specification/SpecificationManager';
 import { SameDayIntervalManager } from '../managers/SameDayIntervalManager';
 import { TimeMapper } from '../mappers/TimeMapper';
+import { TableUtils } from './TableManager/TableUtils';
 
 @Injectable({ providedIn: 'root' })
 export class SpecificationManagerFactory {
@@ -18,15 +19,26 @@ export class SpecificationManagerFactory {
     private timeManager: TimeManager,
     private sameDayIntervalManager: SameDayIntervalManager,
     private pairService: ClientPairService,
+    private tableUtils: TableUtils,
   ) {}
 
   private getAllSpecifications(): Array<ScheduleSpecification> {
     const morningChecker = new MorningChecker();
     return [
-      new NoOverlappingSessionsSpecification(this.sameDayIntervalManager),
+      new NoOverlappingSessionsSpecification(this.sameDayIntervalManager, this.tableUtils),
       new ProperPairsSpecification(this.pairService),
-      new BreakfastSpecification(this.sameDayIntervalManager, this.timeManager, morningChecker),
-      new LunchSpecification(morningChecker, this.sameDayIntervalManager, this.timeManager),
+      new BreakfastSpecification(
+        this.sameDayIntervalManager,
+        this.timeManager,
+        morningChecker,
+        this.tableUtils,
+      ),
+      new LunchSpecification(
+        morningChecker,
+        this.sameDayIntervalManager,
+        this.timeManager,
+        this.tableUtils,
+      ),
     ];
   }
 
