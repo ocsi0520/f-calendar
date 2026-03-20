@@ -5,8 +5,6 @@ import { TableUtils } from './TableUtils';
 import { TableStepper } from './TableStepper';
 import { hasCheckPassed } from '../specification/specification';
 
-// TODO: next variation
-
 @Injectable({ providedIn: 'root' })
 export class TableManager {
   constructor(

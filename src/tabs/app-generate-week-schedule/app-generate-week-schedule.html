@@ -1,8 +1,5 @@
 <div class="wrapper">
   <button matButton (click)="generateSchedule()">Generate</button>
-  <button [disabled]="!this.generatedData()" matButton (click)="generateNextIteration()">
-    Next Variation
-  </button>
 </div>
 @if (this.generatedData(); as data) {
   <app-calendar title="Summary" [weekSchedule]="data.schedule" [isReadOnly]="true"></app-calendar>

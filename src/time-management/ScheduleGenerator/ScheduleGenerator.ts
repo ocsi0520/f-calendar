@@ -4,7 +4,6 @@ import { Table } from './Table';
 import { SpecificationManagerFactory } from './SpecificationManagerFactory';
 import { ScheduleDebugger } from './TableManager/ScheduleDebugger';
 
-// TODO: test
 @Injectable({ providedIn: 'root' })
 export class ScheduleGenerator {
   constructor(
@@ -14,7 +13,6 @@ export class ScheduleGenerator {
   ) {}
 
   public createScheduleIn(table: Table): void {
-    // TODO: finish next variation or delete the entire concept
     if (this.tableManager.isFinished(table)) return;
 
     this.stepTableUntilCompleted(table);
